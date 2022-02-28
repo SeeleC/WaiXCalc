@@ -14,10 +14,10 @@ from functions import *
 from settings import *
 
 # Name <WaiX Calculator Plus>
-# Version 1.3.2 (4.5.2)
+# Version 1.3.3 (4.5.3)
 # By WaiZhong
 waix = 'WaiX Calculator Plus'
-version = '1.3.2'
+version = '1.3.3'
 
 
 class WaiX(QMainWindow):
