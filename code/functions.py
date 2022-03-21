@@ -1,25 +1,15 @@
-from PyQt5.QtWidgets import QLabel
 from decimal import Decimal
 from fractions import Fraction
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_weights
+symbol_lst = ['+', '-', '×', '÷', '^']
+symbol_lst_2 = ['+', '-', '*', ':', '^', '/', '.']
+symbol_turn = {'+': '+', '-': '-', '×': '*', '÷': '/', '^': '**'}
 
 
 def examineInt(num):
 	if float(num) % 1 == 0:
 		num = int(float(num))
 	return num
-
-
-def textUpdate(string: str, label: QLabel):
-	label.setText(string)
-	weight = 0
-	for i in range(len(string)):
-		if string not in symbol_lst:
-			weight += num_weights[string[i]]
-			if weight >= 636:
-				label.setText('...' + string[-i+2:])
-				break
 
 
 def isFormula(formula: list) -> bool:
@@ -39,30 +29,42 @@ def isFormula(formula: list) -> bool:
 	return True
 
 
+'''	def compute(self):
+		if len(self.formula) > 2:
+			try:
+				result = compute(self.formula)
+			except (ValueError, ZeroDivisionError):
+				self.textEdit.setText('错误')
+				'''
+
+
 def compute(formula: list) -> int:
-	start = 0
-	for i in range(len(formula)):
-		if '(' in formula[i]:
-			formula[i] = formula[i].replace('(', '')
-			formula[i] = formula[i].replace(')', '')
-		elif formula[i][-1] == '.' or formula[i][-1] == '/':
-			formula[i] = formula[i][:-1]
-	result = formula[0]
-	if '/' in ''.join(formula):
-		fraction_compute = True
-	else:
-		fraction_compute = False
-	for j in formula:
-		if j in symbol_lst:
-			start += 2
-			if not fraction_compute:
-				result = eval(f'Decimal(result) {symbol_turn[j]} Decimal(formula[start])')
-			else:
-				result = eval(f'Fraction(result) {symbol_turn[j]} Fraction(formula[start])')
 	try:
-		return examineInt(result)
-	except ValueError:
-		return result
+		start = 0
+		for i in range(len(formula)):
+			if '(' in formula[i]:
+				formula[i] = formula[i].replace('(', '')
+				formula[i] = formula[i].replace(')', '')
+			elif formula[i][-1] == '.' or formula[i][-1] == '/':
+				formula[i] = formula[i][:-1]
+		result = formula[0]
+		if '/' in ''.join(formula):
+			fraction_compute = True
+		else:
+			fraction_compute = False
+		for j in formula:
+			if j in symbol_lst:
+				start += 2
+				if not fraction_compute:
+					result = eval(f'Decimal(result) {symbol_turn[j]} Decimal(formula[start])')
+				else:
+					result = eval(f'Fraction(result) {symbol_turn[j]} Fraction(formula[start])')
+		try:
+			return examineInt(result)
+		except ValueError:
+			return result
+	except (ValueError, ZeroDivisionError):
+		return 'error'
 
 
 def getFormula(formula_string: str) -> list:
