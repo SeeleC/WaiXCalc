@@ -29,45 +29,33 @@ def isFormula(formula: list) -> bool:
 	return True
 
 
-'''	def compute(self):
-		if len(self.formula) > 2:
-			try:
-				result = compute(self.formula)
-			except (ValueError, ZeroDivisionError):
-				self.textEdit.setText('错误')
-				'''
-
-
 def compute(formula: list) -> int:
+	start = 0
+	for i in range(len(formula)):
+		if '(' in formula[i]:
+			formula[i] = formula[i].replace('(', '')
+			formula[i] = formula[i].replace(')', '')
+		elif formula[i][-1] == '.' or formula[i][-1] == '/':
+			formula[i] = formula[i][:-1]
+	result = formula[0]
+	if '/' in ''.join(formula):
+		fraction_compute = True
+	else:
+		fraction_compute = False
+	for j in formula:
+		if j in symbol_lst:
+			start += 2
+			if not fraction_compute:
+				result = eval(f'Decimal(result) {symbol_turn[j]} Decimal(formula[start])')
+			else:
+				result = eval(f'Fraction(result) {symbol_turn[j]} Fraction(formula[start])')
 	try:
-		start = 0
-		for i in range(len(formula)):
-			if '(' in formula[i]:
-				formula[i] = formula[i].replace('(', '')
-				formula[i] = formula[i].replace(')', '')
-			elif formula[i][-1] == '.' or formula[i][-1] == '/':
-				formula[i] = formula[i][:-1]
-		result = formula[0]
-		if '/' in ''.join(formula):
-			fraction_compute = True
-		else:
-			fraction_compute = False
-		for j in formula:
-			if j in symbol_lst:
-				start += 2
-				if not fraction_compute:
-					result = eval(f'Decimal(result) {symbol_turn[j]} Decimal(formula[start])')
-				else:
-					result = eval(f'Fraction(result) {symbol_turn[j]} Fraction(formula[start])')
-		try:
-			return examineInt(result)
-		except ValueError:
-			return result
-	except (ValueError, ZeroDivisionError):
-		return 'error'
+		return examineInt(result)
+	except ValueError:
+		return result
 
 
-def getFormula(formula_string: str) -> list:
+def get_formula(formula_string: str) -> list:
 	symbols = ['+', '-', '×', '÷', '^']
 	formula_string = formula_string.replace(' ', '').replace('**', '^').replace('*', '×').replace(':', '÷').replace(
 		'//', '÷')
