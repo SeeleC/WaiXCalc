@@ -1,19 +1,13 @@
-# WaiX_Calculator
+# WaiXCalc
 
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+WaiXCalc实现了分数四则混合运算、算式分割、判断算式等功能。
 
-A calculator that support fractions.
+如仅需该库的函数，见[core](https://github.com/WaiZhong/WaiXCalc/tree/core)
 
 ## Install
 
-This project uses [Git](https://git-scm.com). Go check them out if you don't have them locally installed.
-
     git clone git@github.com:WaiZhong/waix_calculator.git
-
-## Usage
-
-Enter a formula and press the key `Enter`, calculation results appeared.
 
 ## License
 
-[MIT](LICENSE) ©
+该仓库使用[MIT](LICENSE)协议。
