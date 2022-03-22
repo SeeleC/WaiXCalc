@@ -26,4 +26,4 @@ output:
 
 ## License
 
-该仓库使用[MIT](LICENSE)协议。
+本仓库使用[MIT](LICENSE)协议。
