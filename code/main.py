@@ -3,9 +3,8 @@ from fractions import Fraction
 from re import match
 
 symbol_lst = ['+', '-', '*', ':', '^', '/', '.']
-symbol_lst_2 = ['+', '-', '*', '//']
-symbol_turn = {'+': '+', '-': '-', '*': '*', '//': '/', '^': '**'}
-symbol_turn_2 = {'+': '-', '-': '+', '//': '//', '*': '*', '**': '**'}
+symbol_lst_2 = ['+', '-', '*', '//', '**']
+symbol_turn = {'+': '+', '-': '-', '*': '*', '//': '/', '^': '**', '**': '**'}
 
 
 def examineInt(num: int | float):
@@ -32,7 +31,7 @@ def isformula(formula: list) -> bool:
 
 
 def compute(formula: list) -> int:
-	def c(num1: int | float, num2: int | float, symbol: str, bl: bool) -> int | float:
+	def c(num1, num2, symbol: str, bl: bool) -> int | float:
 		if bl:
 			r = eval(f'Fraction(num1) {symbol_turn[symbol]} Fraction(num2)')
 		else:
@@ -44,11 +43,13 @@ def compute(formula: list) -> int:
 			for j in i:
 				if match('^[0-9]+/[0-9]+$', j):
 					fraction_compute = True
+					break
 				else:
 					fraction_compute = False
 		else:
 			if match('^[0-9]+/[0-9]+$', i):
 				fraction_compute = True
+				break
 			else:
 				fraction_compute = False
 
@@ -123,7 +124,7 @@ def get_formula(formula_string: str) -> list[str]:
 		while '' in formula[i] and type(formula[i]) == list:
 			formula[i].remove('')
 
-	if type(formula[-1]) != list and len(formula[-2]) > 1:
+	if type(formula[-1]) != list and formula[-2] not in symbol_lst_2:
 		formula[-2] += formula[-1]
 		del formula[-1]
 	return formula
