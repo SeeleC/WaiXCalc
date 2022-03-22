@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
 from settings import font, symbol_lst, symbol_lst_2
-from functions import textUpdate, getFormula
+from functions import textUpdate, get_formula
 
 
 class FormulaWin(QWidget):
@@ -42,7 +42,7 @@ class FormulaWin(QWidget):
 			QMessageBox.warning(self, '提示', '算式过短！')
 		else:
 			try:
-				self.main.formula = getFormula(formula_string)
+				self.main.formula = get_formula(formula_string)
 				textUpdate(self.main.formula[-1], self.main.textEdit)
 			except ValueError:
 				pass
