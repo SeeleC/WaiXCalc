@@ -1,19 +1,29 @@
-# WaiX_Calculator
+# WaiXCalc
 
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+WaiXCalc实现了分数四则混合运算、算式分割、判断算式等功能。
 
-A calculator that support fractions.
+如需包装好的程序，见[main](https://github.com/WaiZhong/WaiXCalc/)
+
+此branch仅提供所需的函数。
 
 ## Install
-
-This project uses [Git](https://git-scm.com). Go check them out if you don't have them locally installed.
 
     git clone git@github.com:WaiZhong/waix_calculator.git
 
 ## Usage
 
-Enter a formula and press the key `Enter`, calculation results appeared.
+### example
+
+```python
+import WaiXCalc
+f = WaiXCalc.get_formula('1/2^3')
+print(WaiXCalc.compute(f))
+```
+output:
+```
+1/8
+```
 
 ## License
 
-[MIT](LICENSE) ©
+该仓库使用[MIT](LICENSE)协议。
