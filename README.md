@@ -10,4 +10,4 @@ WaiXCalc实现了分数四则混合运算、算式分割、判断算式等功能
 
 ## License
 
-该仓库使用[MIT](LICENSE)协议。
+本仓库使用[MIT](LICENSE)协议。
