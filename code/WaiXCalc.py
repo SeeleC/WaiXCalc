@@ -1,20 +1,27 @@
 from decimal import Decimal
 from fractions import Fraction
 from re import match
+from typing import Union
 
-symbol_lst = ['+', '-', '*', ':', '^', '/', '.']
-symbol_lst_2 = ['+', '-', '*', '//', '**']
+symbol_lst = ['+', '-', '*', '//', '^', '**']
+symbol_lst_2 = ['/', '.']
 symbol_turn = {'+': '+', '-': '-', '*': '*', '//': '/', '^': '**', '**': '**'}
 
 
-def examineInt(num: int | float):
+def examineInt(num: Union[int, float]):
 	if float(num) % 1 == 0:
 		num = int(float(num))
 	return num
 
 
 def isformula(formula: list) -> bool:
+	"""
+	仅支持单层算式，如'1+3.5*8/9'
+	不支持多层算式，如'1+(3.5*8.9)'
+	"""
 	start = 0
+	symbol_in = False
+
 	for i in formula:
 		start += 1
 		if start % 2 == 0:
@@ -22,16 +29,22 @@ def isformula(formula: list) -> bool:
 				continue
 		else:
 			for j in i:
-				if not j.isdigit():
+				if not j.isdigit() or j in symbol_turn or symbol_in:
 					break
+				elif j in symbol_lst_2:
+					symbol_in = True
 			else:
+				symbol_in = False
 				continue
 		return False
 	return True
 
 
 def compute(formula: list) -> int:
-	def c(num1, num2, symbol: str, bl: bool) -> int | float:
+	"""
+	传入formula，从左到右计算，优先计算嵌套的列表内算式。
+	"""
+	def c(num1, num2, symbol: str, bl: bool) -> Union[int, float]:
 		if bl:
 			r = eval(f'Fraction(num1) {symbol_turn[symbol]} Fraction(num2)')
 		else:
@@ -57,7 +70,7 @@ def compute(formula: list) -> int:
 		if type(formula[i]) == list:
 			formula_2 = formula[i][:]
 			for j in range(len(formula[i])):
-				if formula[i][j] in symbol_lst_2:
+				if formula[i][j] in symbol_lst:
 					formula_2[0] = str(c(formula_2[0], formula_2[2], formula[i][j], fraction_compute))
 					del formula_2[1:3]
 			formula[i] = formula_2[:][0]
@@ -66,7 +79,7 @@ def compute(formula: list) -> int:
 	start = 0
 
 	for i in range(len(formula)):
-		if formula[i] in symbol_lst_2:
+		if formula[i] in symbol_lst:
 			start += 2
 			result = c(result, formula[start], formula[i], fraction_compute)
 
@@ -77,6 +90,9 @@ def compute(formula: list) -> int:
 
 
 def get_formula(formula_string: str) -> list[str]:
+	"""
+	传入字符串，将字符串转化为列表，列表每个元素是一串数字或一个符号。
+	"""
 
 	symbols = ['+', '-', '*', ':', '^']
 	front_barckets = ['(', '[', '{']
@@ -124,7 +140,7 @@ def get_formula(formula_string: str) -> list[str]:
 		while '' in formula[i] and type(formula[i]) == list:
 			formula[i].remove('')
 
-	if type(formula[-1]) != list and formula[-2] not in symbol_lst_2:
+	if type(formula[-1]) != list and formula[-2] not in symbol_lst:
 		formula[-2] += formula[-1]
 		del formula[-1]
 	return formula
