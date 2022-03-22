@@ -13,11 +13,11 @@ from OpenedFormulaWin import OpenedFormulaWin
 from functions import *
 from settings import *
 
-# Name <WaiX Calculator Plus>
-# Version 1.3.3 (4.5.3)
+# Name <WaiX Calculator>
+# Version 1.4.0 (4.4.0)
 # By WaiZhong
-waix = 'WaiX Calculator Plus'
-version = '1.3.3'
+waix = 'WaiX Calculator'
+version = '1.4.0'
 
 
 class WaiX(QMainWindow):
@@ -257,7 +257,7 @@ class WaiX(QMainWindow):
 			with open(file[0], 'r') as f:
 				f_formula = f.read()
 				f_formulas = f_formula.split('\n')
-				formulas = [getFormula(i) for i in f_formulas if isFormula(getFormula(i))]
+				formulas = [get_formula(i) for i in f_formulas if isformula(get_formula(i))]
 		except (FileNotFoundError, IndexError) as e:
 			if type(e) == IndexError:
 				QMessageBox.warning(self, '提示', '错误')
@@ -285,8 +285,8 @@ class WaiX(QMainWindow):
 
 	def paste(self):
 		data: str = paste()
-		if isFormula(getFormula(data)):
-			self.formula = getFormula(data)
+		if isformula(get_formula(data)):
+			self.formula = get_formula(data)
 			textUpdate(self.formula[-1], self.textEdit)
 
 	def delete(self):
@@ -302,8 +302,10 @@ class WaiX(QMainWindow):
 
 	def about(self):
 		QMessageBox.about(
-			self, '关于', f'{waix}\n'
-			'By GitHub@WaiZhong\n'
+			self,
+			'关于', f'{waix}\n'
+			'By WaiZhong\n'
+			'Github https://github.com/WaiZhong/WaiXCalc/\n'
 			f'Version {version}\n'
 		)
 
