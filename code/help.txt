@@ -1,0 +1,3 @@
+1. 在“新建”界面中，不支持全角字符;<br>
+2. 在”新建“界面中，为了兼容分数，如果想输入“÷”，请用“//”或“:”代替;<br>
+3. 如有其他问题请前往<a href="https://github.com/WaiZhong/WaiXCalc/issues/">Issues<\a><br>
