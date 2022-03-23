@@ -15,7 +15,7 @@ class HistoryWin(QWidget):
 	def initUI(self):
 		layout = QVBoxLayout()
 
-		text = QTextEdit('history')
+		text = QTextEdit()
 		text.setFont(font)
 		text.setText(''.join([i[:-1] + '\n' for i in [i + ' ' for i in data['history']]]))
 		text.setReadOnly(True)
@@ -23,6 +23,7 @@ class HistoryWin(QWidget):
 		hbox = QHBoxLayout()
 
 		ok = QPushButton('确定')
+		ok.setFont(font)
 		ok.setShortcut('Return')
 		ok.clicked.connect(self.close)
 

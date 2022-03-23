@@ -17,7 +17,7 @@ def textUpdate(string: str, label: QLabel):
 	label.setText(string)
 	weight = 0
 	for i in range(len(string)):
-		if string not in symbol_lst:
+		if string[i] not in symbol_lst:
 			weight += num_weights[string[i]]
 			if weight >= 636:
 				label.setText('...' + string[-i+2:])
@@ -103,8 +103,6 @@ def get_formula(formula_string: str) -> list[str]:
 	"""
 	传入字符串，将字符串转化为列表，列表每个元素是一串数字或一个符号。
 	"""
-
-	symbols = ['+', '-', '*', ':', '^']
 	front_barckets = ['(', '[', '{']
 	back_barckets = [')', ']', '}']
 	formula_string = formula_string.replace(' ', '').replace('**', '^').replace('*', '×').replace(':', '÷').replace(
@@ -113,7 +111,7 @@ def get_formula(formula_string: str) -> list[str]:
 	start = 0
 
 	for i in range(len(formula_string)):
-		if formula_string[i] in symbols or i == len(formula_string) - 1:
+		if formula_string[i] in symbol_lst or i == len(formula_string) - 1:
 			raw_formula.append(formula_string[start:i])
 			raw_formula.append(formula_string[i])
 			start = i + 1
@@ -132,7 +130,7 @@ def get_formula(formula_string: str) -> list[str]:
 		elif raw_formula[i][-1] in back_barckets:
 			formula.append([
 				i.replace('(', '').replace(')', '').replace('[', '').replace(']', '').replace('{', '').replace(
-					'}', '').replace(':', '//').replace('^', '**')
+					'}', '')
 				for i in raw_formula[barcket_start:i+1]
 			])
 			if formula[-1][1] == '-' and formula[-1][0] == '':
@@ -144,7 +142,7 @@ def get_formula(formula_string: str) -> list[str]:
 			is_in_barckets = False
 		else:
 			if not is_in_barckets:
-				formula.append(raw_formula[i].replace(':', '//').replace('^', '**'))
+				formula.append(raw_formula[i])
 
 	for i in range(len(formula)):
 		while '' in formula[i] and type(formula[i]) == list:

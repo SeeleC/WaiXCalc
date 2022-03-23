@@ -23,5 +23,5 @@ num_weights = {
 	'.': 20, '/': 20
 }
 font = QFont()
-font.setFamily('微软雅黑')
+font.setFamily('Microsoft Yahei UI')
 font.setPointSize(8)
