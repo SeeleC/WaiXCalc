@@ -171,82 +171,81 @@ class WaiX(QMainWindow):
 			self.textEdit.setText(self.formula[-1])
 
 	def keyPressEvent(self, e):
-		match e.key():
-			case Qt.Key_Backspace:
-				self.isResult = False
-				if len(self.formula[-1]) <= 2 and '-' in self.formula[-1]:
-					self.formula[-1] = ''
-					textUpdate(self.formula[-1], self.textEdit)
-					if len(self.formula) == 1:
-						self.clearEdit()
-					else:
-						self.formula[-1] = '0'
-						textUpdate(self.formula[-1], self.textEdit)
-				elif self.formula != '0' and self.formula[-1][-1] not in symbol_lst and len(self.formula[-1]) >= 2:
-					self.formula[-1] = self.formula[-1][:-1]
-					textUpdate(self.formula[-1], self.textEdit)
-				elif self.formula[-1] in symbol_lst:
-					self.formula = self.formula[:-1]
-					textUpdate(self.formula[-1], self.textEdit)
-				elif len(self.formula[-1]) == 1 and len(self.formula) >= 2:
-					self.formula = self.formula[:-1]
-					textUpdate(self.formula[-1], self.textEdit)
-				elif len(self.formula[-1]) == 1 and len(self.formula) == 1:
+		if e.key() == Qt.Key_Backspace:
+			self.isResult = False
+			if len(self.formula[-1]) <= 2 and '-' in self.formula[-1]:
+				self.formula[-1] = ''
+				textUpdate(self.formula[-1], self.textEdit)
+				if len(self.formula) == 1:
 					self.clearEdit()
-				elif self.isResult:
-					self.clearEdit()
-			case Qt.Key_Equal | Qt.Key_Return | Qt.Key_Enter:
-				self.compute()
-			case Qt.Key_Plus:
-				self.symbol('+')
-			case Qt.Key_Minus:
-				self.symbol('-')
-			case Qt.Key_Asterisk:
-				self.symbol('×')
-			case Qt.Key_Colon:
-				self.symbol('÷')
-			case Qt.Key_plusminus:
-				self.plusminus()
-			case Qt.Key_C:
+				else:
+					self.formula[-1] = '0'
+					textUpdate(self.formula[-1], self.textEdit)
+			elif self.formula != '0' and self.formula[-1][-1] not in symbol_lst and len(self.formula[-1]) >= 2:
+				self.formula[-1] = self.formula[-1][:-1]
+				textUpdate(self.formula[-1], self.textEdit)
+			elif self.formula[-1] in symbol_lst:
+				self.formula = self.formula[:-1]
+				textUpdate(self.formula[-1], self.textEdit)
+			elif len(self.formula[-1]) == 1 and len(self.formula) >= 2:
+				self.formula = self.formula[:-1]
+				textUpdate(self.formula[-1], self.textEdit)
+			elif len(self.formula[-1]) == 1 and len(self.formula) == 1:
 				self.clearEdit()
-			case Qt.Key_Percent:
-				if self.formula[-1] != '0':
-					try:
-						self.formula[-1] = str(int(self.formula[-1]) / 100)
-					except ValueError:
-						self.formula[-1] = str(Decimal(self.formula[-1]) / 100)
-					textUpdate(self.formula[-1], self.textEdit)
-			case Qt.Key_Period:
-				if self.formula[-1] not in symbol_lst and '.' not in self.formula[-1]:
-					self.formula[-1] = self.formula[-1] + '.'
-					textUpdate(self.formula[-1], self.textEdit)
-			case Qt.Key_Slash:
-				if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
-					self.formula[-1] = self.formula[-1] + '/'
-					textUpdate(self.formula[-1], self.textEdit)
-				elif self.formula[-1][-1] == '/':
-					self.formula[-1] = self.formula[-1][:-1]
-					self.symbol('÷')
-			case Qt.Key_1 | Qt.Key_Launch1:
-				self.addNum('1')
-			case Qt.Key_2 | Qt.Key_Launch2:
-				self.addNum('2')
-			case Qt.Key_3 | Qt.Key_Launch3:
-				self.addNum('3')
-			case Qt.Key_4 | Qt.Key_Launch4:
-				self.addNum('4')
-			case Qt.Key_5 | Qt.Key_Launch5:
-				self.addNum('5')
-			case Qt.Key_6 | Qt.Key_Launch6:
-				self.addNum('6')
-			case Qt.Key_7 | Qt.Key_Launch6:
-				self.addNum('7')
-			case Qt.Key_8 | Qt.Key_Launch8:
-				self.addNum('8')
-			case Qt.Key_9 | Qt.Key_Launch9:
-				self.addNum('9')
-			case Qt.Key_0 | Qt.Key_Launch0:
-				self.addNum('0')
+			elif self.isResult:
+				self.clearEdit()
+		elif e.key() == Qt.Key_Equal | Qt.Key_Return | Qt.Key_Enter:
+			self.compute()
+		elif e.key() == Qt.Key_Plus:
+			self.symbol('+')
+		elif e.key() == Qt.Key_Minus:
+			self.symbol('-')
+		elif e.key() == Qt.Key_Asterisk:
+			self.symbol('×')
+		elif e.key() == Qt.Key_Colon:
+			self.symbol('÷')
+		elif e.key() == Qt.Key_plusminus:
+			self.plusminus()
+		elif e.key() == Qt.Key_C:
+			self.clearEdit()
+		elif e.key() == Qt.Key_Percent:
+			if self.formula[-1] != '0':
+				try:
+					self.formula[-1] = str(int(self.formula[-1]) / 100)
+				except ValueError:
+					self.formula[-1] = str(Decimal(self.formula[-1]) / 100)
+				textUpdate(self.formula[-1], self.textEdit)
+		elif e.key() == Qt.Key_Period:
+			if self.formula[-1] not in symbol_lst and '.' not in self.formula[-1]:
+				self.formula[-1] = self.formula[-1] + '.'
+				textUpdate(self.formula[-1], self.textEdit)
+		elif e.key() == Qt.Key_Slash:
+			if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
+				self.formula[-1] = self.formula[-1] + '/'
+				textUpdate(self.formula[-1], self.textEdit)
+			elif self.formula[-1][-1] == '/':
+				self.formula[-1] = self.formula[-1][:-1]
+				self.symbol('÷')
+		elif e.key() == Qt.Key_1 | Qt.Key_Launch1:
+			self.addNum('1')
+		elif e.key() == Qt.Key_2 | Qt.Key_Launch2:
+			self.addNum('2')
+		elif e.key() == Qt.Key_3 | Qt.Key_Launch3:
+			self.addNum('3')
+		elif e.key() == Qt.Key_4 | Qt.Key_Launch4:
+			self.addNum('4')
+		elif e.key() == Qt.Key_5 | Qt.Key_Launch5:
+			self.addNum('5')
+		elif e.key() == Qt.Key_6 | Qt.Key_Launch6:
+			self.addNum('6')
+		elif e.key() == Qt.Key_7 | Qt.Key_Launch6:
+			self.addNum('7')
+		elif e.key() == Qt.Key_8 | Qt.Key_Launch8:
+			self.addNum('8')
+		elif e.key() == Qt.Key_9 | Qt.Key_Launch9:
+			self.addNum('9')
+		elif e.key() == Qt.Key_0 | Qt.Key_Launch0:
+			self.addNum('0')
 
 	def openFormulaWin(self):
 		self.newWin = FormulaWin(ex)
