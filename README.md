@@ -8,7 +8,7 @@ WaiXCalc实现了分数四则混合运算、算式分割、判断算式等功能
 
 *代码仅兼容Python3.8+*
 
-    git clone git@github.com:WaiZhong/waix_calculator.git
+    git clone git@github.com:WaiZhong/WaiXCalc.git
 
 ## License
 
