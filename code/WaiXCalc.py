@@ -10,11 +10,12 @@ from formulaWin import FormulaWin
 from historyWin import HistoryWin
 from settingsWin import SettingsWin
 from OpenedFormulaWin import OpenedFormulaWin
+from helpWin import HelpWin
 from functions import *
 from settings import *
 
 # Name <WaiX Calculator>
-# Version 1.4.0 (4.4.0)
+# Version 1.4.0 (4.6.0)
 # By WaiZhong
 waix = 'WaiX Calculator'
 version = '1.4.0'
@@ -50,34 +51,34 @@ class WaiX(QMainWindow):
 
 		menus = [fileMenu, editMenu, historyMenu, helpMenu]
 		menuNames = [
-					['新建..', '打开..', '设置..', '退出'],
-					['剪切', '复制', '粘贴', '删除'],
-					['历史记录', '清空历史..', ''],
-					['完整算式', '关于', '', '']
+					['新建..(&N)', '打开..(&O)', '设置..(&S)', '退出(&X)'],
+					['剪切(&T)', '复制(&C)', '粘贴(&P)', '删除(&D)'],
+					['历史记录(&H)', '清空历史..', ''],
+					['帮助(&H)', '完整算式(&W)', '关于(&A)', '']
 		]
 		menuShortcuts = [
-						['Ctrl+N', 'Ctrl+O', 'Ctrl+Alt+S', 'Ctrl+Q'],
+						['Ctrl+N', 'Ctrl+O', 'Ctrl+S', 'Ctrl+Q'],
 						['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Del'],
 						['Ctrl+H', 'Ctrl+Shift+D'],
-						['Ctrl+F', 'Ctrl+A']
+						['', 'Ctrl+F', 'Ctrl+A']
 		]
 		menuStatusTips = [
 						['新建完整算式', '打开包含算式的文本文件', '编辑应用设置', '退出WaiX Calculator'],
 						['剪切到剪贴板', '复制到剪贴板', '从剪贴板粘贴', '删除当前计算步骤'],
 						['计算的历史记录', '清空历史记录'],
-						['查看当前的完整算式', '关于WaiX Calculator']
+						['显示帮助内容', '查看当前的完整算式', '关于WaiX Calculator']
 		]
 		menuFuncs = [
 					[self.openFormulaWin, self.openNewFormulaWin, self.openSettingsWin, self.close],
 					[self.cut, self.copy, self.paste, self.delete],
 					[self.openHistoryWin, self.clear_history],
-					[self.wholeFormula, self.about]
+					[self.openHelpWin, self.wholeFormula, self.about]
 		]
 		for menu, names, shortcuts, statustips, funcs in zip(menus, menuNames, menuShortcuts, menuStatusTips, menuFuncs):
 			for name, shortcut, statusTip, func in zip(names, shortcuts, statustips, funcs):
 				if name == '':
 					continue
-				elif name == '清空历史..' or name == '退出' or name == '设置..':
+				elif name == '清空历史..' or name == '退出' or name == '设置..' or name == '完整算式':
 					menu.addSeparator()
 				if name == '关于':
 					action = QAction(QIcon('images\\image.JPG'), name, self)
@@ -275,6 +276,10 @@ class WaiX(QMainWindow):
 			self.newWin.show()
 		else:
 			QMessageBox.warning(self, '历史', '历史为空', QMessageBox.Ok, QMessageBox.Ok)
+
+	def openHelpWin(self):
+		self.newWin = HelpWin()
+		self.newWin.show()
 
 	def cut(self):
 		copy(''.join([i for i in self.formula]).strip())
