@@ -194,7 +194,7 @@ class WaiX(QMainWindow):
 				self.clearEdit()
 			elif self.isResult:
 				self.clearEdit()
-		elif e.key() == Qt.Key_Equal | Qt.Key_Return | Qt.Key_Enter:
+		elif e.key() == Qt.Key_Equal or e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:
 			self.compute()
 		elif e.key() == Qt.Key_Plus:
 			self.symbol('+')
@@ -226,25 +226,25 @@ class WaiX(QMainWindow):
 			elif self.formula[-1][-1] == '/':
 				self.formula[-1] = self.formula[-1][:-1]
 				self.symbol('÷')
-		elif e.key() == Qt.Key_1 | Qt.Key_Launch1:
+		elif e.key() == Qt.Key_1 or e.key() == Qt.Key_Launch1:
 			self.addNum('1')
-		elif e.key() == Qt.Key_2 | Qt.Key_Launch2:
+		elif e.key() == Qt.Key_2 or e.key() == Qt.Key_Launch2:
 			self.addNum('2')
-		elif e.key() == Qt.Key_3 | Qt.Key_Launch3:
+		elif e.key() == Qt.Key_3 or e.key() == Qt.Key_Launch3:
 			self.addNum('3')
-		elif e.key() == Qt.Key_4 | Qt.Key_Launch4:
+		elif e.key() == Qt.Key_4 or e.key() == Qt.Key_Launch4:
 			self.addNum('4')
-		elif e.key() == Qt.Key_5 | Qt.Key_Launch5:
+		elif e.key() == Qt.Key_5 or e.key() == Qt.Key_Launch5:
 			self.addNum('5')
-		elif e.key() == Qt.Key_6 | Qt.Key_Launch6:
+		elif e.key() == Qt.Key_6 or e.key() == Qt.Key_Launch6:
 			self.addNum('6')
-		elif e.key() == Qt.Key_7 | Qt.Key_Launch6:
+		elif e.key() == Qt.Key_7 or e.key() == Qt.Key_Launch6:
 			self.addNum('7')
-		elif e.key() == Qt.Key_8 | Qt.Key_Launch8:
+		elif e.key() == Qt.Key_8 or e.key() == Qt.Key_Launch8:
 			self.addNum('8')
-		elif e.key() == Qt.Key_9 | Qt.Key_Launch9:
+		elif e.key() == Qt.Key_9 or e.key() == Qt.Key_Launch9:
 			self.addNum('9')
-		elif e.key() == Qt.Key_0 | Qt.Key_Launch0:
+		elif e.key() == Qt.Key_0 or e.key() == Qt.Key_Launch0:
 			self.addNum('0')
 
 	def openFormulaWin(self):

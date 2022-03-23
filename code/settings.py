@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QFont
-from numpy import save, load, array
+from numpy import save, load
 
 try:
 	data = load('data.npy', allow_pickle=True, fix_imports=True).item()

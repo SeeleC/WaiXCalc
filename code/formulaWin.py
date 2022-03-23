@@ -54,7 +54,7 @@ class FormulaWin(QWidget):
 				self.close()
 
 	def keyPressEvent(self, e):
-		if e.key() == Qt.Key_Return | Qt.Key_Enter:
+		if e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:
 			self.updateEdit()
 
 	def textChanged(self):
