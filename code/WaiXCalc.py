@@ -113,7 +113,7 @@ class WaiX(QMainWindow):
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
 				data['history'].append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
-				save('data.npy', data)
+				save('data.json', data)
 				self.formula = [str(result)]
 				self.textUpdate()
 
@@ -126,7 +126,7 @@ class WaiX(QMainWindow):
 		if QMessageBox.question(self, '提示', '确定要清空历史吗', QMessageBox.Ok | QMessageBox.Cancel, QMessageBox.Cancel) \
 			== QMessageBox.Ok:
 			data['history'] = []
-			save('data.npy', data)
+			save('data.json', data)
 			QMessageBox.information(self, '提示', '已清空历史记录', QMessageBox.Ok, QMessageBox.Ok)
 
 	def center(self):
@@ -340,7 +340,7 @@ class WaiX(QMainWindow):
 		except AttributeError:
 			pass
 		data['formula'] = self.formula
-		save('data.npy', data)
+		save('data.json', data)
 
 
 if __name__ == '__main__':
