@@ -4,24 +4,35 @@ from fractions import Fraction
 from re import match
 from typing import Union
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_weights, bracket_lst
+from settings import symbol_lst, symbol_lst_2, symbol_turn, num_weights, bracket_lst, dump
 
 
-def examineInt(num: Union[int, float]):
-	if float(num) % 1 == 0:
-		num = int(float(num))
-	return num
+def save(filename: str, data: dict) -> None:
+	with open(filename, 'w+', encoding='utf-8') as f:
+		dump(data, f)
 
 
-def textUpdate(string: str, label: QLabel):
+def textUpdate(string: str, label: QLabel) -> None:
 	label.setText(string)
 	weight = 0
 	for i in range(len(string)):
-		if string[i] not in symbol_lst and string[i] not in bracket_lst:
+		if string[i] not in symbol_lst and string[i] not in bracket_lst[0] and string[i] not in bracket_lst[1]:
 			weight += num_weights[string[i]]
 			if weight >= 636:
 				label.setText('...' + string[-i+2:])
 				break
+
+
+# core
+
+def examineInt(num: Union[int, float]) -> Union[int, float]:
+	"""
+	将小数点后内容无意义的float转化为int
+	如: examineInt(3.0) -> 3; examineInt(2.5) -> 2.5
+	"""
+	if float(num) % 1 == 0:
+		num = int(float(num))
+	return num
 
 
 def isformula(formula: list) -> bool:

@@ -1,19 +1,25 @@
 from PyQt5.QtGui import QFont
-from numpy import save, load
+from json import load, dump
+from numpy import load as nload
 
 try:
-	data = load('data.npy', allow_pickle=True, fix_imports=True).item()
+	data = nload('data.npy', allow_pickle=True, fix_imports=True).item()
 except FileNotFoundError:
-	data = {
-		'options': {
-			'isResult': False,
-			'_floatToFraction': False,
-			'_fractionToFloat': False
-		},
-		'formula': ['0'],
-		'history': [],
-	}
-	save('data.npy', data, allow_pickle=True, fix_imports=True)
+	try:
+		with open('data.json', 'w+', encoding='utf-8') as f:
+			data = load(f)
+	except FileNotFoundError:
+		data = {
+			'options': {
+				'isResult': False,
+				'_floatToFraction': False,
+				'_fractionToFloat': False
+			},
+			'formula': ['0'],
+			'history': [],
+		}
+		with open('data.json', 'w+', encoding='utf-8') as f:
+			dump(data, f)
 
 symbol_lst = ['+', '-', '×', '÷', '^']
 symbol_lst_2 = ['+', '-', '*', ':', '^', '/', '.']

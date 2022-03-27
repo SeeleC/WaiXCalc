@@ -15,7 +15,7 @@ from functions import *
 from settings import *
 
 # Name <WaiX Calculator>
-# Version 1.5.0 Preview (4.7.0)
+# Version 1.5.0 (4.7.0)
 # By WaiZhong
 waix = 'WaiX Calculator'
 version = '1.5.0'
@@ -113,9 +113,9 @@ class WaiX(QMainWindow):
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
 				data['history'].append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
-				save('data.npy', data, allow_pickle=True, fix_imports=True)
+				save('data.npy', data)
 				self.formula = [str(result)]
-				textUpdate(str(result), self.textEdit)
+				self.textUpdate()
 
 	def clearEdit(self):
 		self.isResult = False
@@ -126,7 +126,7 @@ class WaiX(QMainWindow):
 		if QMessageBox.question(self, '提示', '确定要清空历史吗', QMessageBox.Ok | QMessageBox.Cancel, QMessageBox.Cancel) \
 			== QMessageBox.Ok:
 			data['history'] = []
-			save('data.npy', data, allow_pickle=True, fix_imports=True)
+			save('data.npy', data)
 			QMessageBox.information(self, '提示', '已清空历史记录', QMessageBox.Ok, QMessageBox.Ok)
 
 	def center(self):
@@ -141,10 +141,11 @@ class WaiX(QMainWindow):
 			self.formula[-1] = self.formula[-1].strip('-')
 		self.textUpdate()
 
-	def addNum(self, num: str):
+	def number(self, num: str):
 		if self.formula[-1][-1] != '/' or num != '0':
 			if not self.isResult:
-				if self.formula[-1] in symbol_lst:
+				if self.formula[-1] in symbol_lst \
+						or self.formula[-1] in bracket_lst[0] or self.formula[-1] in bracket_lst[1]:
 					self.formula.append(num)
 				else:
 					if self.formula == ['0'] or self.formula[-1] == '0':
@@ -219,7 +220,7 @@ class WaiX(QMainWindow):
 			self.symbol('÷')
 		elif e.key() == Qt.Key_BracketLeft:
 			self.bracket('(')
-		elif e.key() == Qt.Key_Bra:
+		elif e.key() == Qt.Key_BracketRight:
 			self.bracket(')')
 		elif e.key() == Qt.Key_plusminus:
 			self.plusminus()
@@ -244,25 +245,25 @@ class WaiX(QMainWindow):
 				self.formula[-1] = self.formula[-1][:-1]
 				self.symbol('÷')
 		elif e.key() == Qt.Key_1 or e.key() == Qt.Key_Launch1:
-			self.addNum('1')
+			self.number('1')
 		elif e.key() == Qt.Key_2 or e.key() == Qt.Key_Launch2:
-			self.addNum('2')
+			self.number('2')
 		elif e.key() == Qt.Key_3 or e.key() == Qt.Key_Launch3:
-			self.addNum('3')
+			self.number('3')
 		elif e.key() == Qt.Key_4 or e.key() == Qt.Key_Launch4:
-			self.addNum('4')
+			self.number('4')
 		elif e.key() == Qt.Key_5 or e.key() == Qt.Key_Launch5:
-			self.addNum('5')
+			self.number('5')
 		elif e.key() == Qt.Key_6 or e.key() == Qt.Key_Launch6:
-			self.addNum('6')
+			self.number('6')
 		elif e.key() == Qt.Key_7 or e.key() == Qt.Key_Launch6:
-			self.addNum('7')
+			self.number('7')
 		elif e.key() == Qt.Key_8 or e.key() == Qt.Key_Launch8:
-			self.addNum('8')
+			self.number('8')
 		elif e.key() == Qt.Key_9 or e.key() == Qt.Key_Launch9:
-			self.addNum('9')
+			self.number('9')
 		elif e.key() == Qt.Key_0 or e.key() == Qt.Key_Launch0:
-			self.addNum('0')
+			self.number('0')
 
 	def openFormulaWin(self):
 		self.newWin = FormulaWin(ex)
@@ -339,7 +340,7 @@ class WaiX(QMainWindow):
 		except AttributeError:
 			pass
 		data['formula'] = self.formula
-		save('data.npy', data, allow_pickle=True, fix_imports=True)
+		save('data.npy', data)
 
 
 if __name__ == '__main__':

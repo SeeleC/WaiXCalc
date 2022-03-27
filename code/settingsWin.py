@@ -4,7 +4,8 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
-from settings import font, data, save
+from settings import font, data
+from functions import save
 
 
 class SettingsWin(QTabWidget):
@@ -114,7 +115,7 @@ class SettingsWin(QTabWidget):
 					if i[0] == '_':
 						data['options'][i] = self.options[i]
 				self.apply.setEnabled(False)
-				save('data.npy', data, allow_pickle=True, fix_imports=True)
+				save('data.npy', data)
 			if sender.text() == '确定' or sender.text() == '取消':
 				self.close()
 
