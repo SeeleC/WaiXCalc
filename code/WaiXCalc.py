@@ -8,7 +8,11 @@ symbol_lst_2 = ['/', '.']
 symbol_turn = {'+': '+', '-': '-', '*': '*', '//': '/', '^': '**', '**': '**'}
 
 
-def examineInt(num: Union[int, float]):
+def examineInt(num: Union[int, float]) -> Union[int, float]:
+	"""
+	将小数点后内容无意义的float转化为int
+	如: examineInt(3.0) -> 3; examineInt(2.5) -> 2.5
+	"""
 	if float(num) % 1 == 0:
 		num = int(float(num))
 	return num
