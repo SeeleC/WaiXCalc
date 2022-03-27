@@ -4,7 +4,7 @@ from fractions import Fraction
 from re import match
 from typing import Union
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_weights
+from settings import symbol_lst, symbol_lst_2, symbol_turn, num_weights, bracket_lst
 
 
 def examineInt(num: Union[int, float]):
@@ -17,7 +17,7 @@ def textUpdate(string: str, label: QLabel):
 	label.setText(string)
 	weight = 0
 	for i in range(len(string)):
-		if string[i] not in symbol_lst:
+		if string[i] not in symbol_lst and string[i] not in bracket_lst:
 			weight += num_weights[string[i]]
 			if weight >= 636:
 				label.setText('...' + string[-i+2:])

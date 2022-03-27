@@ -83,13 +83,16 @@ class SettingsWin(QTabWidget):
 		hbox = QHBoxLayout()
 
 		ok = QPushButton('确定')
+		ok.setFont(font)
 		ok.setShortcut('Return')
 		ok.clicked.connect(self.clicked)
 
 		cancel = QPushButton('取消')
+		cancel.setFont(font)
 		cancel.clicked.connect(self.clicked)
 
 		self.apply = QPushButton('应用')
+		self.apply.setFont(font)
 		self.apply.clicked.connect(self.clicked)
 
 		if mode == 0:
