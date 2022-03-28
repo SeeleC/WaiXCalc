@@ -5,17 +5,8 @@ from typing import Union
 
 symbol_lst = ['+', '-', '*', '//', '^', '**']
 symbol_lst_2 = ['/', '.']
+bracket_lst = [['(', '[', '{'], [')', ']', '}']]
 symbol_turn = {'+': '+', '-': '-', '*': '*', '//': '/', '^': '**', '**': '**'}
-
-
-def examineInt(num: Union[int, float]) -> Union[int, float]:
-	"""
-	将小数点后内容无意义的float转化为int
-	如: examineInt(3.0) -> 3; examineInt(2.5) -> 2.5
-	"""
-	if float(num) % 1 == 0:
-		num = int(float(num))
-	return num
 
 
 def isformula(formula: list) -> bool:
@@ -44,53 +35,35 @@ def isformula(formula: list) -> bool:
 	return True
 
 
-def compute(formula: list) -> int:
+def compute(formula: list) -> Union[Fraction, float, int]:
 	"""
 	传入formula，从左到右计算，优先计算嵌套的列表内算式。
 	"""
-	def c(num1, num2, symbol: str, bl: bool) -> Union[int, float]:
-		if bl:
+	def c(num1, num2, symbol: str) -> Union[Fraction, Decimal]:
+		if fraction_compute:
 			r = eval(f'Fraction(num1) {symbol_turn[symbol]} Fraction(num2)')
 		else:
 			r = eval(f'Decimal(num1) {symbol_turn[symbol]} Decimal(num2)')
 		return r
 
-	for i in formula:
-		if type(i) == list:
-			for j in i:
-				if match('^[0-9]+/[0-9]+$', j):
-					fraction_compute = True
-					break
-				else:
-					fraction_compute = False
-		else:
-			if match('^[0-9]+/[0-9]+$', i):
-				fraction_compute = True
-				break
-			else:
-				fraction_compute = False
-
-	for i in range(len(formula)):
-		if type(formula[i]) == list:
-			formula_2 = formula[i][:]
-			for j in range(len(formula[i])):
-				if formula[i][j] in symbol_lst:
-					formula_2[0] = str(c(formula_2[0], formula_2[2], formula[i][j], fraction_compute))
-					del formula_2[1:3]
-			formula[i] = formula_2[:][0]
-
-	result = formula[0]
+	fraction_compute = False
 	start = 0
 
-	for i in range(len(formula)):
-		if formula[i] in symbol_lst:
-			start += 2
-			result = c(result, formula[start], formula[i], fraction_compute)
+	for i in formula:
+		if match('^[0-9]+/[0-9]+$', i):
+			fraction_compute = True
+			break
+
+	pass
 
 	try:
-		return examineInt(result)
-	except ValueError:
+		if float(formula[0]) % 1 == 0:
+			result = int(float(formula[0]))
+		else:
+			result = formula[0]
 		return result
+	except ValueError:
+		return formula[0]
 
 
 def get_formula(formula_string: str) -> list[str]:
@@ -99,8 +72,6 @@ def get_formula(formula_string: str) -> list[str]:
 	"""
 
 	symbols = ['+', '-', '*', ':', '^']
-	front_barckets = ['(', '[', '{']
-	back_barckets = [')', ']', '}']
 	formula_string = formula_string.replace(' ', '').replace('**', '^').replace('×', '*').replace('÷', ':').replace(
 		'=', '').replace('//', ':')
 	raw_formula = []
@@ -111,19 +82,22 @@ def get_formula(formula_string: str) -> list[str]:
 			raw_formula.append(formula_string[start:i])
 			raw_formula.append(formula_string[i])
 			start = i + 1
+		elif formula_string[i] in bracket_lst[0]:
+			raw_formula.append(formula_string[i])
+			start = i+1
 
 	while '' in raw_formula:
 		raw_formula.remove('')
 
-	barcket_start = 0
+	'''barcket_start = 0
 	is_in_barckets = False
 	formula = []
 
 	for i in range(len(raw_formula)):
-		if raw_formula[i][0] in front_barckets:
+		if raw_formula[i][0] in bracket_lst[0]:
 			barcket_start = i
 			is_in_barckets = True
-		elif raw_formula[i][-1] in back_barckets:
+		elif raw_formula[i][-1] in bracket_lst[1]:
 			formula.append([
 				i.replace('(', '').replace(')', '').replace('[', '').replace(']', '').replace('{', '').replace(
 					'}', '').replace(':', '//').replace('^', '**')
@@ -146,5 +120,5 @@ def get_formula(formula_string: str) -> list[str]:
 
 	if type(formula[-1]) != list and formula[-2] not in symbol_lst:
 		formula[-2] += formula[-1]
-		del formula[-1]
-	return formula
+		del formula[-1]'''
+	return raw_formula
