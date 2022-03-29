@@ -3,10 +3,10 @@ from fractions import Fraction
 from re import match
 from typing import Union
 
-symbol_lst = ['+', '-', '*', '//', '^', '**']
+symbol_lst = ['+', '-', '*', '//', ':', '^', '**']
 symbol_lst_2 = ['/', '.']
 bracket_lst = [['(', '[', '{'], [')', ']', '}']]
-symbol_turn = {'+': '+', '-': '-', '*': '*', '//': '/', '^': '**', '**': '**'}
+symbol_turn = {'+': '+', '-': '-', '*': '*', '//': '/', ':': '/', '^': '**', '**': '**'}
 
 
 def isformula(formula: list) -> bool:
@@ -38,8 +38,9 @@ def isformula(formula: list) -> bool:
 def compute(formula: list) -> Union[Fraction, float, int]:
 	"""
 	传入formula，从左到右计算，优先计算嵌套的列表内算式。
+	为了兼容分数，所以 除号(/) 需要用 双斜杠(//) 来代替。
 	"""
-	def c(num1, num2, symbol: str) -> Union[Fraction, Decimal]:
+	def c(num1, num2, symbol: str) -> Union[Fraction, float, int]:
 		if fraction_compute:
 			r = eval(f'Fraction(num1) {symbol_turn[symbol]} Fraction(num2)')
 		else:
@@ -47,14 +48,28 @@ def compute(formula: list) -> Union[Fraction, float, int]:
 		return r
 
 	fraction_compute = False
-	start = 0
+	result = formula[:]
 
 	for i in formula:
 		if match('^[0-9]+/[0-9]+$', i):
 			fraction_compute = True
 			break
 
-	pass
+	while True:
+		for i in range(len(formula)):
+			if formula[i] in symbol_lst:
+				print(formula)
+				if formula[i] in symbol_lst[0:2]:
+					if '*' in formula or '//' in formula:
+						continue
+				elif formula[i] in symbol_lst[2:5] and '**' in formula:
+					continue
+				result[i - 1] = c(formula[i - 1], formula[i + 1], formula[i])
+				del result[i:i + 2]
+				break
+		formula = result[:]
+		if len(result) == 1:
+			break
 
 	try:
 		if float(formula[0]) % 1 == 0:
@@ -89,7 +104,7 @@ def get_formula(formula_string: str) -> list[str]:
 	while '' in raw_formula:
 		raw_formula.remove('')
 
-	'''barcket_start = 0
+	barcket_start = 0
 	is_in_barckets = False
 	formula = []
 
@@ -120,5 +135,5 @@ def get_formula(formula_string: str) -> list[str]:
 
 	if type(formula[-1]) != list and formula[-2] not in symbol_lst:
 		formula[-2] += formula[-1]
-		del formula[-1]'''
-	return raw_formula
+		del formula[-1]
+	return formula
