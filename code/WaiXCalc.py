@@ -24,8 +24,19 @@ version = '1.5.0'
 class WaiX(QMainWindow):
 	def __init__(self):
 		super().__init__()
+
 		self.formula = data['formula']
-		self.isResult = False
+		try:
+			self.isResult = data['options']['isResult']
+		except KeyError:
+			self.isResult = False
+			data['options']['isResult'] = False
+		try:
+			self.isInBracket = data['options']['isInBracket']
+		except KeyError:
+			self.isInBracket = False
+			data['options']['isInBracket'] = False
+
 		self.initUI()
 
 	def initUI(self):
@@ -100,8 +111,12 @@ class WaiX(QMainWindow):
 
 	def compute(self):
 		if len(self.formula) > 2:
+			if self.isInBracket:
+				self.formula.append(')')
+				self.isInBracket = False
+
 			try:
-				result = compute(self.formula)
+				result = compute(get_formula(''.join(self.formula)))
 			except (ValueError, ZeroDivisionError):
 				self.textEdit.setText('错误')
 			else:
@@ -173,9 +188,11 @@ class WaiX(QMainWindow):
 	
 	def bracket(self, bracket):
 		if bracket in bracket_lst[0] and self.formula[-1] in symbol_lst:
+			self.isInBracket = True
 			self.formula.append(bracket)
 			self.textUpdate()
 		elif bracket in bracket_lst[1] and self.formula[-1] not in symbol_lst:
+			self.isInBracket = False
 			self.formula.append(bracket)
 			self.textUpdate()
 			if len(self.formula[-1]) >= 2:
@@ -319,15 +336,14 @@ class WaiX(QMainWindow):
 		self.textUpdate()
 
 	def wholeFormula(self):
-		p_formula = [i + '' for i in self.formula]
+		p_formula = [i + ' ' for i in self.formula]
 		QMessageBox.information(self, '完整算式', ''.join(p_formula))
 
 	def about(self):
 		QMessageBox.about(
 			self,
 			'关于', f'{waix}\n'
-			'By WaiZhong\n'
-			'Github https://github.com/WaiZhong/WaiXCalc/\n'
+			'By GithubWaiZhong\n'
 			f'Version {version}\n'
 		)
 	
@@ -340,6 +356,8 @@ class WaiX(QMainWindow):
 		except AttributeError:
 			pass
 		data['formula'] = self.formula
+		data['options']['isResult'] = self.isResult
+		data['options']['isInBracket'] = self.isInBracket
 		save('data.json', data)
 
 

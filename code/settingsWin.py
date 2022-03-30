@@ -115,7 +115,7 @@ class SettingsWin(QTabWidget):
 					if i[0] == '_':
 						data['options'][i] = self.options[i]
 				self.apply.setEnabled(False)
-				save('data.npy', data)
+				save('data.json', data)
 			if sender.text() == '确定' or sender.text() == '取消':
 				self.close()
 

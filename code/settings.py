@@ -16,8 +16,9 @@ except FileNotFoundError:
 		data = {
 			'options': {
 				'isResult': False,
+				'isInBracket': False,
 				'_floatToFraction': False,
-				'_fractionToFloat': False
+				'_fractionToFloat': False,
 			},
 			'formula': ['0'],
 			'history': [],
@@ -30,8 +31,9 @@ else:
 
 symbol_lst = ['+', '-', '×', '÷', '^']
 symbol_lst_2 = ['+', '-', '*', ':', '^', '/', '.']
+symbol_lst_3 = ['.', '/']
 bracket_lst = [['(', '[', '{'], [')', ']', '}']]
-symbol_turn = {'+': '+', '-': '-', '×': '*', '÷': '/', '^': '**'}
+symbol_turn = {'+': '+', '-': '-', '×': '*', '÷': '/', '//': '/', '^': '**', '**': '**'}
 num_weights = {
 	'1': 24.4, '2': 31.8, '3': 33.4, '4': 33.4, '5': 33.4, '6': 33.4, '7': 30.2, '8': 33.4, '9': 33.4, '0': 31.8,
 	'.': 20, '/': 20
