@@ -148,6 +148,9 @@ def get_formula(formula_string: str) -> list[str]:
 			raw_formula.append(formula_string[i])
 			start = i + 1
 
+	while '' in raw_formula:
+		raw_formula.remove('')
+
 	barcket_start = 0
 	is_in_barckets = False
 	formula = []
