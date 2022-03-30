@@ -48,17 +48,26 @@ def compute(formula: list) -> Union[Fraction, float, int]:
 		return r
 
 	fraction_compute = False
+	lst_in_f = False
 	result = formula[:]
 
 	for i in formula:
-		if match('^[0-9]+/[0-9]+$', i):
-			fraction_compute = True
-			break
+		if type(i) == list:
+			for j in i:
+				if match('^[0-9]+/[0-9]+$', j):
+					fraction_compute = True
+					break
+		else:
+			if match('^[0-9]+/[0-9]+$', i):
+				fraction_compute = True
+				break
 
 	while True:
 		for i in range(len(formula)):
-			if formula[i] in symbol_lst:
-				print(formula)
+			for s in formula:
+				if type(s) == list:
+					lst_in_f = True
+			if formula[i] in symbol_lst and not lst_in_f:
 				if formula[i] in symbol_lst[0:2]:
 					if '*' in formula or '//' in formula:
 						continue
@@ -67,6 +76,24 @@ def compute(formula: list) -> Union[Fraction, float, int]:
 				result[i - 1] = c(formula[i - 1], formula[i + 1], formula[i])
 				del result[i:i + 2]
 				break
+			elif type(formula[i]) == list:
+				subformula = formula[i][:]
+				subresult = subformula[:]
+				while True:
+					for j in range(len(subformula)):
+						if subformula[j] in symbol_lst:
+							if subformula[j] in symbol_lst[0:2]:
+								if '*' in subformula or '//' in subformula:
+									continue
+							elif subformula[j] in symbol_lst[2:5] and '**' in subformula:
+								continue
+							subresult[j - 1] = c(subformula[j - 1], subformula[j + 1], subformula[j])
+							del subresult[j:j + 2]
+							break
+					subformula = subresult[:]
+					if len(subresult) == 1:
+						break
+				result[i] = subresult[0]
 		formula = result[:]
 		if len(result) == 1:
 			break
@@ -100,9 +127,6 @@ def get_formula(formula_string: str) -> list[str]:
 		elif formula_string[i] in bracket_lst[0]:
 			raw_formula.append(formula_string[i])
 			start = i+1
-
-	while '' in raw_formula:
-		raw_formula.remove('')
 
 	barcket_start = 0
 	is_in_barckets = False
