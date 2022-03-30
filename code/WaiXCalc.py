@@ -67,6 +67,9 @@ def compute(formula: list) -> Union[Fraction, float, int]:
 			for s in formula:
 				if type(s) == list:
 					lst_in_f = True
+					break
+			else:
+				lst_in_f = False
 			if formula[i] in symbol_lst and not lst_in_f:
 				if formula[i] in symbol_lst[0:2]:
 					if '*' in formula or '//' in formula:
