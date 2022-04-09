@@ -29,16 +29,8 @@ class WaiX(QMainWindow):
 		self.data = getData()
 		self.trans = getTrans()
 		self.formula = self.data['formula']
-		try:
-			self.isResult = self.data['settings']['isResult']
-		except KeyError:
-			self.isResult = False
-			self.data['settings']['isResult'] = False
-		try:
-			self.isInBracket = self.data['settings']['isInBracket']
-		except KeyError:
-			self.isInBracket = False
-			self.data['settings']['isInBracket'] = False
+		self.isResult = self.data['settings']['isResult']
+		self.isInBracket = self.data['settings']['isInBracket']
 
 		self.initUI()
 
@@ -115,6 +107,8 @@ class WaiX(QMainWindow):
 		self.show()
 
 	def compute(self):
+		self.data = getData()
+
 		if len(self.formula) > 2:
 			if self.isInBracket:
 				self.formula.append(')')
@@ -307,6 +301,8 @@ class WaiX(QMainWindow):
 		self.newWin.show()
 
 	def openHistoryWin(self):
+		self.data = getData()
+
 		if len(self.data['history']) != 0:
 			self.newWin = HistoryWin()
 			self.newWin.show()
