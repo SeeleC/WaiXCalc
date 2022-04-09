@@ -132,8 +132,9 @@ class WaiX(QMainWindow):
 				elif self.data['settings']['_fractionToFloat'] and type(result) == Fraction:
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
-				self.data['history'].append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
-				save('data.json', self.data)
+				if self.data['settings']['_enableRecordHistory']:
+					self.data['history'].append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
+					save('data.json', self.data)
 				self.formula = [str(result)]
 				self.textUpdate()
 
