@@ -3,8 +3,11 @@ from decimal import Decimal
 from fractions import Fraction
 from re import match
 from typing import Union
+from json import load, dump
+from os import remove
+from numpy import load as nload
 
-from settings import symbol_lst, symbol_lst_3, symbol_turn, num_weights, bracket_lst, dump
+from settings import symbol_lst, symbol_lst_3, symbol_turn, num_weights, bracket_lst
 
 
 def save(filename: str, data: dict) -> None:
@@ -13,6 +16,67 @@ def save(filename: str, data: dict) -> None:
 	"""
 	with open(filename, 'w+', encoding='utf-8') as f:
 		dump(data, f)
+
+
+def getData() -> dict[str]:
+	"""
+	获取data.json的内容，具有向下兼容性
+	"""
+	rdata = {
+		'settings': {
+			'isResult': False,
+			'isInBracket': False,
+			'_floatToFraction': False,
+			'_fractionToFloat': False,
+			'_enableRecordHistory': True,
+			'language': 'en_us'
+		},
+		'formula': ['0'],
+		'history': [],
+	}
+
+	try:
+		data = nload('data.npy', allow_pickle=True, fix_imports=True).item()
+		remove('data.npy')
+	except FileNotFoundError:
+		try:
+			with open('data.json', 'r+', encoding='utf-8') as f:
+				data = load(f)
+		except FileNotFoundError:
+			data = rdata
+		else:
+			try:
+				data['settings'] = data['settings']
+			except KeyError:
+				data['settings'] = data.pop('options')
+
+	if not data == rdata:
+		for i in rdata.keys():
+			if type(data[i]) == dict and type(rdata[i]) == dict:
+				for k in rdata[i].keys():
+					try:
+						data[i][k] = data[i][k]
+					except KeyError:
+						data[i][k] = rdata[i][k]
+			try:
+				data[i] = data[i]
+			except KeyError:
+				data[i] = rdata[i]
+
+	with open('data.json', 'w+', encoding='utf-8') as f:
+		dump(data, f)
+	return data
+
+
+def getTrans() -> dict[str]:
+	"""
+	获取翻译文件
+	"""
+	with open('data.json', 'r+', encoding='utf-8') as f:
+		language = load(f)['settings']['language']
+
+	with open(f'resource/lang/{language}.json', 'r+', encoding='utf-8') as f:
+		return load(f)
 
 
 def textUpdate(string: str, label: QLabel) -> None:
