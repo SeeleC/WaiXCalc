@@ -26,17 +26,19 @@ class WaiX(QMainWindow):
 	def __init__(self):
 		super().__init__()
 
-		self.formula = data['formula']
+		self.data = getData()
+		self.trans = getTrans()
+		self.formula = self.data['formula']
 		try:
-			self.isResult = data['settings']['isResult']
+			self.isResult = self.data['settings']['isResult']
 		except KeyError:
 			self.isResult = False
-			data['settings']['isResult'] = False
+			self.data['settings']['isResult'] = False
 		try:
-			self.isInBracket = data['settings']['isInBracket']
+			self.isInBracket = self.data['settings']['isInBracket']
 		except KeyError:
 			self.isInBracket = False
-			data['settings']['isInBracket'] = False
+			self.data['settings']['isInBracket'] = False
 
 		self.initUI()
 
@@ -53,48 +55,55 @@ class WaiX(QMainWindow):
 		vbox.addWidget(self.textEdit)
 
 		menubar = self.menuBar()
-		fileMenu = menubar.addMenu(trans['menu']['menubar1']['name'])
-		editMenu = menubar.addMenu(trans['menu']['menubar2']['name'])
-		helpMenu = menubar.addMenu(trans['menu']['menubar3']['name'])
+		fileMenu = menubar.addMenu(self.trans['menu']['menubar1']['name'])
+		editMenu = menubar.addMenu(self.trans['menu']['menubar2']['name'])
+		helpMenu = menubar.addMenu(self.trans['menu']['menubar3']['name'])
 
-		menus = [fileMenu, editMenu, helpMenu]
+		self.menus = [fileMenu, editMenu, helpMenu]
 		menuNames = [
-					trans['menu']['menubar1']['options'].values(),
-					trans['menu']['menubar2']['options'].values(),
-					trans['menu']['menubar3']['options'].values()
+					self.trans['menu']['menubar1']['options'].values(),
+					self.trans['menu']['menubar2']['options'].values(),
+					self.trans['menu']['menubar3']['options'].values()
 		]
 		menuShortcuts = [
 						['Ctrl+N', 'Ctrl+O', 'Ctrl+S', 'Ctrl+Q'],
 						['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Del'],
 						['', 'Ctrl+H', 'Ctrl+F', 'Ctrl+A']
 		]
-		menuStatusTips = [
-						trans['menu']['menubar1']['statustip'].values(),
-						trans['menu']['menubar2']['statustip'].values(),
-						trans['menu']['menubar3']['statustip'].values()
+		menuStatustips = [
+						self.trans['menu']['menubar1']['statustip'].values(),
+						self.trans['menu']['menubar2']['statustip'].values(),
+						self.trans['menu']['menubar3']['statustip'].values()
 		]
-		menuFuncs = [
+		menufuncs = [
 					[self.openFormulaWin, self.openNewFormulaWin, self.openSettingsWin, self.close],
 					[self.cut, self.copy, self.paste, self.delete],
 					[self.openHelpWin, self.openHistoryWin, self.wholeFormula, self.about]
 		]
-		for menu, names, shortcuts, statustips, funcs in zip(menus, menuNames, menuShortcuts, menuStatusTips, menuFuncs):
+		self.action_lst = []
+		for menu, names, shortcuts, statustips, funcs in zip(
+				self.menus, menuNames, menuShortcuts, menuStatustips, menufuncs
+		):
 			for name, shortcut, statusTip, func in zip(names, shortcuts, statustips, funcs):
+
 				if name == '':
 					continue
-				elif name == trans['menu']['menubar1']['options']['option3'] or\
-					name == trans['menu']['menubar1']['options']['option4'] or\
-					name == trans['menu']['menubar3']['options']['option2'] or\
-					name == trans['menu']['menubar3']['options']['option4']:
+				elif name == self.trans['menu']['menubar1']['options']['option3'] or\
+					name == self.trans['menu']['menubar1']['options']['option4'] or\
+					name == self.trans['menu']['menubar3']['options']['option2'] or\
+					name == self.trans['menu']['menubar3']['options']['option4']:
 					menu.addSeparator()
-				if name == trans['menu']['menubar3']['options']['option4']:
+
+				if name == self.trans['menu']['menubar3']['options']['option4']:
 					action = QAction(QIcon('resource/images/image.JPG'), name, self)
 				else:
 					action = QAction(name, self)
+
 				action.setShortcut(shortcut)
 				action.setStatusTip(statusTip)
 				action.triggered.connect(func)
 				menu.addAction(action)
+				self.action_lst.append(action)
 
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
 		self.setWindowTitle(waix)
@@ -114,17 +123,17 @@ class WaiX(QMainWindow):
 			try:
 				result = calculate(get_formula(''.join(self.formula)))
 			except (ValueError, ZeroDivisionError):
-				self.textEdit.setText(trans['calculateError'])
+				self.textEdit.setText(self.trans['calculateError'])
 			else:
 				self.isResult = True
 
-				if data['settings']['_floatToFraction'] and type(result) == Decimal:
+				if self.data['settings']['_floatToFraction'] and type(result) == Decimal:
 					result = Fraction(result)
-				elif data['settings']['_fractionToFloat'] and type(result) == Fraction:
+				elif self.data['settings']['_fractionToFloat'] and type(result) == Fraction:
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
-				data['history'].append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
-				save('data.json', data)
+				self.data['history'].append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
+				save('data.json', self.data)
 				self.formula = [str(result)]
 				self.textUpdate()
 
@@ -276,7 +285,7 @@ class WaiX(QMainWindow):
 		self.newWin.show()
 
 	def openNewFormulaWin(self):
-		file = QFileDialog.getOpenFileName(self, trans['windowTitles']['selectFileWin'], '', '*.txt;;All Files(*)')
+		file = QFileDialog.getOpenFileName(self, self.trans['windowTitles']['selectFileWin'], '', '*.txt;;All Files(*)')
 		try:
 			with open(file[0], 'r') as f:
 				f_formula = f.read()
@@ -285,7 +294,7 @@ class WaiX(QMainWindow):
 		except (FileNotFoundError, IndexError) as e:
 			if type(e) == IndexError:
 				QMessageBox.warning(
-					self, trans['remindTexts']['title'], trans['remindTexts']['openedFormula']['remind4']
+					self, self.trans['remindTexts']['title'], self.trans['remindTexts']['openedFormula']['remind4']
 				)
 		else:
 			self.newWin = OpenedFormulaWin(formulas)
@@ -293,23 +302,48 @@ class WaiX(QMainWindow):
 
 	def openSettingsWin(self):
 		self.newWin = SettingsWin()
+		self.newWin.signal.connect(self.updateLang)
 		self.newWin.show()
 
 	def openHistoryWin(self):
-		if len(data['history']) != 0:
+		if len(self.data['history']) != 0:
 			self.newWin = HistoryWin()
 			self.newWin.show()
 		else:
 			QMessageBox.information(
 				self,
-				trans['remindTexts']['historyEmpty']['title'],
-				trans['remindTexts']['historyEmpty']['content'],
+				self.trans['remindTexts']['historyEmpty']['title'],
+				self.trans['remindTexts']['historyEmpty']['content'],
 				QMessageBox.Ok, QMessageBox.Ok
 			)
 
 	def openHelpWin(self):
 		self.newWin = HelpWin()
 		self.newWin.show()
+
+	def updateLang(self):
+		self.data = getData()
+		self.trans = getTrans()
+		menuNames = [
+			self.trans['menu']['menubar1']['options'].values(),
+			self.trans['menu']['menubar2']['options'].values(),
+			self.trans['menu']['menubar3']['options'].values()
+		]
+		menuStatustips = [
+			self.trans['menu']['menubar1']['statustip'].values(),
+			self.trans['menu']['menubar2']['statustip'].values(),
+			self.trans['menu']['menubar3']['statustip'].values()
+		]
+
+		for i in range(len(self.menus)):
+			self.menus[i].setTitle(self.trans['menu'][f'menubar{i+1}']['name'])
+
+		idx = 0
+		for names, statustips in zip(menuNames, menuStatustips):
+			for name, statustip in zip(names, statustips):
+				self.action_lst[idx].setText(name)
+				self.action_lst[idx].setStatusTip(statustip)
+				idx += 1
 
 	def cut(self):
 		copy(''.join([i for i in self.formula]).strip())
@@ -333,12 +367,12 @@ class WaiX(QMainWindow):
 
 	def wholeFormula(self):
 		p_formula = [i + ' ' for i in self.formula]
-		QMessageBox.information(self, trans['windowTitles']['wholeFormulaBox'], ''.join(p_formula))
+		QMessageBox.information(self, self.trans['windowTitles']['wholeFormulaBox'], ''.join(p_formula))
 
 	def about(self):
 		QMessageBox.about(
 			self,
-			trans['windowTitles']['aboutBox'],
+			self.trans['windowTitles']['aboutBox'],
 			f'{waix}\nBy GithubWaiZhong\nVersion {version}\n'
 		)
 	
@@ -350,10 +384,10 @@ class WaiX(QMainWindow):
 			self.newWin.close()
 		except AttributeError:
 			pass
-		data['formula'] = self.formula
-		data['settings']['isResult'] = self.isResult
-		data['settings']['isInBracket'] = self.isInBracket
-		save('data.json', data)
+		self.data['formula'] = self.formula
+		self.data['settings']['isResult'] = self.isResult
+		self.data['settings']['isInBracket'] = self.isInBracket
+		save('data.json', self.data)
 
 
 if __name__ == '__main__':
