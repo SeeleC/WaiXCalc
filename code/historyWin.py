@@ -2,13 +2,17 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTex
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
-from settings import font, data, trans
+from settings import font
+from functions import getTrans, getData
 
 
 class HistoryWin(QWidget):
 	def __init__(self):
 		super().__init__()
 		self.setWindowFlag(Qt.WindowCloseButtonHint)
+		
+		self.data = getData()
+		self.trans = getTrans()
 
 		self.initUI()
 
@@ -17,14 +21,14 @@ class HistoryWin(QWidget):
 
 		text = QTextEdit()
 		text.setFont(font)
-		text.setText(''.join([i[:-1] + '\n' for i in [i + ' ' for i in data['history']]]))
-		if not data['settings']['_enableRecordHistory']:
-			text.append(trans['historyDisabled'])
+		text.setText(''.join([i[:-1] + '\n' for i in [i + ' ' for i in self.data['history']]]))
+		if not self.data['settings']['_enableRecordHistory']:
+			text.append(self.trans['historyDisabled'])
 		text.setReadOnly(True)
 
 		hbox = QHBoxLayout()
 
-		ok = QPushButton(trans['buttonBack'])
+		ok = QPushButton(self.trans['buttonBack'])
 		ok.setFont(font)
 		ok.setShortcut('Return')
 		ok.clicked.connect(self.close)
@@ -36,6 +40,6 @@ class HistoryWin(QWidget):
 		layout.addLayout(hbox)
 
 		self.setLayout(layout)
-		self.setWindowTitle(trans['windowTitles']['historyWin'])
+		self.setWindowTitle(self.trans['windowTitles']['historyWin'])
 		self.setWindowIcon(QIcon('resource/images\\ico.JPG'))
 		self.resize(600, 400)

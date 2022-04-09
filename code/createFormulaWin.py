@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import QWidget, QLineEdit, QPushButton, QGridLayout, QHBoxL
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
-from settings import font, symbol_lst, symbol_lst_2, trans
-from functions import textUpdate, get_formula
+from settings import font, symbol_lst, symbol_lst_2
+from functions import textUpdate, get_formula, getTrans
 
 
 class CreateFormulaWin(QWidget):
@@ -12,12 +12,13 @@ class CreateFormulaWin(QWidget):
 
 		self.setWindowFlag(Qt.WindowCloseButtonHint)
 		self.main = main
+		self.trans = getTrans()
 
 		self.edit = QLineEdit(self)
 		self.edit.setFont(font)
 		self.edit.textChanged.connect(self.textChanged)
 
-		ok = QPushButton(trans['buttonOk'])
+		ok = QPushButton(self.trans['buttonOk'])
 		ok.setShortcut('Return')
 		ok.setFont(font)
 		ok.clicked.connect(self.updateEdit)
@@ -31,7 +32,7 @@ class CreateFormulaWin(QWidget):
 
 		self.setLayout(grid)
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
-		self.setWindowTitle(trans['windowTitles']['createFormulaWin'])
+		self.setWindowTitle(self.trans['windowTitles']['createFormulaWin'])
 		self.setFixedWidth(400)
 
 	def updateEdit(self):
@@ -39,7 +40,7 @@ class CreateFormulaWin(QWidget):
 		if formula_string == '':
 			self.close()
 		if len(formula_string) <= 1 and formula_string != '':
-			QMessageBox.warning(self, trans['remindTexts']['title'], trans['remindTexts']['formulaTooShort'])
+			QMessageBox.warning(self, self.trans['remindTexts']['title'], self.trans['remindTexts']['formulaTooShort'])
 		else:
 			if formula_string != '':
 				try:

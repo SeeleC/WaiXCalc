@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import (
 	)
 from PyQt5.QtGui import QIcon
 
-from functions import calculate
-from settings import font, trans, ofwFont
+from functions import calculate, getTrans
+from settings import font, ofwFont
 from pyperclip import copy
 
 
@@ -14,11 +14,13 @@ class OpenedFormulaWin(QWidget):
 
 		self.formulas = formulas
 		self.results = []
+		self.trans = getTrans()
+		
 		for i in formulas:
 			try:
 				self.results.append(calculate(i))
 			except (ZeroDivisionError, ValueError):
-				self.results.append(trans['calculateError'])
+				self.results.append(self.trans['calculateError'])
 		self.initUI()
 
 	def initUI(self):
@@ -35,7 +37,7 @@ class OpenedFormulaWin(QWidget):
 		head.addWidget(self.last_page_btn)
 		head.addStretch(1)
 
-		self.title = QLabel(trans['openedFormula']['pageTitle'] + str(self.now_page) + ' / ' + str(len(self.formulas)))
+		self.title = QLabel(self.trans['openedFormula']['pageTitle'] + str(self.now_page) + ' / ' + str(len(self.formulas)))
 		self.title.setFont(font)
 		head.addWidget(self.title)
 		head.addStretch(1)
@@ -73,17 +75,17 @@ class OpenedFormulaWin(QWidget):
 		base = QHBoxLayout()
 		base.addStretch(1)
 
-		copy_btn = QPushButton(trans['openedFormula']['buttonCopyCurrent'])
+		copy_btn = QPushButton(self.trans['openedFormula']['buttonCopyCurrent'])
 		copy_btn.clicked.connect(self.copy)
 		copy_btn.setFont(font)
 		base.addWidget(copy_btn)
 
-		copy_all_btn = QPushButton(trans['openedFormula']['buttonCopyAll'])
+		copy_all_btn = QPushButton(self.trans['openedFormula']['buttonCopyAll'])
 		copy_all_btn.clicked.connect(self.copy_all)
 		copy_all_btn.setFont(font)
 		base.addWidget(copy_all_btn)
 
-		save_result_btn = QPushButton(trans['openedFormula']['buttonExport'])
+		save_result_btn = QPushButton(self.trans['openedFormula']['buttonExport'])
 		save_result_btn.clicked.connect(self.save_result)
 		save_result_btn.setFont(font)
 		base.addWidget(save_result_btn)
@@ -92,7 +94,7 @@ class OpenedFormulaWin(QWidget):
 
 		self.setLayout(layout)
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
-		self.setWindowTitle(trans['windowTitles']['openedFormulaWin'])
+		self.setWindowTitle(self.trans['windowTitles']['openedFormulaWin'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
 
@@ -117,7 +119,7 @@ class OpenedFormulaWin(QWidget):
 		else:
 			self.next_page_btn.setEnabled(True)
 
-		self.title.setText(trans['openedFormula']['pageTitle'] + str(self.now_page) + ' / ' + str(len(self.formulas)))
+		self.title.setText(self.trans['openedFormula']['pageTitle'] + str(self.now_page) + ' / ' + str(len(self.formulas)))
 
 		self.formula_text.setReadOnly(False)
 		self.result_text.setReadOnly(False)
@@ -132,13 +134,13 @@ class OpenedFormulaWin(QWidget):
 		content = ''.join(self.formulas[self.now_page - 1]) + ' = ' + str(self.results[self.now_page - 1])
 		copy(content.replace(' ', ''))
 		QMessageBox.information(
-			self, trans['remindTexts']['title'], trans['remindTexts']['openedFormula']['remind1']
+			self, self.trans['remindTexts']['title'], self.trans['remindTexts']['openedFormula']['remind1']
 		)
 
 	def copy_all(self):
 		copy(''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))]))
 		QMessageBox.information(
-			self, trans['remindTexts']['title'], trans['remindTexts']['openedFormula']['remind2']
+			self, self.trans['remindTexts']['title'], self.trans['remindTexts']['openedFormula']['remind2']
 		)
 
 	def save_result(self):
@@ -149,5 +151,5 @@ class OpenedFormulaWin(QWidget):
 					''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
 				)
 		QMessageBox.information(
-			self, trans['remindTexts']['title'], trans['remindTexts']['openedFormula']['remind3']
+			self, self.trans['remindTexts']['title'], self.trans['remindTexts']['openedFormula']['remind3']
 		)
