@@ -8,40 +8,46 @@ from settings import symbol_lst, symbol_lst_3, symbol_turn, num_weights, bracket
 
 
 def save(filename: str, data: dict) -> None:
+	"""
+	快速保存
+	"""
 	with open(filename, 'w+', encoding='utf-8') as f:
 		dump(data, f)
 
 
 def textUpdate(string: str, label: QLabel) -> None:
+	"""
+	防止意外的窗口拉伸
+	"""
 	label.setText(string)
 	weight = 0
 	for i in range(len(string)):
 		if string[i] not in symbol_lst and string[i] not in bracket_lst[0] and string[i] not in bracket_lst[1]:
 			weight += num_weights[string[i]]
 			if weight >= 636:
-				label.setText('...' + string[-i+2:])
+				label.setText('...' + string[-i + 2:])
 				break
 
 
 # core
 
 
-def isformula(formula: list) -> bool:
+def isformula(formula: list[str]) -> bool:
 	"""
 	仅支持单层算式，如'1+3.5*8/9'
 	不支持多层算式，如'1+(3.5*8.9)'
 	"""
-	start = 0
 	symbol_in = False
 
-	for i in formula:
-		start += 1
-		if start % 2 == 0:
-			if i in symbol_lst:
+	for i in range(len(formula)):
+		if (i+1) % 2 == 0:
+			if formula[i] in symbol_lst:
 				continue
 		else:
-			for j in i:
-				if not j.isdigit() or j in symbol_turn or symbol_in:
+			for j in formula[i]:
+				if (not j.isdigit() or j in symbol_turn.keys()) and j not in symbol_lst_3:
+					break
+				elif symbol_in and not j.isdigit():
 					break
 				elif j in symbol_lst_3:
 					symbol_in = True
@@ -52,11 +58,12 @@ def isformula(formula: list) -> bool:
 	return True
 
 
-def compute(formula: list) -> Union[Fraction, float, int]:
+def calculate(formula: list) -> Union[Fraction, float, int]:
 	"""
 	传入formula，从左到右计算，优先计算嵌套的列表内算式。
 	为了兼容分数，所以 除号(/) 需要用 双斜杠(//) 来代替。
 	"""
+
 	def c(num1, num2, symbol: str) -> Union[Fraction, float, int]:
 		if fraction_compute:
 			r = eval(f'Fraction(num1) {symbol_turn[symbol]} Fraction(num2)')
@@ -65,7 +72,6 @@ def compute(formula: list) -> Union[Fraction, float, int]:
 		return r
 
 	fraction_compute = False
-	lst_in_f = False
 	result = formula[:]
 
 	for i in formula:
@@ -111,12 +117,10 @@ def compute(formula: list) -> Union[Fraction, float, int]:
 							del subresult[j:j + 2]
 							break
 					subformula = subresult[:]
-					# print(subresult)
 					if len(subresult) == 1:
 						break
 				result[i] = subresult[0]
 		formula = result[:]
-		# print(result)
 		if len(result) == 1:
 			break
 

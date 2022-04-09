@@ -2,11 +2,11 @@ from PyQt5.QtWidgets import QWidget, QLineEdit, QPushButton, QGridLayout, QHBoxL
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
-from settings import font, symbol_lst, symbol_lst_2
+from settings import font, symbol_lst, symbol_lst_2, trans
 from functions import textUpdate, get_formula
 
 
-class FormulaWin(QWidget):
+class CreateFormulaWin(QWidget):
 	def __init__(self, main):
 		super().__init__()
 
@@ -17,41 +17,44 @@ class FormulaWin(QWidget):
 		self.edit.setFont(font)
 		self.edit.textChanged.connect(self.textChanged)
 
-		okBtn = QPushButton('确定')
-		okBtn.setShortcut('Enter')
-		okBtn.setFont(font)
-		okBtn.clicked.connect(self.updateEdit)
+		ok = QPushButton(trans['buttonOk'])
+		ok.setShortcut('Return')
+		ok.setFont(font)
+		ok.clicked.connect(self.updateEdit)
 
 		grid = QGridLayout()
 		grid.addWidget(self.edit, 0, 0)
 		hbox = QHBoxLayout()
 		hbox.addStretch(1)
-		hbox.addWidget(okBtn)
+		hbox.addWidget(ok)
 		grid.addLayout(hbox, 1, 0)
 
 		self.setLayout(grid)
-		self.setWindowIcon(QIcon('images\\ico.JPG'))
-		self.setWindowTitle('新建完整算式')
+		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
+		self.setWindowTitle(trans['windowTitles']['createFormulaWin'])
 		self.setFixedWidth(400)
 
 	def updateEdit(self):
 		formula_string = self.edit.text()
 		if formula_string == '':
 			self.close()
-		if len(formula_string) <= 1:
-			QMessageBox.warning(self, '提示', '算式过短！')
+		if len(formula_string) <= 1 and formula_string != '':
+			QMessageBox.warning(self, trans['remindTexts']['title'], trans['remindTexts']['formulaTooShort'])
 		else:
-			try:
-				self.main.formula = get_formula(formula_string)
-				textUpdate(self.main.formula[-1], self.main.textEdit)
-			except ValueError:
-				pass
-			else:
-				if self.main.formula[-1] not in symbol_lst and not self.main.formula[-1].isdigit() and\
-					type(eval(self.main.formula[-1])) != float:
-					self.main.clearEdit()
+			if formula_string != '':
+				try:
+					self.main.formula = get_formula(formula_string)
 					textUpdate(self.main.formula[-1], self.main.textEdit)
-				self.close()
+				except (ValueError, IndexError):
+					self.close()
+				else:
+					if self.main.formula[-1] in symbol_lst or self.main.formula[-1] in symbol_lst_2:
+						self.main.formula.append('0')
+
+					if not self.main.formula[-1].isdigit() and type(eval(self.main.formula[-1])) != float:
+						self.main.clearEdit()
+						self.main.textEdit.setText('0')
+					self.close()
 
 	def keyPressEvent(self, e):
 		if e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:

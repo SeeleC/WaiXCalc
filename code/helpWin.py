@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTex
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
-from settings import font
+from settings import font, trans
 
 
 class HelpWin(QWidget):
@@ -17,13 +17,12 @@ class HelpWin(QWidget):
 
 		text = QTextBrowser()
 		text.setFont(font)
-		with open('help.txt', 'r', encoding='utf-8') as f:
-			text.setHtml(f.read())
+		text.setHtml(trans['helpContent'])
 		text.setOpenExternalLinks(True)
 
 		hbox = QHBoxLayout()
 
-		ok = QPushButton('返回')
+		ok = QPushButton(trans['buttonBack'])
 		ok.setFont(font)
 		ok.setShortcut('Return')
 		ok.clicked.connect(self.close)
@@ -35,7 +34,7 @@ class HelpWin(QWidget):
 		layout.addLayout(hbox)
 
 		self.setLayout(layout)
-		self.setWindowTitle('帮助')
-		self.setWindowIcon(QIcon('images\\ico.JPG'))
+		self.setWindowTitle(trans['windowTitles']['helpWin'])
+		self.setWindowIcon(QIcon('resource/images\\ico.JPG'))
 		self.resize(600, 400)
 

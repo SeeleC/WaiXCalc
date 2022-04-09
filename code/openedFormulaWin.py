@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import (
 	)
 from PyQt5.QtGui import QIcon
 
-from functions import compute
-from settings import font
+from functions import calculate
+from settings import font, trans, ofwFont
 from pyperclip import copy
 
 
@@ -13,7 +13,12 @@ class OpenedFormulaWin(QWidget):
 		super().__init__()
 
 		self.formulas = formulas
-		self.results = [compute(i) for i in formulas]
+		self.results = []
+		for i in formulas:
+			try:
+				self.results.append(calculate(i))
+			except (ZeroDivisionError, ValueError):
+				self.results.append(trans['calculateError'])
 		self.initUI()
 
 	def initUI(self):
@@ -30,7 +35,7 @@ class OpenedFormulaWin(QWidget):
 		head.addWidget(self.last_page_btn)
 		head.addStretch(1)
 
-		self.title = QLabel('算式: ' + str(self.now_page) + ' / ' + str(len(self.formulas)))
+		self.title = QLabel(trans['openedFormula']['pageTitle'] + str(self.now_page) + ' / ' + str(len(self.formulas)))
 		self.title.setFont(font)
 		head.addWidget(self.title)
 		head.addStretch(1)
@@ -49,7 +54,7 @@ class OpenedFormulaWin(QWidget):
 
 		self.formula_text = QTextEdit()
 		self.formula_text.setText(''.join(self.formulas[0]))
-		self.formula_text.setFont(font)
+		self.formula_text.setFont(ofwFont)
 		self.formula_text.setReadOnly(True)
 		body.addWidget(self.formula_text, 0, 0, 4, 4)
 
@@ -58,8 +63,8 @@ class OpenedFormulaWin(QWidget):
 		body.addWidget(equal, 0, 5)
 
 		self.result_text = QTextEdit()
-		self.result_text.setText(str(compute(self.formulas[0])))
-		self.result_text.setFont(font)
+		self.result_text.setText(str(self.results[0]))
+		self.result_text.setFont(ofwFont)
 		self.result_text.setReadOnly(True)
 		body.addWidget(self.result_text, 0, 6, 4, 4)
 
@@ -68,17 +73,17 @@ class OpenedFormulaWin(QWidget):
 		base = QHBoxLayout()
 		base.addStretch(1)
 
-		copy_btn = QPushButton('复制当前')
+		copy_btn = QPushButton(trans['openedFormula']['buttonCopyCurrent'])
 		copy_btn.clicked.connect(self.copy)
 		copy_btn.setFont(font)
 		base.addWidget(copy_btn)
 
-		copy_all_btn = QPushButton('复制全部')
+		copy_all_btn = QPushButton(trans['openedFormula']['buttonCopyAll'])
 		copy_all_btn.clicked.connect(self.copy_all)
 		copy_all_btn.setFont(font)
 		base.addWidget(copy_all_btn)
 
-		save_result_btn = QPushButton('导出到..')
+		save_result_btn = QPushButton(trans['openedFormula']['buttonExport'])
 		save_result_btn.clicked.connect(self.save_result)
 		save_result_btn.setFont(font)
 		base.addWidget(save_result_btn)
@@ -86,8 +91,8 @@ class OpenedFormulaWin(QWidget):
 		layout.addLayout(base)
 
 		self.setLayout(layout)
-		self.setWindowIcon(QIcon('images\\ico.JPG'))
-		self.setWindowTitle('打开')
+		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
+		self.setWindowTitle(trans['windowTitles']['openedFormulaWin'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
 
@@ -112,27 +117,37 @@ class OpenedFormulaWin(QWidget):
 		else:
 			self.next_page_btn.setEnabled(True)
 
-		self.title.setText('算式: ' + str(self.now_page) + ' / ' + str(len(self.formulas)))
+		self.title.setText(trans['openedFormula']['pageTitle'] + str(self.now_page) + ' / ' + str(len(self.formulas)))
 
 		self.formula_text.setReadOnly(False)
 		self.result_text.setReadOnly(False)
 
 		self.formula_text.setText(''.join(self.formulas[self.now_page - 1]))
-		self.result_text.setText(str(compute(self.formulas[self.now_page - 1])))
+		self.result_text.setText(str(self.results[self.now_page - 1]))
+
+		self.formula_text.setReadOnly(True)
+		self.result_text.setReadOnly(True)
 
 	def copy(self):
 		content = ''.join(self.formulas[self.now_page - 1]) + ' = ' + str(self.results[self.now_page - 1])
 		copy(content.replace(' ', ''))
-		QMessageBox.information(self, '提示', '已复制!')
+		QMessageBox.information(
+			self, trans['remindTexts']['title'], trans['remindTexts']['openedFormula']['remind1']
+		)
 
 	def copy_all(self):
 		copy(''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))]))
-		QMessageBox.information(self, '提示', '已复制!')
+		QMessageBox.information(
+			self, trans['remindTexts']['title'], trans['remindTexts']['openedFormula']['remind2']
+		)
 
 	def save_result(self):
 		path = QFileDialog.getSaveFileName(self, '保存', 'result', '*.txt;;All Files(*)')
-		with open(path[0], 'w') as f:
-			f.write(
-				''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
-			)
-		QMessageBox.information(self, '提示', '已导出!')
+		if path != '':
+			with open(path[0], 'w') as f:
+				f.write(
+					''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
+				)
+		QMessageBox.information(
+			self, trans['remindTexts']['title'], trans['remindTexts']['openedFormula']['remind3']
+		)
