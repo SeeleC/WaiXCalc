@@ -370,7 +370,7 @@ class WaiX(QMainWindow):
 		QMessageBox.about(
 			self,
 			self.trans['windowTitles']['aboutBox'],
-			f'{waix}\nBy GithubWaiZhong\nVersion {version}\n'
+			f'{waix}\nBy Github@WaiZhong\nVersion {version}\n'
 		)
 	
 	def textUpdate(self):
