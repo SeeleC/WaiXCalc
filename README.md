@@ -1,12 +1,10 @@
 # WaiXCalc
 
-WaiXCalc实现了分数四则混合运算、算式分割、判断算式等功能
+WaiXCalc是一个使用PyQt5开发的计算器，它支持分数四则运算、算式解析等功能。
 
-如仅需该库的函数，见[core](https://github.com/WaiZhong/WaiXCalc/tree/core)
+如仅需该项目的函数，请前往 [core](https://github.com/WaiZhong/WaiXCalc/tree/core) 分支。
 
 ## Install
-
-*代码仅兼容Python3.8+*
 
     git clone git@github.com:WaiZhong/WaiXCalc.git
 
