@@ -1,6 +1,6 @@
 # WaiXCalc
 
-WaiXCalc实现了分数四则混合运算、算式分割、判断算式等功能。
+WaiXCalc实现了分数四则混合运算、算式分割等功能。
 
 如需包装好的程序，见[main](https://github.com/WaiZhong/WaiXCalc/)
 
@@ -16,12 +16,11 @@ WaiXCalc实现了分数四则混合运算、算式分割、判断算式等功能
 
 ```python
 import WaiXCalc
-f = WaiXCalc.get_formula('1/2^3')
-print(WaiXCalc.compute(f))
+WaiXCalc.get_formula('1/2^3')
 ```
 output:
-```
-1/8
+```python
+['1/2', '**', '3']
 ```
 
 ## License
