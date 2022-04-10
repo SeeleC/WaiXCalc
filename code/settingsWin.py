@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
+from os import listdir
 
 from settings import font
 from functions import save, getTrans, getData
@@ -93,11 +94,18 @@ class SettingsWin(QTabWidget):
 
 	def languageTab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
-		for i, j in self.trans['settings']['settingsTab3']['options'].items():
-			self.radiobuttons[i] = QRadioButton(j)
-			l = self.addEntry(l, self.radiobuttons[i])
-			if i == self.data['settings']['language']:
-				self.radiobuttons[i].setChecked(True)
+
+		for i in sorted(listdir('resource/lang')):
+			i = i[:-5]
+			if i != 'template':
+				if i in self.trans['settings']['settingsTab3']['options'].keys():
+					name = self.trans['settings']['settingsTab3']['options'][i]
+				else:
+					name = i
+				self.radiobuttons[i] = QRadioButton(name)
+				l = self.addEntry(l, self.radiobuttons[i])
+				if i == self.data['settings']['language']:
+					self.radiobuttons[i].setChecked(True)
 		return l
 
 	def checked(self):
