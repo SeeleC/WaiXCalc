@@ -4,7 +4,7 @@ WaiXCalc实现了分数四则混合运算、算式分割、判断算式等功能
 
 如需包装好的程序，见[main](https://github.com/WaiZhong/WaiXCalc/)
 
-此branch仅提供所需的函数。
+此分支仅提供所需的函数。
 
 ## Install
 
