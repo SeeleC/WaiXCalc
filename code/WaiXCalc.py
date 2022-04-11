@@ -48,7 +48,6 @@ def compute(formula: list) -> Union[Fraction, float, int]:
 		return r
 
 	fraction_compute = False
-	lst_in_f = False
 	result = formula[:]
 
 	for i in formula:
