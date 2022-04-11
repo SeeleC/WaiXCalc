@@ -14,7 +14,7 @@ from helpWin import HelpWin
 from functions import *
 from settings import *
 
-# Name <WaiXCalc (WaiX Calculator)>
+# WaiXCalc (WaiX Calculator)
 # Version 1.6.1 (4.8.1)
 # By WaiZhong
 # MIT License
