@@ -93,7 +93,7 @@ def textUpdate(string: str, label: QLabel) -> None:
 				break
 
 
-# core
+# WaiXCalc-core
 
 
 def isformula(formula: list[str]) -> bool:
@@ -109,9 +109,7 @@ def isformula(formula: list[str]) -> bool:
 				continue
 		else:
 			for j in formula[i]:
-				if (not j.isdigit() or j in symbol_turn.keys()) and j not in symbol_lst_3:
-					break
-				elif symbol_in and not j.isdigit():
+				if ((not j.isdigit() or j in symbol_turn.keys()) and j not in symbol_lst_3) or (symbol_in and not j.isdigit()):
 					break
 				elif j in symbol_lst_3:
 					symbol_in = True
