@@ -2,7 +2,7 @@
 
 WaiXCalc实现了分数四则混合运算、算式分割等功能。
 
-如需包装好的程序，见[main](https://github.com/WaiZhong/WaiXCalc/)
+如需带有单独窗口的计算器，请前往 [main](https://github.com/WaiZhong/WaiXCalc/) 分支。
 
 此分支仅提供所需的函数。
 
