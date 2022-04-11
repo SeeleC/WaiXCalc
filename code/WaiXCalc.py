@@ -3,6 +3,11 @@ from fractions import Fraction
 from re import match
 from typing import Union
 
+# WaiXCalc-core (WaiX_Calculator_core)
+# Version 2.0.0
+# By WaiZhong
+# MIT LICENSE
+
 symbol_lst = ['+', '-', '*', '//', ':', '^', '**']
 symbol_lst_2 = ['/', '.']
 bracket_lst = [['(', '[', '{'], [')', ']', '}']]
@@ -24,7 +29,7 @@ def isformula(formula: list) -> bool:
 				continue
 		else:
 			for j in i:
-				if not j.isdigit() or j in symbol_turn or symbol_in:
+				if (not j.isdigit() and j in symbol_turn) or symbol_in:
 					break
 				elif j in symbol_lst_2:
 					symbol_in = True
@@ -35,7 +40,7 @@ def isformula(formula: list) -> bool:
 	return True
 
 
-def compute(formula: list) -> Union[Fraction, float, int]:
+def calculate(formula: list) -> Union[Fraction, float, int]:
 	"""
 	传入formula，从左到右计算，优先计算嵌套的列表内算式。
 	为了兼容分数，所以 除号(/) 需要用 双斜杠(//) 来代替。
@@ -110,7 +115,6 @@ def get_formula(formula_string: str) -> list[str]:
 		'=', '').replace('//', ':')
 	raw_formula = []
 	start = 0
-	b = False
 
 	for i in range(len(formula_string)):
 		if formula_string[i] in symbols or i == len(formula_string) - 1:
