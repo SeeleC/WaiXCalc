@@ -40,63 +40,53 @@ def compute(formula: list) -> Union[Fraction, float, int]:
 	传入formula，从左到右计算，优先计算嵌套的列表内算式。
 	为了兼容分数，所以 除号(/) 需要用 双斜杠(//) 来代替。
 	"""
-	def c(num1, num2, symbol: str) -> Union[Fraction, float, int]:
-		if fraction_compute:
-			r = eval(f'Fraction(num1) {symbol_turn[symbol]} Fraction(num2)')
-		else:
-			r = eval(f'Decimal(num1) {symbol_turn[symbol]} Decimal(num2)')
-		return r
-
-	fraction_compute = False
-	result = formula[:]
-
-	for i in formula:
-		if type(i) == list:
-			for j in i:
-				if match('^[0-9]+/[0-9]+$', j):
-					fraction_compute = True
-					break
-		else:
-			if match('^[0-9]+/[0-9]+$', i):
-				fraction_compute = True
-				break
-
-	while True:
-		for i in range(len(formula)):
-			for s in formula:
+	def c(r: list[str] = formula[:], f: list = formula[:]) -> list:
+		for i in range(len(f)):
+			for s in f:
 				if type(s) == list:
 					lst_in_f = True
 					break
 			else:
 				lst_in_f = False
-			if formula[i] in symbol_lst and not lst_in_f:
-				if formula[i] in symbol_lst[0:2]:
-					if '*' in formula or '//' in formula:
+
+			if f[i] in symbol_lst and not lst_in_f:
+				if f[i] in symbol_lst[0:2]:
+					if '*' in f or '//' in f:
 						continue
-				elif formula[i] in symbol_lst[2:5] and '**' in formula:
+				elif f[i] in symbol_lst[2:5] and '**' in f:
 					continue
-				result[i - 1] = c(formula[i - 1], formula[i + 1], formula[i])
-				del result[i:i + 2]
+				if fraction_compute:
+					r[i - 1] = eval(f'Fraction(f[i - 1]) {symbol_turn[f[i]]} Fraction(f[i + 1])')
+				else:
+					r[i - 1] = eval(f'Decimal(f[i - 1]) {symbol_turn[f[i]]} Decimal(f[i + 1])')
+				del r[i:i + 2]
 				break
-			elif type(formula[i]) == list:
-				subformula = formula[i][:]
-				subresult = subformula[:]
-				while True:
-					for j in range(len(subformula)):
-						if subformula[j] in symbol_lst:
-							if subformula[j] in symbol_lst[0:2]:
-								if '*' in subformula or '//' in subformula:
-									continue
-							elif subformula[j] in symbol_lst[2:5] and '**' in subformula:
-								continue
-							subresult[j - 1] = c(subformula[j - 1], subformula[j + 1], subformula[j])
-							del subresult[j:j + 2]
-							break
-					subformula = subresult[:]
-					if len(subresult) == 1:
-						break
-				result[i] = subresult[0]
+			elif type(f[i]) == list:
+				while len(r[i]) != 1:
+					r[i] = c(r[i], f[i])
+					for j in range(len(r[i])):
+						if type(r[i][j]) == list and len(r[i][j]) == 1:
+							r[i][j] = r[i][j][0]
+					f[i] = r[i][:]
+		return r
+
+	def fc(f: list[str]):
+		for i in f:
+			if type(i) == list:
+				return fc(i)
+			if match('^[0-9]+/[0-9]+$', i):
+				return True
+
+	fraction_compute = fc(formula)
+
+	while True:
+		result = c(f=formula)
+		for j in range(len(result)):
+			if type(result[j]) == list and len(result[j]) == 1:
+				result[j] = result[j][0]
 		formula = result[:]
+		print(formula)
+
 		if len(result) == 1:
 			break
 
@@ -120,15 +110,17 @@ def get_formula(formula_string: str) -> list[str]:
 		'=', '').replace('//', ':')
 	raw_formula = []
 	start = 0
+	b = False
 
 	for i in range(len(formula_string)):
 		if formula_string[i] in symbols or i == len(formula_string) - 1:
+
 			raw_formula.append(formula_string[start:i])
 			raw_formula.append(formula_string[i])
 			start = i + 1
-		elif formula_string[i] in bracket_lst[0]:
-			raw_formula.append(formula_string[i])
-			start = i+1
+
+	while '' in raw_formula:
+		raw_formula.remove('')
 
 	barcket_start = 0
 	is_in_barckets = False
