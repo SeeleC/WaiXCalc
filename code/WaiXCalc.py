@@ -108,7 +108,6 @@ def get_formula(formula_string: str) -> Union[list[str], list[list[str]]]:
 	"""
 	传入字符串，将字符串转化为列表，列表每个元素是一串数字或一个符号。
 	"""
-
 	symbols = ['+', '-', '*', ':', '^']
 	fs = formula_string.replace(' ', '').replace('**', '^').replace('×', '*').replace('÷', ':').replace(
 		'=', '').replace('//', ':')  # formula string=fs
@@ -118,12 +117,20 @@ def get_formula(formula_string: str) -> Union[list[str], list[list[str]]]:
 		start = 0
 
 		for i in range(len(s)):
+			if i >= len(s):
+				break
+
 			if s[i] in symbols or i == len(s) - 1:
-				f.append(s[start:i])
+				if not s[i-1] == ' ':
+					f.append(s[start:i])
 				f.append(s[i])
 				start = i + 1
+			elif s[i] in bracket_lst[0]:
+				idx = s.index(bracket_lst[1][bracket_lst[0].index(s[i])])
+				f.append(split(s[i+1:idx]))
+				s = s[:i] + ' ' + s[idx+1:]
 
-		if type(f[-1]) != list:
+		if f[-2] not in symbols and type(f[-1]) != list:
 			f[-2] += f[-1]
 			del f[-1]
 		return f
