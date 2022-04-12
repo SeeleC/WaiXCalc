@@ -1,6 +1,6 @@
 from decimal import Decimal
 from fractions import Fraction
-from re import match
+from re import match, search
 from typing import Union
 
 # WaiXCalc-core (WaiX_Calculator_core)
@@ -90,7 +90,6 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
 			if type(result[j]) == list and len(result[j]) == 1:
 				result[j] = result[j][0]
 		formula = result[:]
-		print(formula)
 
 		if len(result) == 1:
 			break
@@ -105,57 +104,28 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
 		return formula[0]
 
 
-def get_formula(formula_string: str) -> list[str]:
+def get_formula(formula_string: str) -> Union[list[str], list[list[str]]]:
 	"""
 	传入字符串，将字符串转化为列表，列表每个元素是一串数字或一个符号。
 	"""
 
 	symbols = ['+', '-', '*', ':', '^']
-	formula_string = formula_string.replace(' ', '').replace('**', '^').replace('×', '*').replace('÷', ':').replace(
-		'=', '').replace('//', ':')
-	raw_formula = []
-	start = 0
+	fs = formula_string.replace(' ', '').replace('**', '^').replace('×', '*').replace('÷', ':').replace(
+		'=', '').replace('//', ':')  # formula string=fs
 
-	for i in range(len(formula_string)):
-		if formula_string[i] in symbols or i == len(formula_string) - 1:
+	def split(s: str = fs) -> list[str]:
+		f = []
+		start = 0
 
-			raw_formula.append(formula_string[start:i])
-			raw_formula.append(formula_string[i])
-			start = i + 1
+		for i in range(len(s)):
+			if s[i] in symbols or i == len(s) - 1:
+				f.append(s[start:i])
+				f.append(s[i])
+				start = i + 1
 
-	while '' in raw_formula:
-		raw_formula.remove('')
+		if type(f[-1]) != list:
+			f[-2] += f[-1]
+			del f[-1]
+		return f
 
-	barcket_start = 0
-	is_in_barckets = False
-	formula = []
-
-	for i in range(len(raw_formula)):
-		if raw_formula[i][0] in bracket_lst[0]:
-			barcket_start = i
-			is_in_barckets = True
-		elif raw_formula[i][-1] in bracket_lst[1]:
-			formula.append([
-				i.replace('(', '').replace(')', '').replace('[', '').replace(']', '').replace('{', '').replace(
-					'}', '').replace(':', '//').replace('^', '**')
-				for i in raw_formula[barcket_start:i+1]
-			])
-			if formula[-1][1] == '-' and formula[-1][0] == '':
-				formula[-1][0] = formula[-1][1] + formula[-1][2]
-				del formula[-1][1:3]
-				if len(formula[-1]) == 1:
-					formula[-1] = formula[-1][0]
-
-			is_in_barckets = False
-		else:
-			if not is_in_barckets:
-				formula.append(raw_formula[i].replace(':', '//').replace('^', '**'))
-
-	for i in range(len(formula)):
-		while '' in formula[i] and type(formula[i]) == list:
-			formula[i].remove('')
-
-	if type(formula[-1]) != list and formula[-2] not in symbol_lst:
-		formula[-2] += formula[-1]
-		del formula[-1]
-	return formula
+	return split()
