@@ -107,6 +107,7 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
 def get_formula(formula_string: str) -> Union[list[str], list[list[str]]]:
 	"""
 	传入字符串，将字符串转化为列表，列表每个元素是一串数字或一个符号。
+	仅允许以 括号`()` / 中括号`[]` / 大括号`{}` 作嵌套、同一嵌套内不能重复使用、不限制使用顺序。
 	"""
 	symbols = ['+', '-', '*', ':', '^']
 	fs = formula_string.replace(' ', '').replace('**', '^').replace('×', '*').replace('÷', ':').replace(
