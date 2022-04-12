@@ -1,6 +1,6 @@
 from decimal import Decimal
 from fractions import Fraction
-from re import match, search
+from re import match
 from typing import Union
 
 # WaiXCalc-core (WaiX_Calculator_core)
