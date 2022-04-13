@@ -7,7 +7,7 @@ from json import load, dump
 from os import remove
 from numpy import load as nload
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_weights, bracket_lst
+from settings import symbol_lst, symbol_lst_3, symbol_turn, num_weights, bracket_lst
 
 
 def save(filename: str, data: dict) -> None:
@@ -94,7 +94,6 @@ def textUpdate(string: str, label: QLabel) -> None:
 
 
 # WaiXCalc-core
-# Version 2.0.0
 
 
 def isformula(formula: list[str]) -> bool:
@@ -110,9 +109,9 @@ def isformula(formula: list[str]) -> bool:
 				continue
 		else:
 			for j in formula[i]:
-				if (not j.isdigit() and j in symbol_turn.keys()) or symbol_in:
+				if ((not j.isdigit() or j in symbol_turn.keys()) and j not in symbol_lst_3) or (symbol_in and not j.isdigit()):
 					break
-				elif j in symbol_lst_2:
+				elif j in symbol_lst_3:
 					symbol_in = True
 			else:
 				symbol_in = False
@@ -127,52 +126,63 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
 	为了兼容分数，所以 除号(/) 需要用 双斜杠(//) 来代替。
 	"""
 
-	def c(r: list[str] = formula[:], f: list = formula[:]) -> list:
-		for i in range(len(f)):
-			for s in f:
+	def c(num1, num2, symbol: str) -> Union[Fraction, float, int]:
+		if fraction_compute:
+			r = eval(f'Fraction(num1) {symbol_turn[symbol]} Fraction(num2)')
+		else:
+			r = eval(f'Decimal(num1) {symbol_turn[symbol]} Decimal(num2)')
+		return r
+
+	fraction_compute = False
+	result = formula[:]
+
+	for i in formula:
+		if type(i) == list:
+			for j in i:
+				if match('^[0-9]+/[0-9]+$', j):
+					fraction_compute = True
+					break
+		else:
+			if match('^[0-9]+/[0-9]+$', i):
+				fraction_compute = True
+				break
+
+	while True:
+		for i in range(len(formula)):
+			for s in formula:
 				if type(s) == list:
 					lst_in_f = True
 					break
 			else:
 				lst_in_f = False
-
-			if f[i] in symbol_lst and not lst_in_f:
-				if f[i] in symbol_lst[0:2]:
-					if '×' in formula or '÷' in f:
+			if formula[i] in symbol_lst and not lst_in_f:
+				if formula[i] in symbol_lst[0:2]:
+					if '×' in formula or '÷' in formula:
 						continue
-				elif f[i] in symbol_lst[2:4] and '^' in f:
+				elif formula[i] in symbol_lst[2:4] and '^' in formula:
 					continue
-				if fraction_compute:
-					r[i - 1] = eval(f'Fraction(f[i - 1]) {symbol_turn[f[i]]} Fraction(f[i + 1])')
-				else:
-					r[i - 1] = eval(f'Decimal(f[i - 1]) {symbol_turn[f[i]]} Decimal(f[i + 1])')
-				del r[i:i + 2]
+				result[i - 1] = c(formula[i - 1], formula[i + 1], formula[i])
+				del result[i:i + 2]
 				break
-			elif type(f[i]) == list:
-				while len(r[i]) != 1:
-					r[i] = c(r[i], f[i])
-					for j in range(len(r[i])):
-						if type(r[i][j]) == list and len(r[i][j]) == 1:
-							r[i][j] = r[i][j][0]
-					f[i] = r[i][:]
-		return r
-
-	def fc(f: list[str]):
-		for i in f:
-			if type(i) == list:
-				return fc(i)
-			if match('^[0-9]+/[0-9]+$', i):
-				return True
-
-	fraction_compute = fc(formula)
-
-	while True:
-		result = c(f=formula)
-		for j in range(len(result)):
-			if type(result[j]) == list and len(result[j]) == 1:
-				result[j] = result[j][0]
+			elif type(formula[i]) == list:
+				subformula = formula[i][:]
+				subresult = subformula[:]
+				while True:
+					for j in range(len(subformula)):
+						if subformula[j] in symbol_lst:
+							if subformula[j] in symbol_lst[0:2]:
+								if '×' in subformula or '÷' in subformula:
+									continue
+							elif subformula[j] in symbol_lst[2:4] and '^' in subformula:
+								continue
+							subresult[j - 1] = c(subformula[j - 1], subformula[j + 1], subformula[j])
+							del subresult[j:j + 2]
+							break
+					subformula = subresult[:]
+					if len(subresult) == 1:
+						break
+				result[i] = subresult[0]
 		formula = result[:]
-
 		if len(result) == 1:
 			break
 
@@ -186,37 +196,57 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
 		return formula[0]
 
 
-def get_formula(formula_string: str) -> Union[list[str], list[list[str]]]:
+def get_formula(formula_string: str) -> list[str]:
 	"""
 	传入字符串，将字符串转化为列表，列表每个元素是一串数字或一个符号。
-	仅允许以 括号`()` / 中括号`[]` / 大括号`{}` 作嵌套、同一嵌套内不能重复使用、不限制使用顺序。
 	"""
-	symbols = ['+', '-', '*', ':', '^']
-	fs = formula_string.replace(' ', '').replace('**', '^').replace('×', '*').replace('÷', ':').replace(
-		'=', '').replace('//', ':')  # formula string=fs
+	formula_string = formula_string.replace(' ', '').replace('**', '^').replace('*', '×').replace(':', '÷').replace(
+		'//', '÷')
+	raw_formula = []
+	start = 0
 
-	def split(s: str = fs) -> list[str]:
-		f = []
-		start = 0
+	for i in range(len(formula_string)):
+		if formula_string[i] in symbol_lst or i == len(formula_string) - 1:
+			raw_formula.append(formula_string[start:i])
+			raw_formula.append(formula_string[i])
+			start = i + 1
+		elif formula_string[i] in bracket_lst[0]:
+			raw_formula.append(formula_string[i])
+			start = i + 1
 
-		for i in range(len(s)):
-			if i >= len(s):
-				break
+	while '' in raw_formula:
+		raw_formula.remove('')
 
-			if s[i] in symbols or i == len(s) - 1:
-				if not s[i-1] == ' ':
-					f.append(s[start:i])
-				f.append(s[i])
-				start = i + 1
-			elif s[i] in bracket_lst[0]:
-				print(s)
-				idx = s.index(bracket_lst[1][bracket_lst[0].index(s[i])])
-				f.append(split(s[i+1:idx+1]))
-				s = s[:i] + ' ' + s[idx+1:]
+	barcket_start = 0
+	is_in_barckets = False
+	formula = []
 
-		if f[-2] not in symbols and type(f[-1]) != list:
-			f[-2] += f[-1]
-			del f[-1]
-		return f
+	for i in range(len(raw_formula)):
+		if raw_formula[i][0] in bracket_lst[0]:
+			barcket_start = i
+			is_in_barckets = True
+		elif raw_formula[i][-1] in bracket_lst[1]:
+			formula.append([
+				i.replace('(', '').replace(')', '').replace('[', '').replace(']', '').replace('{', '').replace(
+					'}', '')
+				for i in raw_formula[barcket_start:i + 1]
+			])
+			if formula[-1][1] == '-' and formula[-1][0] == '':
+				formula[-1][0] = formula[-1][1] + formula[-1][2]
+				del formula[-1][1:3]
+				if len(formula[-1]) == 1:
+					formula[-1] = formula[-1][0]
 
-	return split()
+			is_in_barckets = False
+		else:
+			if not is_in_barckets:
+				formula.append(raw_formula[i])
+
+	for i in range(len(formula)):
+		while '' in formula[i] and type(formula[i]) == list:
+			formula[i].remove('')
+
+	if type(formula[-1]) != list and formula[-2] not in symbol_lst:
+		formula[-2] += formula[-1]
+		del formula[-1]
+	return formula

@@ -1,7 +1,8 @@
 from PyQt5.QtGui import QFont
 
 symbol_lst = ['+', '-', '×', '÷', '^']
-symbol_lst_2 = ['.', '/']
+symbol_lst_2 = ['+', '-', '*', ':', '^', '/', '.']
+symbol_lst_3 = ['.', '/']
 bracket_lst = [['(', '[', '{'], [')', ']', '}']]
 symbol_turn = {'+': '+', '-': '-', '×': '*', '÷': '/', '//': '/', '^': '**', '**': '**'}
 num_weights = {
