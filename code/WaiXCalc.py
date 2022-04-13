@@ -106,10 +106,11 @@ class WaiX(QMainWindow):
 		self.center()
 		self.show()
 
-	def compute(self):
+	def calculate(self):
 		self.data = getData()
+		result = calculate(get_formula(''.join(self.formula)))
 
-		if len(self.formula) > 2:
+		'''if len(self.formula) > 2:
 			if self.isInBracket:
 				self.formula.append(')')
 				self.isInBracket = False
@@ -130,7 +131,7 @@ class WaiX(QMainWindow):
 					self.data['history'].append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
 					save('data.json', self.data)
 				self.formula = [str(result)]
-				self.textUpdate()
+				self.textUpdate()'''
 
 	def clearEdit(self):
 		self.isResult = False
@@ -219,7 +220,7 @@ class WaiX(QMainWindow):
 			elif self.isResult:
 				self.clearEdit()
 		elif e.key() == Qt.Key_Equal or e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:
-			self.compute()
+			self.calculate()
 		elif e.key() == Qt.Key_Plus:
 			self.symbol('+')
 		elif e.key() == Qt.Key_Minus:
