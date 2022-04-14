@@ -2,8 +2,8 @@ from PyQt5.QtWidgets import QWidget, QLineEdit, QPushButton, QGridLayout, QHBoxL
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
-from settings import font, symbol_lst, symbol_lst_2
-from functions import textUpdate, get_formula, getTrans
+from settings import font, symbol_lst_2, symbol_turn
+from functions import textUpdate, get_formula, get_trans
 
 
 class CreateFormulaWin(QWidget):
@@ -12,7 +12,7 @@ class CreateFormulaWin(QWidget):
 
 		self.setWindowFlag(Qt.WindowCloseButtonHint)
 		self.main = main
-		self.trans = getTrans()
+		self.trans = get_trans()
 
 		self.edit = QLineEdit(self)
 		self.edit.setFont(font)
@@ -49,9 +49,6 @@ class CreateFormulaWin(QWidget):
 				except (ValueError, IndexError):
 					self.close()
 				else:
-					if self.main.formula[-1] in symbol_lst or self.main.formula[-1] in symbol_lst_2:
-						self.main.formula.append('0')
-
 					if not self.main.formula[-1].isdigit() and type(eval(self.main.formula[-1])) != float:
 						self.main.clearEdit()
 						self.main.textEdit.setText('0')
@@ -63,7 +60,8 @@ class CreateFormulaWin(QWidget):
 
 	def textChanged(self):
 		if len(self.edit.text().strip()) >= 1:
-			if not self.edit.text()[-1].isdigit() and self.edit.text()[-1] not in symbol_lst_2:
+			if not self.edit.text()[-1].isdigit() and self.edit.text()[-1] not in symbol_turn.keys() or \
+					self.edit.text()[-1] not in symbol_lst_2:
 				if len(self.edit.text()) > 1:
 					self.edit.setText(self.edit.text()[:-1])
 				else:

@@ -6,7 +6,7 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from os import listdir
 
 from settings import font
-from functions import save, getTrans, getData
+from functions import save, get_trans, get_data
 
 
 class SettingsWin(QTabWidget):
@@ -14,8 +14,8 @@ class SettingsWin(QTabWidget):
 		super().__init__()
 		self.setWindowFlag(Qt.WindowCloseButtonHint)
 
-		self.data = getData()
-		self.trans = getTrans()
+		self.data = get_data()
+		self.trans = get_trans()
 		self.check = self.data['settings']
 		self.names = {
 			j: i

@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
 from settings import font
-from functions import getTrans
+from functions import get_trans
 
 
 class HelpWin(QWidget):
@@ -11,7 +11,7 @@ class HelpWin(QWidget):
 		super().__init__()
 		self.setWindowFlag(Qt.WindowCloseButtonHint)
 
-		self.trans = getTrans()
+		self.trans = get_trans()
 
 		self.initUI()
 
