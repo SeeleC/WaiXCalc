@@ -359,7 +359,7 @@ class WaiX(QMainWindow):
 		)
 	
 	def textUpdate(self):
-		textUpdate(self.formula[-1], self.textEdit)
+		text_update(self.formula[-1], self.textEdit)
 
 	def closeEvent(self, a0: QCloseEvent) -> None:
 		try:
