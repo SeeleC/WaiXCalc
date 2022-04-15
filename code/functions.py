@@ -73,7 +73,7 @@ def get_trans() -> dict[str, dict]:
 		return load(f)
 
 
-def textUpdate(string: str, label: QLabel) -> None:
+def text_update(string: str, label: QLabel) -> None:
 	"""
 	防止意外的窗口拉伸
 	"""
