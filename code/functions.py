@@ -28,8 +28,6 @@ def get_data() -> dict[Union[dict[str], str]]:
 			'language': 'en_us'
 		},
 		'isResult': False,
-		'isInBracket': [False, False, False],
-		'bracketIndex': [],
 		'formula': ['0'],
 		'history': [],
 	}

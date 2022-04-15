@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (
 	)
 from PyQt5.QtGui import QIcon
 
-from functions import calculate, getTrans
+from functions import calculate, get_trans
 from settings import font, ofwFont
 from pyperclip import copy
 
@@ -14,7 +14,7 @@ class OpenedFormulaWin(QWidget):
 
 		self.formulas = formulas
 		self.results = []
-		self.trans = getTrans()
+		self.trans = get_trans()
 		
 		for i in formulas:
 			try:

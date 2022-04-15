@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
 from settings import font, symbol_lst, symbol_lst_2
-from functions import textUpdate, get_formula, getTrans
+from functions import textUpdate, get_formula, get_trans
 
 
 class CreateFormulaWin(QWidget):
@@ -12,7 +12,7 @@ class CreateFormulaWin(QWidget):
 
 		self.setWindowFlag(Qt.WindowCloseButtonHint)
 		self.main = main
-		self.trans = getTrans()
+		self.trans = get_trans()
 
 		self.edit = QLineEdit(self)
 		self.edit.setFont(font)

@@ -26,8 +26,8 @@ class WaiX(QMainWindow):
 	def __init__(self):
 		super().__init__()
 
-		self.data = getData()
-		self.trans = getTrans()
+		self.data = get_data()
+		self.trans = get_trans()
 		self.formula = self.data['formula']
 		self.isResult = self.data['settings']['isResult']
 		self.isInBracket = self.data['settings']['isInBracket']
@@ -107,7 +107,7 @@ class WaiX(QMainWindow):
 		self.show()
 
 	def compute(self):
-		self.data = getData()
+		self.data = get_data()
 
 		if len(self.formula) > 2:
 			if self.isInBracket:
@@ -178,21 +178,6 @@ class WaiX(QMainWindow):
 		else:
 			self.formula[-1] = symbol
 			self.textEdit.setText(self.formula[-1])
-	
-	def bracket(self, bracket):
-		if bracket in bracket_lst[0] and self.formula[-1] in symbol_lst:
-			self.isInBracket = True
-			self.formula.append(bracket)
-			self.textUpdate()
-		elif bracket in bracket_lst[1] and self.formula[-1] not in symbol_lst:
-			self.isInBracket = False
-			self.formula.append(bracket)
-			self.textUpdate()
-			if len(self.formula[-1]) >= 2:
-				if self.formula[-2][-1] == '.':
-					self.formula[-2] = self.formula[-2] + '0'
-				elif self.formula[-2][-1] == '/':
-					self.formula[-2] = self.formula[-2] + '1'
 
 	def keyPressEvent(self, e):
 		if e.key() == Qt.Key_Backspace:
@@ -301,7 +286,7 @@ class WaiX(QMainWindow):
 		self.newWin.show()
 
 	def openHistoryWin(self):
-		self.data = getData()
+		self.data = get_data()
 
 		if len(self.data['history']) != 0:
 			self.newWin = HistoryWin()
@@ -319,8 +304,8 @@ class WaiX(QMainWindow):
 		self.newWin.show()
 
 	def updateLang(self):
-		self.data = getData()
-		self.trans = getTrans()
+		self.data = get_data()
+		self.trans = get_trans()
 		menuNames = [
 			self.trans['menu']['menubar1']['options'].values(),
 			self.trans['menu']['menubar2']['options'].values(),
