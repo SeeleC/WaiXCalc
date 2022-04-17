@@ -211,6 +211,7 @@ class WaiX(QMainWindow):
 	def delete(self):
 		if len(self.formula) >= 2:
 			self.formula = self.formula[:-1]
+			self.calc_formula = self.calc_f_step[:-1]
 		else:
 			self.clear_edit()
 		self.text_update()
@@ -383,7 +384,12 @@ class WaiX(QMainWindow):
 	def paste(self):
 		data: str = paste()
 		if isformula(get_formula(data)):
-			self.formula = get_formula(data)
+			if self.formula[-1] in symbol_lst or self.formula[-1] in bracket_lst[0]:
+				self.formula += get_formula(data)
+				self.calc_formula += get_formula(data)
+			else:
+				self.formula = get_formula(data)
+				self.calc_formula = get_formula(data)
 			self.text_update()
 
 	def plusminus(self):
