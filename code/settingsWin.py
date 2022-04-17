@@ -159,18 +159,18 @@ class SettingsWin(QTabWidget):
 				for i in self.radiobuttons.values():
 					if i.isChecked() and self.names[i.text()] != self.data['settings']['language']:
 						self.data['settings']['language'] = self.names[i.text()]
-						save('data.json', self.data)
+						save('data/data.json', self.data)
 						self.signal.emit(True)
 						break
 				self.apply.setEnabled(False)
-				save('data.json', self.data)
+				save('data/data.json', self.data)
 			if sender.text() == self.trans['buttonOk'] or sender.text() == self.trans['buttonCancel']:
 				self.close()
 
 	def updateStatus(self):
 		self.autoCheck = True
 		bools = [self.check[i] for i in self.check if '_' == i[0]]
-		for bl, name in zip(bools, self.names.values()):
+		for bl, name in zip(bools, self.check.keys()):
 			try:
 				self.checkboxes[name].setChecked(bl)
 			except KeyError:
@@ -186,7 +186,7 @@ class SettingsWin(QTabWidget):
 				QMessageBox.Cancel
 		) == QMessageBox.Ok:
 			self.data['history'] = []
-			save('data.json', self.data)
+			save('data/data.json', self.data)
 			QMessageBox.information(
 				self,
 				self.trans['remindTexts']['title'],

@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
 from settings import font, symbol_lst, symbol_lst_2
-from functions import textUpdate, get_formula, get_trans
+from functions import text_update, get_formula, get_trans
 
 
 class CreateFormulaWin(QWidget):
@@ -45,7 +45,7 @@ class CreateFormulaWin(QWidget):
 			if formula_string != '':
 				try:
 					self.main.formula = get_formula(formula_string)
-					textUpdate(self.main.formula[-1], self.main.textEdit)
+					text_update(self.main.formula[-1], self.main.textEdit)
 				except (ValueError, IndexError):
 					self.close()
 				else:
@@ -53,7 +53,7 @@ class CreateFormulaWin(QWidget):
 						self.main.formula.append('0')
 
 					if not self.main.formula[-1].isdigit() and type(eval(self.main.formula[-1])) != float:
-						self.main.clearEdit()
+						self.main.clear_edit()
 						self.main.textEdit.setText('0')
 					self.close()
 
