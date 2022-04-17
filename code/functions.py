@@ -1,19 +1,23 @@
 from PyQt5.QtWidgets import QLabel
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from re import match
 from typing import Union
 from json import load, dump
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_weights, bracket_lst
+from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widthes, bracket_lst
 
 
-def save(filename: str, data: dict) -> None:
-	"""
-	快速保存
-	"""
-	with open(filename, 'w+', encoding='utf-8') as f:
-		dump(data, f)
+def compatible(d, rd) -> dict[str, dict]:
+	for i in rd.keys():
+		try:
+			d[i] = d[i]
+		except KeyError:
+			d[i] = rd[i]
+		else:
+			if type(d[i]) == dict and type(rd[i]) == dict:
+				compatible(d[i], rd[i])
+	return d
 
 
 def get_data() -> dict[Union[dict[str], str]]:
@@ -28,12 +32,10 @@ def get_data() -> dict[Union[dict[str], str]]:
 			'language': 'en_us'
 		},
 		'isResult': False,
-		'formula': ['0'],
-		'history': [],
 	}
 
 	try:
-		with open('data.json', 'r+', encoding='utf-8') as f:
+		with open('data/data.json', 'r+', encoding='utf-8') as f:
 			data = load(f)
 	except FileNotFoundError:
 		data = rdata
@@ -43,34 +45,68 @@ def get_data() -> dict[Union[dict[str], str]]:
 		except KeyError:
 			data['settings'] = data.pop('options')
 
-	def compatible(d=data, rd=rdata) -> dict[str, dict]:
-		for i in rd.keys():
-			try:
-				d[i] = d[i]
-			except KeyError:
-				d[i] = rd[i]
-			else:
-				if type(d[i]) == dict and type(rd[i]) == dict:
-					compatible(d[i], rd[i])
-		return d
-
 	if data != rdata:
-		data = compatible()
+		data = compatible(data, rdata)
 
-	with open('data.json', 'w+', encoding='utf-8') as f:
-		dump(data, f)
+	save('data/data.json', data)
 	return data
+
+
+def get_formula_data() -> dict[str, list]:
+	formula_data = {
+		'formula': ['0'],
+		'calcFormula': ['0'],
+		'calcFormulaStep': [],
+		'frontBracketIndex': [0],
+		'frontBracketIndexStep': []
+	}
+
+	try:
+		with open('data/formula_data.json', 'r+', encoding='utf-8') as f:
+			data = load(f)
+	except FileNotFoundError:
+		data = formula_data
+
+	if data != formula_data:
+		data = compatible(data, formula_data)
+
+	save('data/formula_data.json', data)
+	return data
+
+
+def get_history() -> list[str]:
+	try:
+		with open('data/history.json', 'r+', encoding='utf-8') as f:
+			hdata = load(f)
+	except FileNotFoundError:
+		data = get_data()
+		if 'history' in data.keys():
+			hdata = data.pop('history')
+			save('data/data.json', data)
+		else:
+			hdata = []
+
+	save('data/history.json', hdata)
+	return hdata
 
 
 def get_trans() -> dict[str, dict]:
 	"""
 	获取翻译文件
 	"""
-	with open('data.json', 'r+', encoding='utf-8') as f:
+	with open('data/data.json', 'r+', encoding='utf-8') as f:
 		language = load(f)['settings']['language']
 
 	with open(f'resource/lang/{language}.json', 'r+', encoding='utf-8') as f:
 		return load(f)
+
+
+def save(filename: str, data) -> None:
+	"""
+	快速保存
+	"""
+	with open(filename, 'w+', encoding='utf-8') as f:
+		dump(data, f)
 
 
 def text_update(string: str, label: QLabel) -> None:
@@ -81,7 +117,7 @@ def text_update(string: str, label: QLabel) -> None:
 	weight = 0
 	for i in range(len(string)):
 		if string[i] not in symbol_lst and string[i] not in bracket_lst[0] and string[i] not in bracket_lst[1]:
-			weight += num_weights[string[i]]
+			weight += num_widthes[string[i]]
 			if weight >= 636:
 				label.setText('...' + string[-i + 2:])
 				break
@@ -135,12 +171,17 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
 						continue
 				elif formula[i] in symbol_lst[2:4] and '^' in formula:
 					continue
-				if fraction_compute:
-					r[i - 1] = eval(f'Fraction(f[i - 1]) {symbol_turn[f[i]]} Fraction(f[i + 1])')
+
+				try:
+					if fraction_compute:
+						r[i - 1] = eval(f'Fraction(f[i - 1]) {symbol_turn[f[i]]} Fraction(f[i + 1])')
+					else:
+						r[i - 1] = eval(f'Decimal(f[i - 1]) {symbol_turn[f[i]]} Decimal(f[i + 1])')
+				except InvalidOperation:
+					raise SyntaxError('非法算式!')
 				else:
-					r[i - 1] = eval(f'Decimal(f[i - 1]) {symbol_turn[f[i]]} Decimal(f[i + 1])')
-				del r[i:i + 2]
-				break
+					del r[i:i + 2]
+					break
 			elif type(f[i]) == list:
 				while len(r[i]) != 1:
 					r[i] = c(r[i], f[i])
@@ -184,7 +225,6 @@ def get_formula(formula_string: str) -> list[str]:
 	"""
 	传入字符串，将字符串转化为列表，列表每个元素是一串数字或一个符号。
 	"""
-	symbols = ['+', '-', '*', ':', '^']
 	fs = formula_string.replace(' ', '').replace('**', '^').replace('*', '×').replace(':', '÷').replace(
 		'//', '÷')
 
@@ -196,7 +236,7 @@ def get_formula(formula_string: str) -> list[str]:
 			if i >= len(s):
 				break
 
-			if s[i] in symbols or i == len(s) - 1:
+			if s[i] in symbol_lst or i == len(s) - 1:
 				if not s[i-1] == ' ':
 					f.append(s[start:i])
 				f.append(s[i])
@@ -206,7 +246,7 @@ def get_formula(formula_string: str) -> list[str]:
 				f.append(split(s[i+1:idx]))
 				s = s[:i] + ' ' + s[idx+1:]
 
-		if f[-2] not in symbols and type(f[-1]) != list:
+		if type(f[-1]) != list and f[-2] not in symbol_lst:
 			f[-2] += f[-1]
 			del f[-1]
 		return f
