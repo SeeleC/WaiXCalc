@@ -15,11 +15,11 @@ from functions import *
 from settings import *
 
 # WaiXCalc (WaiX Calculator)
-# Version 1.7.0 (4.9.0)
+# Version 1.7.1 (4.9.1)
 # By WaiZhong
 # MIT License
 waix = 'WaiXCalc'
-version = '1.7.0'
+version = '1.7.1'
 
 
 class WaiX(QMainWindow):
