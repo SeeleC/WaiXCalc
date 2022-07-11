@@ -370,8 +370,8 @@ class WaiX(QMainWindow):
 			],
 		]
 
-		for i in ['file', 'edit', 'help']:
-			self.menus[i].setTitle(self.trans[f'menubar.{i}Menu.title'])
+		for idx, name in zip([0, 1, 2], ['file', 'edit', 'help']):
+			self.menus[idx].setTitle(self.trans[f'menubar.{name}Menu.title'])
 
 		idx = 0
 		for names, statustips in zip(menuNames, menuStatustips):
