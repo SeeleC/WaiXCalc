@@ -186,12 +186,12 @@ class WaiX(QMainWindow):
 			else:
 				self.isResult = True
 
-				if self.data['settings']['_floatToFraction'] and type(result) == Decimal:
+				if self.data['settings']['settings.1.option.1'] and type(result) == Decimal:
 					result = Fraction(result)
-				elif self.data['settings']['_fractionToFloat'] and type(result) == Fraction:
+				elif self.data['settings']['settings.1.option.2'] and type(result) == Fraction:
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
-				if self.data['settings']['_enableRecordHistory']:
+				if self.data['settings']['settings.2.option']:
 					history = get_history()
 					history.append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
 					save('data/history.json', history)
