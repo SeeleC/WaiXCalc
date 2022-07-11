@@ -43,17 +43,17 @@
   "window.about.title": "About",
   "window.hint.title": "Hint",
 
-  "text.settings.1.title": "Calculate",
-  "option.settings.1.1": "Only fraction result",
-  "option.settings.1.2": "Only decimal result",
+  "settings.1.title": "Calculate",
+  "settings.1.option.1": "Only fraction result",
+  "settings.1.option.2": "Only decimal result",
 
-  "text.settings.2.title": "History",
-  "option.settings.2": "Enable record history",
-  "button.settings.2": "Clear history",
-  "hint.settings.2.1": "Are you sure?",
-  "hint.settings.2.2": "Cleared!",
+  "settings.2.title": "History",
+  "settings.2.option": "Enable record history",
+  "settings.2.button": "Clear history",
+  "settings.2.hint.1": "Are you sure?",
+  "settings.2.hint.2": "Cleared!",
 
-  "text.settings.3.title": "Language",
+  "settings.3.title": "Language",
 
   "text.open.page": "Page %d / %d",
   "button.open.copyCurrent": "Copy",
