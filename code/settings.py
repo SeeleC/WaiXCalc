@@ -17,9 +17,9 @@ mwFont = QFont()
 mwFont.setFamily('Microsoft Yahei UI')
 mwFont.setPointSize(24)
 
-ofwFont = QFont()
-ofwFont.setFamily('Microsoft Yahei UI')
-ofwFont.setPointSize(10)
+textFont = QFont()
+textFont.setFamily('Microsoft Yahei UI')
+textFont.setPointSize(10)
 
 # tipFont = QFont()
 # tipFont.setFamily('Microsoft Yahei UI')
