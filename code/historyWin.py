@@ -24,12 +24,12 @@ class HistoryWin(QWidget):
 		text.setFont(font)
 		text.setText(''.join([i[:-1] + '\n' for i in [i + ' ' for i in self.history]]))
 		if not self.data['settings']['_enableRecordHistory']:
-			text.append(self.trans['historyDisabled'])
+			text.append(self.trans['text.history.disabled'])
 		text.setReadOnly(True)
 
 		hbox = QHBoxLayout()
 
-		ok = QPushButton(self.trans['buttonBack'])
+		ok = QPushButton(self.trans['button.back'])
 		ok.setFont(font)
 		ok.setShortcut('Return')
 		ok.clicked.connect(self.close)
@@ -41,6 +41,6 @@ class HistoryWin(QWidget):
 		layout.addLayout(hbox)
 
 		self.setLayout(layout)
-		self.setWindowTitle(self.trans['windowTitles']['historyWin'])
+		self.setWindowTitle(self.trans['window.history.title'])
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
 		self.resize(600, 400)

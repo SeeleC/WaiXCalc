@@ -1,119 +1,82 @@
 {
-  "menu": {
-    "menubar1": {
-      "name": "文件(&F)",
-      "options": {
-        "option1": "新建..(&N)",
-        "option2": "打開..(&O)",
-        "option3": "設置..(&S)",
-        "option4": "退出(&X)"
-      },
-      "statustip": {
-        "statustip1": "新建完整算式",
-        "statustip2": "打開包含算式的文本文件",
-        "statustip3": "編輯應用設置",
-        "statustip4": "退出WaiXCalc"
-      }
-    },
-    "menubar2": {
-      "name": "編輯(&E)",
-      "options": {
-        "option1": "剪切(&T)",
-        "option2": "複製(&C)",
-        "option3": "粘貼(&P)",
-        "option4": "刪除(&D)"
-      },
-      "statustip": {
-        "statustip1": "剪切到剪貼板",
-        "statustip2": "複製到剪貼板",
-        "statustip3": "從剪切板粘貼",
-        "statustip4": "刪除當前計算步驟"
-      }
-    },
-    "menubar3": {
-      "name": "幫助(&S)",
-      "options": {
-        "option1": "幫助(&H)",
-        "option2": "歷史記錄(&I)",
-        "option3": "完整算式(&W)",
-        "option4": "關於(&A)"
-      },
-      "statustip": {
-        "statustip1": "顯示幫助内容",
-        "statustip2": "計算的歷史記錄",
-        "statustip3": "查看當前的完整算式",
-        "statustip4": "關於WaiXCalc"
-      }
-    }
-  },
-  "windowTitles": {
-    "mainWin": "WaiXCalc",
-    "settingsWin": "設置",
-    "openedFormulaWin": "打開",
-    "selectFileWin": "文件",
-    "historyWin": "歷史",
-    "helpWin": "幫助",
-    "createFormulaWin": "新建算式",
-    "wholeFormulaBox": "完整算式",
-    "aboutBox": "關於"
-  },
-  "settings": {
-    "settingsTab1": {
-      "title": "計算",
-      "options": {
-        "_floatToFraction": "僅顯示分數結果",
-        "_fractionToFloat": "僅顯示小數結果"
-      }
-    },
-    "settingsTab2": {
-      "title": "歷史",
+  "language.name": "繁體中文",
+  "language.id": "zh_tw",
 
-      "options": {
-        "_enableRecordHistory": "啓用歷史記錄"
-      },
-      "buttonClearHistory": "清空歷史.."
-    },
-    "settingsTab3": {
-      "title": "語言",
-      "options": {
-        "zh_cn": "中文(简体)",
-        "zh_tw": "中文(繁體)",
-        "en_us": "English"
-      }
-    }
-  },
-  "openedFormula": {
-    "pageTitle": "算式: ",
-    "buttonCopyCurrent": "複製當前",
-    "buttonCopyAll": "複製當前",
-    "buttonExport": "導出到.."
-  },
-  "remindTexts": {
-    "title": "提示",
-    "formulaTooShort": "算式太短了!",
-    "clearHistory": {
-      "remind1": "確定要清空歷史嗎",
-      "remind2": "已清空歷史"
-    },
-    "openedFormula": {
-      "remind1": "已複製!",
-      "remind2": "已複製!",
-      "remind3": "已導出!",
-      "remind4": "錯誤"
-    },
-    "historyEmpty": {
-      "title": "歷史",
-      "content": "歷史為空"
-    }
-  },
-  "calculateError": "錯誤",
+  "menubar.fileMenu.title": "文件(&F)",
+  "option.fileMenu.1": "新建..(&N)",
+  "option.fileMenu.2": "打開..(&O)",
+  "option.fileMenu.3": "設置..(&S)",
+  "option.fileMenu.4": "退出(&X)",
+  "statusTip.fileMenu.1": "新建完整算式",
+  "statusTip.fileMenu.2": "打開包含算式的文本文件",
+  "statusTip.fileMenu.3": "編輯應用設置",
+  "statusTip.fileMenu.4": "退出WaiXCalc",
 
-  "buttonOk": "確定",
-  "buttonCancel": "取消",
-  "buttonApply": "應用",
-  "buttonBack": "返回",
+  "menubar.editMenu.title": "編輯(&E)",
+  "option.editMenu.1": "剪切(&T)",
+  "option.editMenu.2": "複製(&C)",
+  "option.editMenu.3": "粘貼(&P)",
+  "option.editMenu.4": "刪除(&D)",
+  "statusTip.editMenu.1": "剪切到剪貼板",
+  "statusTip.editMenu.2": "複製到剪貼板",
+  "statusTip.editMenu.3": "從剪切板粘貼",
+  "statusTip.editMenu.4": "刪除當前計算步驟",
 
-  "historyDisabled": "記錄歷史已關閉",
+  "menubar.helpMenu.title": "幫助(&H)",
+  "option.helpMenu.1": "幫助(&H)",
+  "option.helpMenu.2": "歷史記錄(&I)",
+  "option.helpMenu.3": "完整算式(&W)",
+  "option.helpMenu.4": "關於(&A)",
+  "statusTip.helpMenu.1": "顯示幫助内容",
+  "statusTip.helpMenu.2": "計算的歷史記錄",
+  "statusTip.helpMenu.3": "查看當前的完整算式",
+  "statusTip.helpMenu.4": "關於WaiXCalc",
 
-  "helpContent": "1. 在“新建”界面中，不支持全角字符;<br>2. 在”新建“界面中，爲了兼容分數，如須輸入“÷”，請用“//”或“:”代替;<br>\n3. 如有其他問題請前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\">Issues<\\a><br>"
+  "window.main.title": "WaiXCalc",
+  "window.settings.title": "設置",
+  "window.open.title": "打開",
+  "window.selectFile.title": "文件",
+  "window.history.title": "歷史",
+  "window.help.title": "幫助",
+  "window.create.title": "新建",
+  "window.whole.title": "完整算式",
+  "window.about.title": "關於",
+  "window.hint.title": "提示",
+
+  "text.settings.1.title": "計算",
+  "option.settings.1.1": "僅顯示分數結果",
+  "option.settings.1.2": "僅顯示小數結果",
+
+  "text.settings.2.title": "歷史",
+  "option.settings.2": "使用歷史記錄",
+  "button.settings.2": "清空歷史..",
+  "hint.settings.2.1": "確定要清空歷史嗎",
+  "hint.settings.2.2": "已經清空歷史",
+
+  "text.settings.3.title": "多語言",
+
+  "text.open.page": "%d / %d 頁",
+  "button.open.copyCurrent": "複製當前",
+  "button.open.copyAll": "複製全部",
+  "button.open.export": "導出到..",
+  "hint.open.copyCurrent": "已經複製!",
+  "hint.open.copyAll": "已經複製!",
+  "hint.open.export": "已經複製!",
+  "hint.open.error": "錯誤",
+
+  "hint.history.empty.title": "歷史",
+  "hint.history.empty.content": "歷史為空",
+
+  "hint.create.tooShort": "算式過短！",
+
+  "text.history.disabled": "記錄歷史已關閉",
+
+  "text.help.content": "1. 在“新建”界面中，不支持全角字符;<br>2. 在”新建“界面中，爲了兼容分數，如須輸入“÷”，請用“//”或“:”代替;<br>\n3. 如有其他問題請前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\">Issues<\\a><br>",
+
+  "text.main.error": "錯誤",
+
+  "button.ok": "確定",
+  "button.cancel": "取消",
+  "button.apply": "應用",
+  "button.back": "返回"
 }

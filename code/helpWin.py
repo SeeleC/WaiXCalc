@@ -20,12 +20,12 @@ class HelpWin(QWidget):
 
 		text = QTextBrowser()
 		text.setFont(font)
-		text.setHtml(self.trans['helpContent'])
+		text.setHtml(self.trans['text.help.content'])
 		text.setOpenExternalLinks(True)
 
 		hbox = QHBoxLayout()
 
-		ok = QPushButton(self.trans['buttonBack'])
+		ok = QPushButton(self.trans['button.back'])
 		ok.setFont(font)
 		ok.setShortcut('Return')
 		ok.clicked.connect(self.close)
@@ -37,7 +37,7 @@ class HelpWin(QWidget):
 		layout.addLayout(hbox)
 
 		self.setLayout(layout)
-		self.setWindowTitle(self.trans['windowTitles']['helpWin'])
+		self.setWindowTitle(self.trans['window.help.title'])
 		self.setWindowIcon(QIcon('resource/images\\ico.JPG'))
 		self.resize(600, 400)
 

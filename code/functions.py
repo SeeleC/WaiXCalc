@@ -1,3 +1,5 @@
+from os import listdir
+
 from PyQt5.QtWidgets import QLabel
 from decimal import Decimal, InvalidOperation
 from fractions import Fraction
@@ -26,9 +28,9 @@ def get_data() -> dict[Union[dict[str], str]]:
 	"""
 	rdata = {
 		'settings': {
-			'_floatToFraction': False,
-			'_fractionToFloat': False,
-			'_enableRecordHistory': True,
+			'settings.1.option.1': False,
+			'settings.1.option.2': False,
+			'settings.2.option': True,
 			'language': 'en_us'
 		},
 		'isResult': False,
@@ -90,7 +92,7 @@ def get_history() -> list[str]:
 	return hdata
 
 
-def get_trans() -> dict[str, dict]:
+def get_trans() -> dict[str]:
 	"""
 	获取翻译文件
 	"""
@@ -99,6 +101,28 @@ def get_trans() -> dict[str, dict]:
 
 	with open(f'resource/lang/{language}.json', 'r+', encoding='utf-8') as f:
 		return load(f)
+
+
+def get_trans_entry(trans: dict, text: str) -> dict:
+	result = {}
+
+	for i in trans.keys():
+		for j in range(len(i)):
+			if i[:j] == text:
+				result = {**result, **{i: trans[i]}}
+
+	return result
+
+
+def get_trans_info() -> dict[str]:
+	data = {}
+	for i in sorted(listdir('resource/lang')):
+		i = i[:-5]
+		if i != 'template':
+			with open(f'resource/lang/{i}.json', 'r', encoding='utf-8') as f:
+				res = load(f)
+				data = {**data, **{res['language.name']: res['language.id']}}
+	return data
 
 
 def save(filename: str, data) -> None:

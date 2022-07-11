@@ -18,7 +18,7 @@ class CreateFormulaWin(QWidget):
 		self.edit.setFont(font)
 		self.edit.textChanged.connect(self.textChanged)
 
-		ok = QPushButton(self.trans['buttonOk'])
+		ok = QPushButton(self.trans['button.ok'])
 		ok.setShortcut('Return')
 		ok.setFont(font)
 		ok.clicked.connect(self.updateEdit)
@@ -32,7 +32,7 @@ class CreateFormulaWin(QWidget):
 
 		self.setLayout(grid)
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
-		self.setWindowTitle(self.trans['windowTitles']['createFormulaWin'])
+		self.setWindowTitle(self.trans['window.create.title'])
 		self.setFixedWidth(400)
 
 	def updateEdit(self):
@@ -40,7 +40,7 @@ class CreateFormulaWin(QWidget):
 		if formula_string == '':
 			self.close()
 		if len(formula_string) <= 1 and formula_string != '':
-			QMessageBox.warning(self, self.trans['remindTexts']['title'], self.trans['remindTexts']['formulaTooShort'])
+			QMessageBox.warning(self, self.trans['window.hint.title'], self.trans['hint.create.tooShort'])
 		else:
 			if formula_string != '':
 				try:

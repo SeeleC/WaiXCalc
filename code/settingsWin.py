@@ -3,10 +3,9 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
-from os import listdir
 
 from settings import font
-from functions import save, get_trans, get_data
+from functions import save, get_trans, get_data, get_trans_entry, get_trans_info
 
 
 class SettingsWin(QTabWidget):
@@ -19,9 +18,10 @@ class SettingsWin(QTabWidget):
 		self.check = self.data['settings']
 		self.names = {
 			j: i
-			for _ in self.trans['settings'].values()
-			for i, j in _['options'].items()
+			for _ in range(1, 4)
+			for i, j in get_trans_entry(self.trans, f'settings.{_}').items()
 		}
+		self.languages = get_trans_info()
 		self.checkboxes = {}
 		self.radiobuttons = {}
 		self.autoCheck = False
@@ -33,17 +33,17 @@ class SettingsWin(QTabWidget):
 
 	def initUI(self):
 		lyt = self.calculateTab()
-		self.addNewTab(lyt, self.trans['settings']['settingsTab1']['title'])
+		self.addNewTab(lyt, self.trans['settings.1.title'])
 		lyt = self.historyTab()
-		self.addNewTab(lyt, self.trans['settings']['settingsTab2']['title'])
+		self.addNewTab(lyt, self.trans['settings.2.title'])
 		lyt = self.languageTab()
-		self.addNewTab(lyt, self.trans['settings']['settingsTab3']['title'])
+		self.addNewTab(lyt, self.trans['settings.3.title'])
 		self.setFont(font)
 
 		self.apply.setEnabled(False)
 
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
-		self.setWindowTitle(self.trans['windowTitles']['settingsWin'])
+		self.setWindowTitle(self.trans['window.settings.title'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
 
@@ -76,17 +76,20 @@ class SettingsWin(QTabWidget):
 
 	def calculateTab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
-		for i, j in self.trans['settings']['settingsTab1']['options'].items():
+		for i, j in get_trans_entry(self.trans, 'settings.1.option').items():
 			self.checkboxes[i] = QCheckBox(j)
 			l = self.addEntry(l, self.checkboxes[i])
 		return l
 
 	def historyTab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
-		for i, j in self.trans['settings']['settingsTab2']['options'].items():
-			self.checkboxes[i] = QCheckBox(j)
-			l = self.addEntry(l, self.checkboxes[i])
-		btn = QPushButton(self.trans['settings']['settingsTab2']['buttonClearHistory'])
+		# for i, j in self.trans['settings']['settingsTab2']['options'].items():
+		# 	self.checkboxes[i] = QCheckBox(j)
+		# 	l = self.addEntry(l, self.checkboxes[i])
+		self.checkboxes['settings.2.option'] = QCheckBox(self.trans['settings.2.option'])
+		l = self.addEntry(l, self.checkboxes['settings.2.option'])
+
+		btn = QPushButton(self.trans['settings.2.button'])
 		btn.setFont(font)
 		btn.clicked.connect(self.clear_history)
 		l.addWidget(btn)
@@ -95,17 +98,13 @@ class SettingsWin(QTabWidget):
 	def languageTab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
 
-		for i in sorted(listdir('resource/lang')):
-			i = i[:-5]
-			if i != 'template':
-				if i in self.trans['settings']['settingsTab3']['options'].keys():
-					name = self.trans['settings']['settingsTab3']['options'][i]
-				else:
-					name = i
-				self.radiobuttons[i] = QRadioButton(name)
-				l = self.addEntry(l, self.radiobuttons[i])
-				if i == self.data['settings']['language']:
-					self.radiobuttons[i].setChecked(True)
+		for name, id in get_trans_info().items():
+			self.radiobuttons[id] = QRadioButton(name)
+			l = self.addEntry(l, self.radiobuttons[id])
+
+			if id == self.data['settings']['language']:
+				self.radiobuttons[id].setChecked(True)
+
 		return l
 
 	def checked(self):
@@ -115,25 +114,25 @@ class SettingsWin(QTabWidget):
 			self.apply.setEnabled(True)
 
 			self.check[self.names[sender.text()]] = sender.isChecked()
-			if sender.text() == self.trans['settings']['settingsTab1']['options']['_floatToFraction']:
-				self.check['_fractionToFloat'] = False
-			elif sender.text() == self.trans['settings']['settingsTab1']['options']['_fractionToFloat']:
-				self.check['_floatToFraction'] = False
+			if sender.text() == self.trans['settings.1.option.1']:
+				self.check['settings.1.option.2'] = False
+			elif sender.text() == self.trans['settings.1.option.2']:
+				self.check['settings.1.option.1'] = False
 			self.updateStatus()
 
 	def addBottomButton(self, layout: QVBoxLayout, mode: int = 0):
 		hbox = QHBoxLayout()
 
-		ok = QPushButton(self.trans['buttonOk'])
+		ok = QPushButton(self.trans['button.ok'])
 		ok.setFont(font)
 		ok.setShortcut('Return')
 		ok.clicked.connect(self.clicked)
 
-		cancel = QPushButton(self.trans['buttonCancel'])
+		cancel = QPushButton(self.trans['button.cancel'])
 		cancel.setFont(font)
 		cancel.clicked.connect(self.clicked)
 
-		self.apply = QPushButton(self.trans['buttonApply'])
+		self.apply = QPushButton(self.trans['button.apply'])
 		self.apply.setFont(font)
 		self.apply.clicked.connect(self.clicked)
 
@@ -150,26 +149,26 @@ class SettingsWin(QTabWidget):
 
 	def clicked(self):
 		sender = self.sender()
-		if sender.text() == self.trans['buttonOk'] or sender.text() == self.trans['buttonCancel'] or\
-			sender.text() == self.trans['buttonApply']:
-			if sender.text() == self.trans['buttonOk'] or sender.text() == self.trans['buttonApply']:
+		if sender.text() == self.trans['button.ok'] or sender.text() == self.trans['button.cancel'] or\
+			sender.text() == self.trans['button.apply']:
+			if sender.text() == self.trans['button.ok'] or sender.text() == self.trans['button.apply']:
 				for i in self.check:
 					if i[0] == '_':
 						self.data['settings'][i] = self.check[i]
 				for i in self.radiobuttons.values():
-					if i.isChecked() and self.names[i.text()] != self.data['settings']['language']:
-						self.data['settings']['language'] = self.names[i.text()]
+					if i.isChecked() and self.languages[i.text()] != self.data['settings']['language']:
+						self.data['settings']['language'] = self.languages[i.text()]
 						save('data/data.json', self.data)
 						self.signal.emit(True)
 						break
 				self.apply.setEnabled(False)
 				save('data/data.json', self.data)
-			if sender.text() == self.trans['buttonOk'] or sender.text() == self.trans['buttonCancel']:
+			if sender.text() == self.trans['button.ok'] or sender.text() == self.trans['button.cancel']:
 				self.close()
 
 	def updateStatus(self):
 		self.autoCheck = True
-		bools = [self.check[i] for i in self.check if '_' == i[0]]
+		bools = [self.check[i] for i in self.check]
 		for bl, name in zip(bools, self.check.keys()):
 			try:
 				self.checkboxes[name].setChecked(bl)
@@ -180,8 +179,8 @@ class SettingsWin(QTabWidget):
 	def clear_history(self):
 		if QMessageBox.question(
 				self,
-				self.trans['remindTexts']['title'],
-				self.trans['remindTexts']['clearHistory']['remind1'],
+				self.trans['window.hint.title'],
+				self.trans['settings.2.hint.1'],
 				QMessageBox.Ok | QMessageBox.Cancel,
 				QMessageBox.Cancel
 		) == QMessageBox.Ok:
@@ -189,6 +188,7 @@ class SettingsWin(QTabWidget):
 			save('data/data.json', self.data)
 			QMessageBox.information(
 				self,
-				self.trans['remindTexts']['title'],
-				self.trans['remindTexts']['clearHistory']['remind2'],
-				QMessageBox.Ok, QMessageBox.Ok)
+				self.trans['window.hint.title'],
+				self.trans['settings.2.hint.2'],
+				QMessageBox.Ok, QMessageBox.Ok
+			)

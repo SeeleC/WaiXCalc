@@ -1,118 +1,82 @@
 {
-  "menu": {
-    "menubar1": {
-      "name": "&File",
-      "options": {
-        "option1": "&New",
-        "option2": "&Open",
-        "option3": "&Settings",
-        "option4": "E&xit"
-      },
-      "statustip": {
-        "statustip1": "Create new formula",
-        "statustip2": "Open a text file and calculate",
-        "statustip3": "Edit application settings",
-        "statustip4": "Quit calculator"
-      }
-    },
-    "menubar2": {
-      "name": "&Edit",
-      "options": {
-        "option1": "Cu&t",
-        "option2": "&Copy",
-        "option3": "&Paste",
-        "option4": "&Delete"
-      },
-      "statustip": {
-        "statustip1": "Cut to clipboard",
-        "statustip2": "Copy to clipboard",
-        "statustip3": "Paste from clipboard",
-        "statustip4": "Delete current item"
-      }
-    },
-    "menubar3": {
-      "name": "&Help",
-      "options": {
-        "option1": "&Help",
-        "option2": "H&istory",
-        "option3": "&Whole formula",
-        "option4": "&About"
-      },
-      "statustip": {
-        "statustip1": "Show help contents",
-        "statustip2": "View accumulated history",
-        "statustip3": "View the current full formula",
-        "statustip4": "About WaiXCalc"
-      }
-    }
-  },
-  "windowTitles": {
-    "mainWin": "WaiXCalc",
-    "settingsWin": "Settings",
-    "openedFormulaWin": "Opened formula",
-    "selectFileWin": "File",
-    "historyWin" : "History",
-    "helpWin": "Help",
-    "createFormulaWin": "Create formula",
-    "wholeFormulaBox": "Whole formula",
-    "aboutBox": "About"
-  },
-  "settings": {
-    "settingsTab1": {
-      "title": "Calculate",
-      "options": {
-        "_floatToFraction": "Only fraction result",
-        "_fractionToFloat": "Only decimal result"
-      }
-    },
-    "settingsTab2": {
-      "title": "History",
-      "options": {
-        "_enableRecordHistory": "Enable record history"
-      },
-      "buttonClearHistory": "Clear history"
-    },
-    "settingsTab3": {
-      "title": "Language",
-      "options": {
-        "zh_cn": "中文(简体)",
-        "zh_tw": "中文(繁體)",
-        "en_us": "English"
-      }
-    }
-  },
-  "openedFormula": {
-    "pageTitle": "Page: ",
-    "buttonCopyCurrent": "Copy",
-    "buttonCopyAll": "CopyAll",
-    "buttonExport": "Export.."
-  },
-  "remindTexts": {
-    "title": "Hint",
-    "formulaTooShort": "too short!",
-    "clearHistory": {
-      "remind1": "Are you sure?",
-      "remind2": "Cleared!"
-    },
-    "openedFormula": {
-      "remind1": "Copied!",
-      "remind2": "Copied!",
-      "remind3": "Exported!",
-      "remind4": "Error"
-    },
-    "historyEmpty": {
-      "title": "History",
-      "content": "Nothing"
-    }
-  },
-  "calculateError": "Error",
+  "language.name": "English",
+  "language.id": "en_us",
 
-  "buttonOk": "OK",
-  "buttonCancel": "Cancel",
-  "buttonApply": "Apply",
-  "buttonBack": "Back",
+  "menubar.fileMenu.title": "&File",
+  "option.fileMenu.1": "&New",
+  "option.fileMenu.2": "&Open",
+  "option.fileMenu.3": "&Settings",
+  "option.fileMenu.4": "E&xit",
+  "statusTip.fileMenu.1": "Create new formula",
+  "statusTip.fileMenu.2": "Open a text file and calculate",
+  "statusTip.fileMenu.3": "Edit application settings",
+  "statusTip.fileMenu.4": "Quit calculator",
 
-  "historyDisabled": "Record history is disabled",
+  "menubar.editMenu.title": "&Edit",
+  "option.editMenu.1": "Cu&t",
+  "option.editMenu.2": "&Copy",
+  "option.editMenu.3": "&Paste",
+  "option.editMenu.4": "&Delete",
+  "statusTip.editMenu.1": "Cut to clipboard",
+  "statusTip.editMenu.2": "Copy to clipboard",
+  "statusTip.editMenu.3": "Paste from clipboard",
+  "statusTip.editMenu.4": "Delete current item",
 
-  "helpContent": "1. Don't use full-width char when creating formula.<br>2. Use `:` or `//` to replace `/` when creating formula.<br>3. If you have other questions, please go to <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\">Issues<\\a>.<br>"
+  "menubar.helpMenu.title": "&Help",
+  "option.helpMenu.1": "&Help",
+  "option.helpMenu.2": "H&istory",
+  "option.helpMenu.3": "&Whole formula",
+  "option.helpMenu.4": "&About",
+  "statusTip.helpMenu.1": "Show help contents",
+  "statusTip.helpMenu.2": "View accumulated history",
+  "statusTip.helpMenu.3": "View the current full formula",
+  "statusTip.helpMenu.4": "About WaiXCalc",
+
+  "window.main.title": "WaiXCalc",
+  "window.settings.title": "Settings",
+  "window.open.title": "Opened Formula",
+  "window.selectFile.title": "File",
+  "window.history.title": "History",
+  "window.help.title": "Help",
+  "window.create.title": "New",
+  "window.whole.title": "Whole",
+  "window.about.title": "About",
+  "window.hint.title": "Hint",
+
+  "text.settings.1.title": "Calculate",
+  "option.settings.1.1": "Only fraction result",
+  "option.settings.1.2": "Only decimal result",
+
+  "text.settings.2.title": "History",
+  "option.settings.2": "Enable record history",
+  "button.settings.2": "Clear history",
+  "hint.settings.2.1": "Are you sure?",
+  "hint.settings.2.2": "Cleared!",
+
+  "text.settings.3.title": "Language",
+
+  "text.open.page": "Page %d / %d",
+  "button.open.copyCurrent": "Copy",
+  "button.open.copyAll": "CopyAll",
+  "button.open.export": "Export..",
+  "hint.open.copyCurrent": "Copied!",
+  "hint.open.copyAll": "Copied!",
+  "hint.open.export": "Exported!",
+  "hint.open.error": "Error",
+
+  "hint.history.empty.title": "History",
+  "hint.history.empty.content": "Empty!",
+
+  "hint.create.tooShort": "Too short!",
+
+  "text.history.disabled": "Record history is disabled",
+
+  "text.help.content": "1. Don't use full-width char when creating formula.<br>2. Use `:` or `//` to replace `/` when creating formula.<br>3. If you have other questions, please go to <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\">Issues<\\a>.<br>",
+
+  "text.main.error": "Error",
+
+  "button.ok": "OK",
+  "button.cancel": "Cancel",
+  "button.apply": "Apply",
+  "button.back": "Back"
 }

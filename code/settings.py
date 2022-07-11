@@ -12,9 +12,15 @@ num_widthes = {
 font = QFont()
 font.setFamily('Microsoft Yahei UI')
 font.setPointSize(8)
+
 mwFont = QFont()
 mwFont.setFamily('Microsoft Yahei UI')
-mwFont.setPointSize(20)
+mwFont.setPointSize(24)
+
 ofwFont = QFont()
 ofwFont.setFamily('Microsoft Yahei UI')
 ofwFont.setPointSize(10)
+
+# tipFont = QFont()
+# tipFont.setFamily('Microsoft Yahei UI')
+# tipFont.setPointSize(4)

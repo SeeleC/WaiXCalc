@@ -15,11 +15,12 @@ from functions import *
 from settings import *
 
 # WaiXCalc (WaiX Calculator)
-# Version 1.7.1 (4.9.1)
+# Version 1.7.2 (4.9.2)
 # By WaiZhong
 # MIT License
+# Source https://github.com/WaiZhong/WaiXCalc
 waix = 'WaiXCalc'
-version = '1.7.1'
+version = '1.7.2'
 
 
 class WaiX(QMainWindow):
@@ -54,15 +55,30 @@ class WaiX(QMainWindow):
 		vbox.addWidget(self.textEdit)
 
 		menubar = self.menuBar()
-		fileMenu = menubar.addMenu(self.trans['menu']['menubar1']['name'])
-		editMenu = menubar.addMenu(self.trans['menu']['menubar2']['name'])
-		helpMenu = menubar.addMenu(self.trans['menu']['menubar3']['name'])
+		fileMenu = menubar.addMenu(self.trans['menubar.fileMenu.title'])
+		editMenu = menubar.addMenu(self.trans['menubar.editMenu.title'])
+		helpMenu = menubar.addMenu(self.trans['menubar.helpMenu.title'])
 
 		self.menus = [fileMenu, editMenu, helpMenu]
 		menuNames = [
-					self.trans['menu']['menubar1']['options'].values(),
-					self.trans['menu']['menubar2']['options'].values(),
-					self.trans['menu']['menubar3']['options'].values()
+			[
+				self.trans['option.fileMenu.1'],
+				self.trans['option.fileMenu.2'],
+				self.trans['option.fileMenu.3'],
+				self.trans['option.fileMenu.4']
+			],
+			[
+				self.trans['option.editMenu.1'],
+				self.trans['option.editMenu.2'],
+				self.trans['option.editMenu.3'],
+				self.trans['option.editMenu.4']
+			],
+			[
+				self.trans['option.helpMenu.1'],
+				self.trans['option.helpMenu.2'],
+				self.trans['option.helpMenu.3'],
+				self.trans['option.helpMenu.4']
+			],
 		]
 		menuShortcuts = [
 						['Ctrl+N', 'Ctrl+O', 'Ctrl+S', 'Ctrl+Q'],
@@ -70,9 +86,24 @@ class WaiX(QMainWindow):
 						['', 'Ctrl+H', 'Ctrl+F', 'Ctrl+A']
 		]
 		menuStatustips = [
-						self.trans['menu']['menubar1']['statustip'].values(),
-						self.trans['menu']['menubar2']['statustip'].values(),
-						self.trans['menu']['menubar3']['statustip'].values()
+			[
+				self.trans['statusTip.fileMenu.1'],
+				self.trans['statusTip.fileMenu.2'],
+				self.trans['statusTip.fileMenu.3'],
+				self.trans['statusTip.fileMenu.4'],
+			],
+			[
+				self.trans['statusTip.editMenu.1'],
+				self.trans['statusTip.editMenu.2'],
+				self.trans['statusTip.editMenu.3'],
+				self.trans['statusTip.editMenu.4'],
+			],
+			[
+				self.trans['statusTip.helpMenu.1'],
+				self.trans['statusTip.helpMenu.2'],
+				self.trans['statusTip.helpMenu.3'],
+				self.trans['statusTip.helpMenu.4'],
+			],
 		]
 		menufuncs = [
 					[self.openFormulaWin, self.openNewFormulaWin, self.openSettingsWin, self.close],
@@ -87,13 +118,11 @@ class WaiX(QMainWindow):
 
 				if name == '':
 					continue
-				elif name == self.trans['menu']['menubar1']['options']['option3'] or\
-					name == self.trans['menu']['menubar1']['options']['option4'] or\
-					name == self.trans['menu']['menubar3']['options']['option2'] or\
-					name == self.trans['menu']['menubar3']['options']['option4']:
+				elif name == self.trans['statusTip.fileMenu.3'] or name == self.trans['statusTip.fileMenu.4'] or\
+					name == self.trans['statusTip.helpMenu.2'] or name == self.trans['statusTip.helpMenu.4']:
 					menu.addSeparator()
 
-				if name == self.trans['menu']['menubar3']['options']['option4']:
+				if name == self.trans['option.helpMenu.4']:
 					action = QAction(QIcon('resource/images/image.JPG'), name, self)
 				else:
 					action = QAction(name, self)
@@ -116,7 +145,7 @@ class WaiX(QMainWindow):
 	def about(self):
 		QMessageBox.about(
 			self,
-			self.trans['windowTitles']['aboutBox'],
+			self.trans['window.about.title'],
 			f'{waix}\nBy Github@WaiZhong\nVersion {version}\n'
 		)
 
@@ -153,7 +182,7 @@ class WaiX(QMainWindow):
 			try:
 				result = calculate(self.calc_formula)
 			except (ValueError, ZeroDivisionError):
-				self.textEdit.setText(self.trans['calculateError'])
+				self.textEdit.setText(self.trans['text.main.error'])
 			else:
 				self.isResult = True
 
@@ -301,18 +330,48 @@ class WaiX(QMainWindow):
 	def language_update(self):
 		self.trans = get_trans()
 		menuNames = [
-			self.trans['menu']['menubar1']['options'].values(),
-			self.trans['menu']['menubar2']['options'].values(),
-			self.trans['menu']['menubar3']['options'].values()
+			[
+				self.trans['option.fileMenu.1'],
+				self.trans['option.fileMenu.2'],
+				self.trans['option.fileMenu.3'],
+				self.trans['option.fileMenu.4']
+			],
+			[
+				self.trans['option.editMenu.1'],
+				self.trans['option.editMenu.2'],
+				self.trans['option.editMenu.3'],
+				self.trans['option.editMenu.4']
+			],
+			[
+				self.trans['option.helpMenu.1'],
+				self.trans['option.helpMenu.2'],
+				self.trans['option.helpMenu.3'],
+				self.trans['option.helpMenu.4']
+			],
 		]
 		menuStatustips = [
-			self.trans['menu']['menubar1']['statustip'].values(),
-			self.trans['menu']['menubar2']['statustip'].values(),
-			self.trans['menu']['menubar3']['statustip'].values()
+			[
+				self.trans['statusTip.fileMenu.1'],
+				self.trans['statusTip.fileMenu.2'],
+				self.trans['statusTip.fileMenu.3'],
+				self.trans['statusTip.fileMenu.4'],
+			],
+			[
+				self.trans['statusTip.editMenu.1'],
+				self.trans['statusTip.editMenu.2'],
+				self.trans['statusTip.editMenu.3'],
+				self.trans['statusTip.editMenu.4'],
+			],
+			[
+				self.trans['statusTip.helpMenu.1'],
+				self.trans['statusTip.helpMenu.2'],
+				self.trans['statusTip.helpMenu.3'],
+				self.trans['statusTip.helpMenu.4'],
+			],
 		]
 
-		for i in range(len(self.menus)):
-			self.menus[i].setTitle(self.trans['menu'][f'menubar{i+1}']['name'])
+		for i in ['file', 'edit', 'help']:
+			self.menus[i].setTitle(self.trans[f'menubar.{i}Menu.title'])
 
 		idx = 0
 		for names, statustips in zip(menuNames, menuStatustips):
@@ -355,13 +414,13 @@ class WaiX(QMainWindow):
 		else:
 			QMessageBox.information(
 				self,
-				self.trans['remindTexts']['historyEmpty']['title'],
-				self.trans['remindTexts']['historyEmpty']['content'],
+				self.trans['hint.history.empty.title'],
+				self.trans['hint.history.empty.content'],
 				QMessageBox.Ok, QMessageBox.Ok
 			)
 
 	def openNewFormulaWin(self):
-		file = QFileDialog.getOpenFileName(self, self.trans['windowTitles']['selectFileWin'], '', '*.txt;;All Files(*)')
+		file = QFileDialog.getOpenFileName(self, self.trans['window.selectFile.title'], '', '*.txt;;All Files(*)')
 		try:
 			with open(file[0], 'r') as f:
 				f_formula = f.read()
@@ -370,7 +429,7 @@ class WaiX(QMainWindow):
 		except (FileNotFoundError, IndexError) as e:
 			if type(e) == IndexError:
 				QMessageBox.warning(
-					self, self.trans['remindTexts']['title'], self.trans['remindTexts']['openedFormula']['remind4']
+					self, self.trans['window.hint.title'], self.trans['hint.open.error']
 				)
 		else:
 			self.newWin = OpenedFormulaWin(formulas)
@@ -415,7 +474,7 @@ class WaiX(QMainWindow):
 
 	def whole_formula(self):
 		p_formula = [i + ' ' for i in self.formula]
-		QMessageBox.information(self, self.trans['windowTitles']['wholeFormulaBox'], ''.join(p_formula))
+		QMessageBox.information(self, self.trans['window.whole.title'], ''.join(p_formula))
 
 
 if __name__ == '__main__':
