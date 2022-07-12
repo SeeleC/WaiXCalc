@@ -7,6 +7,7 @@ from typing import Union
 # Version 2.0.0
 # By WaiZhong
 # MIT LICENSE
+# Source https://github.com/WaiZhong/WaiXCalc/tree/core1
 
 symbol_lst = ['+', '-', '*', '//', ':', '^', '**']
 symbol_lst_2 = ['/', '.']
