@@ -147,7 +147,7 @@ def text_update(string: str, label: QLabel) -> None:
 				break
 
 
-# WaiXCalc-core (WaiX_Calculator_core)
+# WaiXCalc-Core (waiX_Calculator_core)
 # Version 2.0.0
 
 
