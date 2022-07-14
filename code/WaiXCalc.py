@@ -15,12 +15,15 @@ from functions import *
 from settings import *
 
 # WaiXCalc (WaiX Calculator)
-# Version 1.7.2 (4.9.2)
+# Version 1.8.0 (4.10.0)
 # By WaiZhong
 # MIT License
 # Source https://github.com/WaiZhong/WaiXCalc
+# Python 3.9.12
+# PyQt 5.15.6
+
 waix = 'WaiXCalc'
-version = '1.7.2'
+version = '1.8.0'
 
 
 class WaiX(QMainWindow):
@@ -37,6 +40,10 @@ class WaiX(QMainWindow):
 		self.b_idx: list[int] = self.formula_data['frontBracketIndex']
 		self.calc_f_step: list = self.formula_data['calcFormulaStep']
 		self.b_idx_step: list = self.formula_data['frontBracketIndexStep']
+
+		font.setFamily(self.data['font'])
+		mwFont.setFamily(self.data['font'])
+		textFont.setFamily(self.data['font'])
 
 		self.initUI()
 
@@ -137,6 +144,9 @@ class WaiX(QMainWindow):
 		self.setWindowTitle(waix)
 		self.resize(672, 0)
 		self.setMaximumSize(self.width(), self.height())
+
+		if self.data['qss_code']:
+			self.setStyleSheet(self.data['qss_code'])
 
 		self.statusBar()
 		self.center()
@@ -242,6 +252,15 @@ class WaiX(QMainWindow):
 		else:
 			self.clear_edit()
 		self.text_update()
+
+	def font_update(self):
+		self.data = get_data()
+
+		font.setFamily(self.data['font'])
+		mwFont.setFamily(self.data['font'])
+		textFont.setFamily(self.data['font'])
+
+		self.textEdit.setFont(mwFont)
 
 	def formula_update(self, content):
 		self.isResult = False
@@ -436,6 +455,7 @@ class WaiX(QMainWindow):
 		self.newWin = SettingsWin()
 		self.newWin.language_signal.connect(self.language_update)
 		self.newWin.options_signal.connect(self.options_update)
+		self.newWin.font_signal.connect(self.font_update)
 		self.newWin.show()
 
 	def options_update(self):
