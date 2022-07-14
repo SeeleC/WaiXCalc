@@ -174,7 +174,6 @@ class WaiX(QMainWindow):
 	def calculate(self):
 		if len(self.formula) > 2 and self.formula[-1] not in symbol_lst and\
 			self.formula[-1][-1] not in symbol_lst_2 and self.formula[-1] not in bracket_lst[0]:
-			self.data = get_data()
 
 			while len(self.b_idx) != 0:
 				self.bracket(1)
@@ -186,9 +185,9 @@ class WaiX(QMainWindow):
 			else:
 				self.isResult = True
 
-				if self.data['settings']['settings.1.option.1'] and type(result) == Decimal:
+				if self.data['settings']['settings.1.option.2']:
 					result = Fraction(result)
-				elif self.data['settings']['settings.1.option.2'] and type(result) == Fraction:
+				elif self.data['settings']['settings.1.option.3']:
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
 				if self.data['settings']['settings.2.option']:
@@ -219,7 +218,6 @@ class WaiX(QMainWindow):
 			self.newWin.close()
 		except AttributeError:
 			pass
-		self.data = get_data()
 
 		self.data['isResult'] = self.isResult
 		self.formula_data['formula'] = self.formula
@@ -281,7 +279,7 @@ class WaiX(QMainWindow):
 			self.symbol('-')
 		elif e.key() == Qt.Key_Asterisk:
 			self.symbol('×')
-		elif e.key() == Qt.Key_Colon:
+		elif e.key() == Qt.Key_Colon or (e.key() == Qt.Key_Slash and not self.data['settings']['settings.1.option.1']):
 			self.symbol('÷')
 		elif e.key() == Qt.Key_ParenLeft or e.key() == Qt.Key_BracketLeft:
 			self.bracket(0)
@@ -299,7 +297,7 @@ class WaiX(QMainWindow):
 			if self.formula[-1] not in symbol_lst and '.' not in self.formula[-1]:
 				self.formula_update(self.formula[-1] + '.')
 				self.text_update()
-		elif e.key() == Qt.Key_Slash:
+		elif e.key() == Qt.Key_Slash and self.data['settings']['settings.1.option.1']:
 			if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
 				self.formula_update(self.formula[-1] + '/')
 				self.text_update()
@@ -405,7 +403,6 @@ class WaiX(QMainWindow):
 		self.newWin.show()
 
 	def openHistoryWin(self):
-		self.data = get_data()
 		history = get_history()
 
 		if len(history) != 0:
@@ -437,8 +434,12 @@ class WaiX(QMainWindow):
 
 	def openSettingsWin(self):
 		self.newWin = SettingsWin()
-		self.newWin.signal.connect(self.language_update)
+		self.newWin.language_signal.connect(self.language_update)
+		self.newWin.options_signal.connect(self.options_update)
 		self.newWin.show()
+
+	def options_update(self):
+		self.data = get_data()
 
 	def paste(self):
 		data: str = paste()
