@@ -32,8 +32,10 @@ def get_data() -> dict[Union[dict[str], str]]:
 			'settings.1.option.2': False,
 			'settings.1.option.3': False,
 			'settings.2.option': True,
-			'language': 'en_us'
 		},
+		'language': 'en_us',
+		'font': 'Segoe UI',
+		'qss_code': '',
 		'isResult': False,
 	}
 
@@ -98,13 +100,16 @@ def get_trans() -> dict[str]:
 	获取翻译文件
 	"""
 	with open('data/data.json', 'r+', encoding='utf-8') as f:
-		language = load(f)['settings']['language']
+		language = load(f)['language']
 
 	with open(f'resource/lang/{language}.json', 'r+', encoding='utf-8') as f:
 		return load(f)
 
 
 def get_trans_entry(trans: dict, text: str) -> dict:
+	"""
+	通过键名查找多个条目
+	"""
 	result = {}
 
 	for i in trans.keys():
@@ -116,6 +121,9 @@ def get_trans_entry(trans: dict, text: str) -> dict:
 
 
 def get_trans_info() -> dict[str]:
+	"""
+	遍历lang文件夹、获取json文件信息
+	"""
 	data = {}
 	for i in sorted(listdir('resource/lang')):
 		i = i[:-5]
