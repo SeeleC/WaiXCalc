@@ -22,14 +22,15 @@ class SettingsWin(QTabWidget):
 			for i, j in get_trans_entry(self.trans, f'settings.{_}').items()
 		}
 		self.languages = get_trans_info()
-		self.checkboxes = {}
-		self.radiobuttons = {}
+		self.checkboxes: dict[str: QCheckBox] = {}
+		self.radiobuttons: dict[str: QRadioButton] = {}
 		self.autoCheck = False
-		self.changeLang = False
+		self.changeLanguage = False
 
 		self.initUI()
 
-	signal = pyqtSignal(bool)
+	language_signal = pyqtSignal(bool)
+	options_signal = pyqtSignal(bool)
 
 	def initUI(self):
 		lyt = self.calculateTab()
@@ -71,7 +72,7 @@ class SettingsWin(QTabWidget):
 		self.addBottomButton(outer, 0)
 		widget.setLayout(outer)
 
-		self.updateStatus()
+		self.update_status()
 		self.addTab(widget, name)
 
 	def calculateTab(self) -> QVBoxLayout:
@@ -114,11 +115,11 @@ class SettingsWin(QTabWidget):
 			self.apply.setEnabled(True)
 
 			self.check[self.names[sender.text()]] = sender.isChecked()
-			if sender.text() == self.trans['settings.1.option.1']:
+			if sender.text() == self.trans['settings.1.option.2']:
+				self.check['settings.1.option.3'] = False
+			elif sender.text() == self.trans['settings.1.option.3']:
 				self.check['settings.1.option.2'] = False
-			elif sender.text() == self.trans['settings.1.option.2']:
-				self.check['settings.1.option.1'] = False
-			self.updateStatus()
+			self.update_status()
 
 	def addBottomButton(self, layout: QVBoxLayout, mode: int = 0):
 		hbox = QHBoxLayout()
@@ -149,31 +150,35 @@ class SettingsWin(QTabWidget):
 
 	def clicked(self):
 		sender = self.sender()
-		if sender.text() == self.trans['button.ok'] or sender.text() == self.trans['button.cancel'] or\
-			sender.text() == self.trans['button.apply']:
-			if sender.text() == self.trans['button.ok'] or sender.text() == self.trans['button.apply']:
+		if sender.text() in [self.trans['button.ok'], self.trans['button.cancel'], self.trans['button.apply']]:
+			if sender.text() in [self.trans['button.ok'], self.trans['button.apply']]:
 				for i in self.check:
-					if i[0] == '_':
-						self.data['settings'][i] = self.check[i]
+					self.data['settings'][i] = self.check[i]
 				for i in self.radiobuttons.values():
 					if i.isChecked() and self.languages[i.text()] != self.data['settings']['language']:
 						self.data['settings']['language'] = self.languages[i.text()]
 						save('data/data.json', self.data)
-						self.signal.emit(True)
+						self.language_signal.emit(True)
 						break
 				self.apply.setEnabled(False)
 				save('data/data.json', self.data)
-			if sender.text() == self.trans['button.ok'] or sender.text() == self.trans['button.cancel']:
+				self.options_signal.emit(True)
+			if sender.text() in [self.trans['button.ok'], self.trans['button.cancel']]:
 				self.close()
 
-	def updateStatus(self):
+	def update_status(self):
 		self.autoCheck = True
 		bools = [self.check[i] for i in self.check]
-		for bl, name in zip(bools, self.check.keys()):
+		for bool, name in zip(bools, self.check.keys()):
 			try:
-				self.checkboxes[name].setChecked(bl)
+				self.checkboxes[name].setChecked(bool)
 			except KeyError:
 				pass
+
+			if name == 'settings.1.option.1':
+				for i in range(2):
+					self.checkboxes[f'settings.1.option.{i + 2}'].setEnabled(bool)
+
 		self.autoCheck = False
 
 	def clear_history(self):
