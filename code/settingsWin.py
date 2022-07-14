@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import (
-	QTabWidget, QWidget, QVBoxLayout, QRadioButton, QCheckBox, QHBoxLayout, QScrollArea, QPushButton, QMessageBox
+	QTabWidget, QWidget, QVBoxLayout, QRadioButton, QCheckBox, QHBoxLayout, QScrollArea, QPushButton, QMessageBox,
+	QLabel, QLineEdit, QComboBox
 )
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QFontDatabase
 from PyQt5.QtCore import Qt, pyqtSignal
 
 from settings import font
@@ -26,15 +27,19 @@ class SettingsWin(QTabWidget):
 		self.radiobuttons: dict[str: QRadioButton] = {}
 		self.autoCheck = False
 		self.changeLanguage = False
+		self.changedFont = ''
 
 		self.initUI()
 
 	language_signal = pyqtSignal(bool)
+	font_signal = pyqtSignal(bool)
 	options_signal = pyqtSignal(bool)
 
 	def initUI(self):
 		lyt = self.calculateTab()
 		self.addNewTab(lyt, self.trans['settings.1.title'])
+		lyt = self.styleTab()
+		self.addNewTab(lyt, self.trans['settings.4.title'])
 		lyt = self.historyTab()
 		self.addNewTab(lyt, self.trans['settings.2.title'])
 		lyt = self.languageTab()
@@ -103,8 +108,38 @@ class SettingsWin(QTabWidget):
 			self.radiobuttons[id] = QRadioButton(name)
 			l = self.addEntry(l, self.radiobuttons[id])
 
-			if id == self.data['settings']['language']:
+			if id == self.data['language']:
 				self.radiobuttons[id].setChecked(True)
+
+		return l
+
+	def styleTab(self) -> QVBoxLayout:
+		l = QVBoxLayout()
+
+		hbox = QHBoxLayout()
+
+		cblbl = QLabel(self.trans['settings.4.text.1'])
+		cblbl.setFont(font)
+		hbox.addWidget(cblbl)
+
+		self.cb = QComboBox()
+		database = QFontDatabase()
+		self.cb.addItems(database.families())
+		self.cb.setCurrentText(self.data['font'])
+		hbox.addWidget(self.cb)
+
+		hbox.addStretch(1)
+
+		l.addLayout(hbox)
+
+		lbl = QLabel(self.trans['settings.4.text.2'])
+		lbl.setFont(font)
+		l.addWidget(lbl)
+
+		self.le = QLineEdit()
+		self.le.setFont(font)
+		self.le.setText(self.data['qss_code'])
+		l.addWidget(self.le)
 
 		return l
 
@@ -152,17 +187,30 @@ class SettingsWin(QTabWidget):
 		sender = self.sender()
 		if sender.text() in [self.trans['button.ok'], self.trans['button.cancel'], self.trans['button.apply']]:
 			if sender.text() in [self.trans['button.ok'], self.trans['button.apply']]:
+
 				for i in self.check:
 					self.data['settings'][i] = self.check[i]
+
 				for i in self.radiobuttons.values():
-					if i.isChecked() and self.languages[i.text()] != self.data['settings']['language']:
-						self.data['settings']['language'] = self.languages[i.text()]
+					if i.isChecked() and self.languages[i.text()] != self.data['language']:
+						self.data['language'] = self.languages[i.text()]
 						save('data/data.json', self.data)
 						self.language_signal.emit(True)
 						break
+
+				if self.cb.currentText() != self.data['font']:
+					self.data['font'] = self.cb.currentText()
+					save('data/data.json', self.data)
+					self.font_signal.emit(True)
+
+				if self.le.text() != self.data['qss_code']:
+					self.data['qss_code'] = self.le.text()
+					QMessageBox.information(self, self.trans['window.hint.title'], self.trans['settings.4.hint'], QMessageBox.Ok)
+
 				self.apply.setEnabled(False)
 				save('data/data.json', self.data)
 				self.options_signal.emit(True)
+
 			if sender.text() in [self.trans['button.ok'], self.trans['button.cancel']]:
 				self.close()
 
