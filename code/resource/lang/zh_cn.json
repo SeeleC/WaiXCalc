@@ -44,8 +44,9 @@
   "window.hint.title": "提示",
 
   "settings.1.title": "计算",
-  "settings.1.option.1": "仅显示分数结果",
-  "settings.1.option.2": "仅显示小数结果",
+  "settings.1.option.1": "启用分数计算",
+  "settings.1.option.2": "仅显示分数结果",
+  "settings.1.option.3": "仅显示小数结果",
 
   "settings.2.title": "历史",
   "settings.2.option": "启用历史记录",

@@ -34,7 +34,7 @@
 
   "window.main.title": "WaiXCalc",
   "window.settings.title": "Settings",
-  "window.open.title": "Opened Formula",
+  "window.open.title": "Open",
   "window.selectFile.title": "File",
   "window.history.title": "History",
   "window.help.title": "Help",
@@ -44,12 +44,13 @@
   "window.hint.title": "Hint",
 
   "settings.1.title": "Calculate",
-  "settings.1.option.1": "Only fraction result",
-  "settings.1.option.2": "Only decimal result",
+  "settings.1.option.1": "Enable Fraction Calculate",
+  "settings.1.option.2": "Only Fraction Result",
+  "settings.1.option.3": "Only Decimal Result",
 
   "settings.2.title": "History",
-  "settings.2.option": "Enable record history",
-  "settings.2.button": "Clear history",
+  "settings.2.option": "Enable Record History",
+  "settings.2.button": "Clear History",
   "settings.2.hint.1": "Are you sure?",
   "settings.2.hint.2": "Cleared!",
 
