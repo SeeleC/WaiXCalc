@@ -28,8 +28,9 @@ def get_data() -> dict[Union[dict[str], str]]:
 	"""
 	rdata = {
 		'settings': {
-			'settings.1.option.1': False,
+			'settings.1.option.1': True,
 			'settings.1.option.2': False,
+			'settings.1.option.3': False,
 			'settings.2.option': True,
 			'language': 'en_us'
 		},
