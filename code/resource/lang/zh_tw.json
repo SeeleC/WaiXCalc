@@ -56,6 +56,11 @@
 
   "settings.3.title": "多語言",
 
+  "settings.4.title": "外觀",
+  "settings.4.text.1": "字體: ",
+  "settings.4.text.2": "全局 QSS 代碼:",
+  "settings.4.hint": "需要重啓以應用 QSS 的修改",
+
   "text.open.page": "%d / %d 頁",
   "button.open.copyCurrent": "複製當前",
   "button.open.copyAll": "複製全部",
