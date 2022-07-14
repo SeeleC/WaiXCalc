@@ -10,17 +10,13 @@ num_widthes = {
 }  # number weight / 640
 
 font = QFont()
-font.setFamily('Microsoft Yahei UI')
 font.setPointSize(8)
 
 mwFont = QFont()
-mwFont.setFamily('Microsoft Yahei UI')
 mwFont.setPointSize(24)
 
 textFont = QFont()
-textFont.setFamily('Microsoft Yahei UI')
 textFont.setPointSize(10)
 
 # tipFont = QFont()
-# tipFont.setFamily('Microsoft Yahei UI')
 # tipFont.setPointSize(4)
