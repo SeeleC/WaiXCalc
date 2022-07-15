@@ -1,13 +1,12 @@
-from os import listdir
-
 from PyQt5.QtWidgets import QLabel
 from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from re import match
 from typing import Union
 from json import load, dump
+from os import mkdir, listdir
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widthes, bracket_lst
+from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widthes, bracket_lst, default_data, default_formula_data
 
 
 def compatible(d, rd) -> dict[str, dict]:
@@ -26,54 +25,37 @@ def get_data() -> dict[Union[dict[str], str]]:
 	"""
 	获取data.json的内容，具有向下兼容性
 	"""
-	rdata = {
-		'settings': {
-			'settings.1.option.1': True,
-			'settings.1.option.2': False,
-			'settings.1.option.3': False,
-			'settings.2.option': True,
-		},
-		'language': 'en_us',
-		'font': 'Segoe UI',
-		'qss_code': '',
-		'isResult': False,
-	}
-
 	try:
 		with open('data/data.json', 'r+', encoding='utf-8') as f:
 			data = load(f)
 	except FileNotFoundError:
-		data = rdata
+		try:
+			listdir('data')
+		except FileNotFoundError:
+			mkdir('data')
+		data = default_data
 	else:
 		try:
 			data['settings'] = data['settings']
 		except KeyError:
 			data['settings'] = data.pop('options')
 
-	if data != rdata:
-		data = compatible(data, rdata)
+	if data != default_data:
+		data = compatible(data, default_data)
 
 	save('data/data.json', data)
 	return data
 
 
 def get_formula_data() -> dict[str, list]:
-	formula_data = {
-		'formula': ['0'],
-		'calcFormula': ['0'],
-		'calcFormulaStep': [],
-		'frontBracketIndex': [0],
-		'frontBracketIndexStep': []
-	}
-
 	try:
 		with open('data/formula_data.json', 'r+', encoding='utf-8') as f:
 			data = load(f)
 	except FileNotFoundError:
-		data = formula_data
+		data = default_formula_data
 
-	if data != formula_data:
-		data = compatible(data, formula_data)
+	if data != default_formula_data:
+		data = compatible(data, default_formula_data)
 
 	save('data/formula_data.json', data)
 	return data

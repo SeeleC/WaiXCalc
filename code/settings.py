@@ -9,6 +9,28 @@ num_widthes = {
 	'.': 20, '/': 20, 'E': 30.5
 }  # number weight / 640
 
+default_data = {
+	'settings': {
+		'settings.1.option.1': True,
+		'settings.1.option.2': False,
+		'settings.1.option.3': False,
+		'settings.2.option': True,
+	},
+	'language': 'en_us',
+	'font': 'Segoe UI',
+	'qss_code': '',
+	'window_title': 'WaiXCalc',
+	'isResult': False,
+}
+
+default_formula_data = {
+	'formula': ['0'],
+	'calcFormula': ['0'],
+	'calcFormulaStep': [],
+	'frontBracketIndex': [0],
+	'frontBracketIndexStep': []
+}
+
 font = QFont()
 font.setPointSize(8)
 
