@@ -70,8 +70,7 @@ class WaiX(QMainWindow):
 			[
 				self.trans['option.fileMenu.1'],
 				self.trans['option.fileMenu.2'],
-				self.trans['option.fileMenu.3'],
-				self.trans['option.fileMenu.4']
+				self.trans['option.fileMenu.3']
 			],
 			[
 				self.trans['option.editMenu.1'],
@@ -87,7 +86,7 @@ class WaiX(QMainWindow):
 			],
 		]
 		menuShortcuts = [
-						['Ctrl+N', 'Ctrl+O', 'Ctrl+S', 'Ctrl+Q'],
+						['Ctrl+O', 'Ctrl+S', 'Ctrl+Q', ''],
 						['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Del'],
 						['', 'Ctrl+H', 'Ctrl+F', 'Ctrl+A']
 		]
@@ -96,7 +95,6 @@ class WaiX(QMainWindow):
 				self.trans['statusTip.fileMenu.1'],
 				self.trans['statusTip.fileMenu.2'],
 				self.trans['statusTip.fileMenu.3'],
-				self.trans['statusTip.fileMenu.4'],
 			],
 			[
 				self.trans['statusTip.editMenu.1'],
@@ -112,7 +110,7 @@ class WaiX(QMainWindow):
 			],
 		]
 		menufuncs = [
-					[self.openFormulaWin, self.openNewFormulaWin, self.openSettingsWin, self.close],
+					[self.openNewFormulaWin, self.openSettingsWin, self.close],
 					[self.cut, self.copy, self.paste, self.delete],
 					[self.openHelpWin, self.openHistoryWin, self.whole_formula, self.about]
 		]
@@ -353,7 +351,6 @@ class WaiX(QMainWindow):
 				self.trans['option.fileMenu.1'],
 				self.trans['option.fileMenu.2'],
 				self.trans['option.fileMenu.3'],
-				self.trans['option.fileMenu.4']
 			],
 			[
 				self.trans['option.editMenu.1'],
@@ -373,7 +370,6 @@ class WaiX(QMainWindow):
 				self.trans['statusTip.fileMenu.1'],
 				self.trans['statusTip.fileMenu.2'],
 				self.trans['statusTip.fileMenu.3'],
-				self.trans['statusTip.fileMenu.4'],
 			],
 			[
 				self.trans['statusTip.editMenu.1'],
@@ -414,10 +410,6 @@ class WaiX(QMainWindow):
 				self.isResult = False
 				self.formula_update(num)
 			self.text_update()
-
-	def openFormulaWin(self):
-		self.newWin = CreateFormulaWin(ex)
-		self.newWin.show()
 
 	def openHelpWin(self):
 		self.newWin = HelpWin()
