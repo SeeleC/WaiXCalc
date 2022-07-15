@@ -21,7 +21,7 @@ from settings import *
 # Python 3.9.12
 # PyQt 5.15.6
 
-version = '1.8.0'
+version = '1.8.1'
 
 
 class WaiX(QMainWindow):
