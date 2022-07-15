@@ -22,7 +22,6 @@ from settings import *
 # Python 3.9.12
 # PyQt 5.15.6
 
-waix = 'WaiXCalc'
 version = '1.8.0'
 
 
@@ -141,7 +140,7 @@ class WaiX(QMainWindow):
 				self.action_lst.append(action)
 
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
-		self.setWindowTitle(waix)
+		self.setWindowTitle(self.data['window_title'])
 		self.resize(672, 0)
 		self.setMaximumSize(self.width(), self.height())
 
@@ -156,7 +155,7 @@ class WaiX(QMainWindow):
 		QMessageBox.about(
 			self,
 			self.trans['window.about.title'],
-			f'{waix}\nBy Github@WaiZhong\nVersion {version}\n'
+			f'WaiXCalc\nBy Github@WaiZhong\nVersion {version}\n'
 		)
 
 	def bracket(self, l_idx):
@@ -298,7 +297,7 @@ class WaiX(QMainWindow):
 			self.symbol('-')
 		elif e.key() == Qt.Key_Asterisk:
 			self.symbol('×')
-		elif e.key() == Qt.Key_Colon or (e.key() == Qt.Key_Slash and not self.data['settings']['settings.1.option.1']):
+		elif e.key() == Qt.Key_Colon:
 			self.symbol('÷')
 		elif e.key() == Qt.Key_ParenLeft or e.key() == Qt.Key_BracketLeft:
 			self.bracket(0)
@@ -316,12 +315,15 @@ class WaiX(QMainWindow):
 			if self.formula[-1] not in symbol_lst and '.' not in self.formula[-1]:
 				self.formula_update(self.formula[-1] + '.')
 				self.text_update()
-		elif e.key() == Qt.Key_Slash and self.data['settings']['settings.1.option.1']:
-			if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
-				self.formula_update(self.formula[-1] + '/')
-				self.text_update()
-			elif self.formula[-1][-1] == '/':
-				self.formula_update(self.formula[-1][:-1])
+		elif e.key() == Qt.Key_Slash:
+			if self.data['settings']['settings.1.option.1']:
+				if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
+					self.formula_update(self.formula[-1] + '/')
+					self.text_update()
+				elif self.formula[-1][-1] == '/':
+					self.formula_update(self.formula[-1][:-1])
+					self.symbol('÷')
+			else:
 				self.symbol('÷')
 		elif e.key() == Qt.Key_1 or e.key() == Qt.Key_Launch1:
 			self.number('1')
@@ -456,6 +458,7 @@ class WaiX(QMainWindow):
 		self.newWin.language_signal.connect(self.language_update)
 		self.newWin.options_signal.connect(self.options_update)
 		self.newWin.font_signal.connect(self.font_update)
+		self.newWin.title_signal.connect(self.title_update)
 		self.newWin.show()
 
 	def options_update(self):
@@ -492,6 +495,10 @@ class WaiX(QMainWindow):
 
 	def text_update(self):
 		text_update(self.formula[-1], self.textEdit)
+
+	def title_update(self):
+		self.data = get_data()
+		self.setWindowTitle(self.data['window_title'])
 
 	def whole_formula(self):
 		p_formula = [i + ' ' for i in self.formula]
