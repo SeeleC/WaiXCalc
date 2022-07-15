@@ -27,7 +27,7 @@ default_formula_data = {
 	'formula': ['0'],
 	'calcFormula': ['0'],
 	'calcFormulaStep': [],
-	'frontBracketIndex': [0],
+	'frontBracketIndex': [],
 	'frontBracketIndexStep': []
 }
 
