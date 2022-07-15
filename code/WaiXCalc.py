@@ -14,7 +14,7 @@ from functions import *
 from settings import *
 
 # WaiXCalc (WaiX Calculator)
-# Version 1.8.0 (4.10.0)
+# Version 1.8.1 (4.10.1)
 # By WaiZhong
 # MIT License
 # Source https://github.com/WaiZhong/WaiXCalc
