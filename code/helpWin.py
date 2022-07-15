@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTex
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
-from settings import font
+from settings import font, textFont
 from functions import get_trans
 
 
@@ -19,7 +19,7 @@ class HelpWin(QWidget):
 		layout = QVBoxLayout()
 
 		text = QTextBrowser()
-		text.setFont(font)
+		text.setFont(textFont)
 		text.setHtml(self.trans['text.help.content'])
 		text.setOpenExternalLinks(True)
 
