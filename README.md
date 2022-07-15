@@ -1,5 +1,7 @@
 # WaiXCalc
 
+[![OSCS Status](https://www.oscs1024.com/platform/badge/WaiZhong/WaiXCalc.svg?size=small)](https://www.oscs1024.com/project/WaiZhong/WaiXCalc?ref=badge_small)
+
 [WaiXCalc](https://github.com/WaiZhong/WaiXCalc) (WaiX Calculator) 是一个使用PyQt5开发的计算器，它支持分数四则运算、算式解析等功能。
 
 如仅需该项目的函数，请前往 [core](https://github.com/WaiZhong/WaiXCalc/tree/core) 分支。
