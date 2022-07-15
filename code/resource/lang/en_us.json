@@ -58,7 +58,8 @@
 
   "settings.4.title": "Style",
   "settings.4.text.1": "Font: ",
-  "settings.4.text.2": "Global QSS Code:",
+  "settings.4.text.2": "Global QSS Code",
+  "settings.4.text.3": "Window Title",
   "settings.4.hint": "Reboot to Enable Modifications",
 
   "text.open.page": "Page %d / %d",

@@ -58,7 +58,8 @@
 
   "settings.4.title": "外观",
   "settings.4.text.1": "字体: ",
-  "settings.4.text.2": "全局 QSS 代码:",
+  "settings.4.text.2": "全局 QSS 代码",
+  "settings.4.text.3": "窗口标题",
   "settings.4.hint": "重启以应用 QSS 修改",
 
   "text.open.page": "%d / %d 页",

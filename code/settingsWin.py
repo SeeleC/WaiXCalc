@@ -34,6 +34,7 @@ class SettingsWin(QTabWidget):
 	language_signal = pyqtSignal(bool)
 	font_signal = pyqtSignal(bool)
 	options_signal = pyqtSignal(bool)
+	title_signal = pyqtSignal(bool)
 
 	def initUI(self):
 		lyt = self.calculateTab()
@@ -53,17 +54,33 @@ class SettingsWin(QTabWidget):
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
 
-	def addEntry(self, layout: QVBoxLayout, button: QCheckBox) -> QVBoxLayout:
-		button.setFont(font)
-		if isinstance(button, QCheckBox):
-			button.stateChanged.connect(self.checked)
+	def addOptionEntry(self, layout: QVBoxLayout, widget: QCheckBox) -> QVBoxLayout:
+		widget.setFont(font)
+		if isinstance(widget, QCheckBox):
+			widget.stateChanged.connect(self.checked)
 		else:
-			button.clicked.connect(self.clicked)
+			widget.clicked.connect(self.clicked)
 
 		hbox = QHBoxLayout()
-		hbox.addWidget(button)
+		hbox.addWidget(widget)
 		hbox.addStretch(1)
 		layout.addLayout(hbox)
+		return layout
+
+	def addEnterEntry(self, layout: QVBoxLayout, title: str, widget: QLineEdit, text: str = '') -> QVBoxLayout:
+		widget.setFont(font)
+		widget.setText(text)
+
+		hbox = QHBoxLayout()
+
+		title_label = QLabel(title + ':')
+		title_label.setFont(font)
+		hbox.addWidget(title_label)
+		hbox.addStretch(1)
+
+		layout.addLayout(hbox)
+		layout.addWidget(widget)
+
 		return layout
 
 	def addNewTab(self, inner: QVBoxLayout, name: str):
@@ -84,7 +101,7 @@ class SettingsWin(QTabWidget):
 		l = QVBoxLayout()
 		for i, j in get_trans_entry(self.trans, 'settings.1.option').items():
 			self.checkboxes[i] = QCheckBox(j)
-			l = self.addEntry(l, self.checkboxes[i])
+			l = self.addOptionEntry(l, self.checkboxes[i])
 		return l
 
 	def historyTab(self) -> QVBoxLayout:
@@ -93,7 +110,7 @@ class SettingsWin(QTabWidget):
 		# 	self.checkboxes[i] = QCheckBox(j)
 		# 	l = self.addEntry(l, self.checkboxes[i])
 		self.checkboxes['settings.2.option'] = QCheckBox(self.trans['settings.2.option'])
-		l = self.addEntry(l, self.checkboxes['settings.2.option'])
+		l = self.addOptionEntry(l, self.checkboxes['settings.2.option'])
 
 		btn = QPushButton(self.trans['settings.2.button'])
 		btn.setFont(font)
@@ -106,7 +123,7 @@ class SettingsWin(QTabWidget):
 
 		for name, id in get_trans_info().items():
 			self.radiobuttons[id] = QRadioButton(name)
-			l = self.addEntry(l, self.radiobuttons[id])
+			l = self.addOptionEntry(l, self.radiobuttons[id])
 
 			if id == self.data['language']:
 				self.radiobuttons[id].setChecked(True)
@@ -132,14 +149,11 @@ class SettingsWin(QTabWidget):
 
 		l.addLayout(hbox)
 
-		lbl = QLabel(self.trans['settings.4.text.2'])
-		lbl.setFont(font)
-		l.addWidget(lbl)
+		self.window_title = QLineEdit()
+		self.addEnterEntry(l, self.trans['settings.4.text.3'], self.window_title, self.data['window_title'])
 
-		self.le = QLineEdit()
-		self.le.setFont(font)
-		self.le.setText(self.data['qss_code'])
-		l.addWidget(self.le)
+		self.qss_code = QLineEdit()
+		self.addEnterEntry(l, self.trans['settings.4.text.2'], self.qss_code, self.data['qss_code'])
 
 		return l
 
@@ -203,9 +217,14 @@ class SettingsWin(QTabWidget):
 					save('data/data.json', self.data)
 					self.font_signal.emit(True)
 
-				if self.le.text() != self.data['qss_code']:
-					self.data['qss_code'] = self.le.text()
+				if self.qss_code.text() != self.data['qss_code']:
+					self.data['qss_code'] = self.qss_code.text()
 					QMessageBox.information(self, self.trans['window.hint.title'], self.trans['settings.4.hint'], QMessageBox.Ok)
+
+				if self.window_title.text() != self.data['window_title']:
+					self.data['window_title'] = self.window_title.text()
+					save('data/data.json', self.data)
+					self.title_signal.emit(True)
 
 				self.apply.setEnabled(False)
 				save('data/data.json', self.data)
