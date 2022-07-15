@@ -6,7 +6,6 @@ from PyQt5.QtCore import Qt
 from sys import argv, exit
 from pyperclip import paste, copy
 
-from createFormulaWin import CreateFormulaWin
 from historyWin import HistoryWin
 from settingsWin import SettingsWin
 from openedFormulaWin import OpenedFormulaWin
@@ -122,7 +121,7 @@ class WaiX(QMainWindow):
 
 				if name == '':
 					continue
-				elif name == self.trans['statusTip.fileMenu.3'] or name == self.trans['statusTip.fileMenu.4'] or\
+				elif name == self.trans['statusTip.fileMenu.2'] or name == self.trans['statusTip.fileMenu.3'] or\
 					name == self.trans['statusTip.helpMenu.2'] or name == self.trans['statusTip.helpMenu.4']:
 					menu.addSeparator()
 

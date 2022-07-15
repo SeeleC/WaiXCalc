@@ -6,9 +6,9 @@
   "option.fileMenu.1": "打开..(&O)",
   "option.fileMenu.2": "设置..(&S)",
   "option.fileMenu.3": "退出(&X)",
-  "statusTip.fileMenu.2": "打开包含算式的文本文件",
-  "statusTip.fileMenu.3": "编辑应用设置",
-  "statusTip.fileMenu.4": "退出WaiXCalc",
+  "statusTip.fileMenu.1": "打开包含算式的文本文件",
+  "statusTip.fileMenu.2": "编辑应用设置",
+  "statusTip.fileMenu.3": "退出WaiXCalc",
 
   "menubar.editMenu.title": "编辑(&E)",
   "option.editMenu.1": "剪切(&T)",

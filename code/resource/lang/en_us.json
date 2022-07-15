@@ -3,12 +3,12 @@
   "language.id": "en_us",
 
   "menubar.fileMenu.title": "&File",
-  "option.fileMenu.2": "&Open",
-  "option.fileMenu.3": "&Settings",
-  "option.fileMenu.4": "E&xit",
-  "statusTip.fileMenu.2": "Open a text file and calculate",
-  "statusTip.fileMenu.3": "Edit application settings",
-  "statusTip.fileMenu.4": "Quit calculator",
+  "option.fileMenu.1": "&Open",
+  "option.fileMenu.2": "&Settings",
+  "option.fileMenu.3": "E&xit",
+  "statusTip.fileMenu.1": "Open a text file and calculate",
+  "statusTip.fileMenu.2": "Edit application settings",
+  "statusTip.fileMenu.3": "Quit calculator",
 
   "menubar.editMenu.title": "&Edit",
   "option.editMenu.1": "Cu&t",
@@ -75,7 +75,7 @@
 
   "text.history.disabled": "Record history is disabled",
 
-  "text.help.content": "1. Don't use full-width char when creating formula.<br>2. Use `:` or `//` to replace `/` when creating formula.<br>3. If you have other questions, please go to <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\">Issues<\\a>.<br>",
+  "text.help.content": "1. Don't use full-width char when creating formula.<br>2. Use `:` or `//` to replace `/` when creating formula.<br>3. If you have any other questions, go and <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/new\">create a new issue<\\a>.<br>",
 
   "text.main.error": "Error",
 
