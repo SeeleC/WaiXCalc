@@ -80,7 +80,7 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
 		for i in f:
 			if type(i) == list:
 				return fc(i)
-			elif match('^\d+/\d+$', i):
+			if match('^\d+/\d+$', i):
 				break
 		else:
 			return False
