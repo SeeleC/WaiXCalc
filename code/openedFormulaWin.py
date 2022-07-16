@@ -1,11 +1,10 @@
 from PyQt5.QtWidgets import (
-	QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QGridLayout, QTextEdit, QMessageBox, QFileDialog
+	QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QGridLayout, QTextEdit, QMessageBox, QFileDialog, QApplication
 	)
 from PyQt5.QtGui import QIcon
 
 from functions import calculate, get_trans
 from settings import font, textFont
-from pyperclip import copy
 
 
 class OpenedFormulaWin(QWidget):
@@ -15,6 +14,8 @@ class OpenedFormulaWin(QWidget):
 		self.formulas = formulas
 		self.results = []
 		self.trans = get_trans()
+
+		self.clipboard = QApplication.clipboard()
 		
 		for i in formulas:
 			try:
@@ -132,13 +133,15 @@ class OpenedFormulaWin(QWidget):
 
 	def copy(self):
 		content = ''.join(self.formulas[self.now_page - 1]) + ' = ' + str(self.results[self.now_page - 1])
-		copy(content.replace(' ', ''))
+		self.clipboard.setText(content.replace(' ', ''))
 		QMessageBox.information(
 			self, self.trans['window.hint.title'], self.trans['hint.open.copyCurrent']
 		)
 
 	def copy_all(self):
-		copy(''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))]))
+		self.clipboard.setText(
+			''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
+		)
 		QMessageBox.information(
 			self, self.trans['window.hint.title'], self.trans['hint.open.copyAll']
 		)

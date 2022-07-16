@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
 from PyQt5.QtCore import Qt
 from sys import argv, exit
-from pyperclip import paste, copy
 
 from historyWin import HistoryWin
 from settingsWin import SettingsWin
@@ -38,6 +37,8 @@ class WaiX(QMainWindow):
 		self.b_idx: list[int] = self.formula_data['frontBracketIndex']
 		self.calc_f_step: list = self.formula_data['calcFormulaStep']
 		self.b_idx_step: list = self.formula_data['frontBracketIndexStep']
+
+		self.clipboard = QApplication.clipboard()
 
 		font.setFamily(self.data['font'])
 		mwFont.setFamily(self.data['font'])
@@ -235,10 +236,10 @@ class WaiX(QMainWindow):
 		save('data/formula_data.json', self.formula_data)
 
 	def copy(self):
-		copy(''.join([i for i in self.formula]).strip())
+		self.clipboard.setText(''.join([i for i in self.formula]).strip())
 
 	def cut(self):
-		copy(''.join([i for i in self.formula]).strip())
+		self.clipboard.setText(''.join([i for i in self.formula]).strip())
 		self.clear_edit()
 
 	def delete(self):
@@ -456,14 +457,14 @@ class WaiX(QMainWindow):
 		self.data = get_data()
 
 	def paste(self):
-		data: str = paste()
-		if isformula(get_formula(data)):
+		text: str = self.clipboard.text()
+		if isformula(get_formula(text)):
 			if self.formula[-1] in symbol_lst or self.formula[-1] in bracket_lst[0]:
-				self.formula += get_formula(data)
-				self.calc_formula += get_formula(data)
+				self.formula += get_formula(text)
+				self.calc_formula += get_formula(text)
 			else:
-				self.formula = get_formula(data)
-				self.calc_formula = get_formula(data)
+				self.formula = get_formula(text)
+				self.calc_formula = get_formula(text)
 			self.text_update()
 
 	def plusminus(self):
