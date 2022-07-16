@@ -155,7 +155,7 @@ def isformula(formula: list[str]) -> bool:
 				continue
 		else:
 			for j in formula[i]:
-				if (not j.isdigit() and j in symbol_turn) or symbol_in:
+				if j in symbol_turn or (symbol_in and not j.isdigit()):
 					break
 				elif j in symbol_lst_2:
 					symbol_in = True
@@ -210,9 +210,11 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
 		for i in f:
 			if type(i) == list:
 				return fc(i)
-			if match('^[0-9]+/[0-9]+$', i):
-				return True
+			if match('^\d+/\d+$', i):
+				break
+		else:
 			return False
+		return True
 
 	fraction_compute = fc(formula)
 
