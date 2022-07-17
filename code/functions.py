@@ -4,9 +4,9 @@ from fractions import Fraction
 from re import match
 from typing import Union
 from json import load, dump
-from os import mkdir, listdir
+from os import mkdir, listdir, remove
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widthes, bracket_lst, default_data, default_formula_data
+from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widthes, bracket_lst, default_options, default_data
 
 
 def compatible(d, rd) -> dict[str, dict]:
@@ -21,24 +21,54 @@ def compatible(d, rd) -> dict[str, dict]:
 	return d
 
 
-def get_data() -> dict[Union[dict[str], str]]:
+def get_options() -> dict[Union[dict[str], str]]:
 	"""
-	获取data.json的内容，具有向下兼容性
+	获取data/options.json的内容，具有向下兼容性
 	"""
 	try:
-		with open('data/data.json', 'r+', encoding='utf-8') as f:
+		with open('data/options.json', 'r', encoding='utf-8') as f:
 			data = load(f)
 	except FileNotFoundError:
 		try:
 			listdir('data')
 		except FileNotFoundError:
 			mkdir('data')
-		data = default_data
+		data = default_options
 	else:
+		if 'settings' in data.keys():
+			settings = data.pop('settings')
+			data = {**settings, **data}
+		elif 'options' in data.keys():
+			settings = data.pop('options')
+			data = {**settings, **data}
+
+	if data != default_options:
+		data = compatible(data, default_options)
+
+	save('data/options.json', data)
+	return data
+
+
+def get_data() -> dict[Union[str, list, bool]]:
+	"""
+	获取data/data.json的内容，具有向下兼容性
+	"""
+	try:
+		with open('data/formula_data.json', 'r', encoding='utf-8') as f:
+			data: dict = load(f)
+		remove('data/formula_data.json')
+	except FileNotFoundError:
 		try:
-			data['settings'] = data['settings']
-		except KeyError:
-			data['settings'] = data.pop('options')
+			with open('data/data.json', 'r', encoding='utf-8') as f:
+				data = load(f)
+		except FileNotFoundError:
+			data = default_data
+	else:
+		if 'settings' in data.keys():
+			options = data
+			data = {**default_data, 'isResult': options.pop('isResult')}
+			print(options)
+			save('data/options.json', options)
 
 	if data != default_data:
 		data = compatible(data, default_data)
@@ -47,29 +77,15 @@ def get_data() -> dict[Union[dict[str], str]]:
 	return data
 
 
-def get_formula_data() -> dict[str, list]:
-	try:
-		with open('data/formula_data.json', 'r+', encoding='utf-8') as f:
-			data = load(f)
-	except FileNotFoundError:
-		data = default_formula_data
-
-	if data != default_formula_data:
-		data = compatible(data, default_formula_data)
-
-	save('data/formula_data.json', data)
-	return data
-
-
 def get_history() -> list[str]:
 	try:
-		with open('data/history.json', 'r+', encoding='utf-8') as f:
+		with open('data/history.json', 'r', encoding='utf-8') as f:
 			hdata = load(f)
 	except FileNotFoundError:
-		data = get_data()
-		if 'history' in data.keys():
-			hdata = data.pop('history')
-			save('data/data.json', data)
+		options = get_options()
+		if 'history' in options.keys():
+			hdata = options.pop('history')
+			save('data/options.json', options)
 		else:
 			hdata = []
 
@@ -81,10 +97,10 @@ def get_trans() -> dict[str]:
 	"""
 	获取翻译文件
 	"""
-	with open('data/data.json', 'r+', encoding='utf-8') as f:
+	with open('data/options.json', 'r', encoding='utf-8') as f:
 		language = load(f)['language']
 
-	with open(f'resource/lang/{language}.json', 'r+', encoding='utf-8') as f:
+	with open(f'resource/lang/{language}.json', 'r', encoding='utf-8') as f:
 		return load(f)
 
 
@@ -120,7 +136,7 @@ def save(filename: str, data) -> None:
 	"""
 	快速保存
 	"""
-	with open(filename, 'w+', encoding='utf-8') as f:
+	with open(filename, 'w', encoding='utf-8') as f:
 		dump(data, f)
 
 

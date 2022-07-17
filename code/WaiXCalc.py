@@ -27,22 +27,22 @@ class WaiX(QMainWindow):
 	def __init__(self):
 		super().__init__()
 
-		self.data: dict = get_data()
+		self.options: dict = get_options()
 		self.trans: dict = get_trans()
-		self.formula_data = get_formula_data()
+		self.data = get_data()
 
 		self.isResult: bool = self.data['isResult']
-		self.formula: list = self.formula_data['formula']
-		self.calc_formula: list = self.formula_data['calcFormula']
-		self.b_idx: list[int] = self.formula_data['frontBracketIndex']
-		self.calc_f_step: list = self.formula_data['calcFormulaStep']
-		self.b_idx_step: list = self.formula_data['frontBracketIndexStep']
+		self.formula: list = self.data['formula']
+		self.calc_formula: list = self.data['calcFormula']
+		self.b_idx: list[int] = self.data['frontBracketIndex']
+		self.calc_f_step: list = self.data['calcFormulaStep']
+		self.b_idx_step: list = self.data['frontBracketIndexStep']
 
 		self.clipboard = QApplication.clipboard()
 
-		font.setFamily(self.data['font'])
-		mwFont.setFamily(self.data['font'])
-		textFont.setFamily(self.data['font'])
+		font.setFamily(self.options['font'])
+		mwFont.setFamily(self.options['font'])
+		textFont.setFamily(self.options['font'])
 
 		self.initUI()
 
@@ -138,12 +138,12 @@ class WaiX(QMainWindow):
 				self.action_lst.append(action)
 
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
-		self.setWindowTitle(self.data['window_title'])
+		self.setWindowTitle(self.options['window_title'])
 		self.resize(672, 0)
 		self.setMaximumSize(self.width(), self.height())
 
-		if self.data['qss_code']:
-			self.setStyleSheet(self.data['qss_code'])
+		if self.options['qss_code']:
+			self.setStyleSheet(self.options['qss_code'])
 
 		self.statusBar()
 		self.center()
@@ -192,12 +192,12 @@ class WaiX(QMainWindow):
 			else:
 				self.isResult = True
 
-				if self.data['settings']['settings.1.option.2']:
+				if self.options['settings']['settings.1.option.2']:
 					result = Fraction(result)
-				elif self.data['settings']['settings.1.option.3']:
+				elif self.options['settings']['settings.1.option.3']:
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
-				if self.data['settings']['settings.2.option']:
+				if self.options['settings']['settings.2.option']:
 					history = get_history()
 					history.append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
 					save('data/history.json', history)
@@ -227,13 +227,13 @@ class WaiX(QMainWindow):
 			pass
 
 		self.data['isResult'] = self.isResult
-		self.formula_data['formula'] = self.formula
-		self.formula_data['calcFormula'] = self.calc_formula
-		self.formula_data['frontBracketIndex'] = self.b_idx
-		self.formula_data['calcFormulaStep'] = self.calc_f_step
-		self.formula_data['frontBracketIndexStep'] = self.b_idx_step
+		self.data['formula'] = self.formula
+		self.data['calcFormula'] = self.calc_formula
+		self.data['frontBracketIndex'] = self.b_idx
+		self.data['calcFormulaStep'] = self.calc_f_step
+		self.data['frontBracketIndexStep'] = self.b_idx_step
+		save('data/options.json', self.options)
 		save('data/data.json', self.data)
-		save('data/formula_data.json', self.formula_data)
 
 	def copy(self):
 		self.clipboard.setText(''.join([i for i in self.formula]).strip())
@@ -251,11 +251,11 @@ class WaiX(QMainWindow):
 		self.text_update()
 
 	def font_update(self):
-		self.data = get_data()
+		self.options = get_options()
 
-		font.setFamily(self.data['font'])
-		mwFont.setFamily(self.data['font'])
-		textFont.setFamily(self.data['font'])
+		font.setFamily(self.options['font'])
+		mwFont.setFamily(self.options['font'])
+		textFont.setFamily(self.options['font'])
 
 		self.textEdit.setFont(mwFont)
 
@@ -314,7 +314,7 @@ class WaiX(QMainWindow):
 				self.formula_update(self.formula[-1] + '.')
 				self.text_update()
 		elif e.key() == Qt.Key_Slash:
-			if self.data['settings']['settings.1.option.1']:
+			if self.options['settings']['settings.1.option.1']:
 				if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
 					self.formula_update(self.formula[-1] + '/')
 					self.text_update()
@@ -454,7 +454,7 @@ class WaiX(QMainWindow):
 		self.newWin.show()
 
 	def options_update(self):
-		self.data = get_data()
+		self.options = get_options()
 
 	def paste(self):
 		text: str = self.clipboard.text()
@@ -489,8 +489,8 @@ class WaiX(QMainWindow):
 		text_update(self.formula[-1], self.textEdit)
 
 	def title_update(self):
-		self.data = get_data()
-		self.setWindowTitle(self.data['window_title'])
+		self.options = get_options()
+		self.setWindowTitle(self.options['window_title'])
 
 	def whole_formula(self):
 		p_formula = [i + ' ' for i in self.formula]
