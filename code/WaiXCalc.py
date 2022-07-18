@@ -192,12 +192,12 @@ class WaiX(QMainWindow):
 			else:
 				self.isResult = True
 
-				if self.options['settings']['settings.1.option.2']:
+				if self.options['settings.1.option.2']:
 					result = Fraction(result)
-				elif self.options['settings']['settings.1.option.3']:
+				elif self.options['settings.1.option.3']:
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
-				if self.options['settings']['settings.2.option']:
+				if self.options['settings.2.option']:
 					history = get_history()
 					history.append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
 					save('data/history.json', history)
