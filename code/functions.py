@@ -9,15 +9,12 @@ from os import mkdir, listdir, remove
 from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widthes, bracket_lst, default_options, default_data
 
 
-def compatible(d, rd) -> dict[str, dict]:
+def mend_dict_item(d, rd) -> dict[str, dict]:
 	for i in rd.keys():
 		try:
 			d[i] = d[i]
 		except KeyError:
 			d[i] = rd[i]
-		else:
-			if type(d[i]) == dict and type(rd[i]) == dict:
-				compatible(d[i], rd[i])
 	return d
 
 
@@ -43,7 +40,7 @@ def get_options() -> dict[Union[dict[str], str]]:
 			data = {**settings, **data}
 
 	if data != default_options:
-		data = compatible(data, default_options)
+		data = mend_dict_item(data, default_options)
 
 	save('data/options.json', data)
 	return data
@@ -56,7 +53,6 @@ def get_data() -> dict[Union[str, list, bool]]:
 	try:
 		with open('data/formula_data.json', 'r', encoding='utf-8') as f:
 			data: dict = load(f)
-		remove('data/formula_data.json')
 	except FileNotFoundError:
 		try:
 			with open('data/data.json', 'r', encoding='utf-8') as f:
@@ -64,14 +60,15 @@ def get_data() -> dict[Union[str, list, bool]]:
 		except FileNotFoundError:
 			data = default_data
 	else:
+		remove('data/formula_data.json')
+
 		if 'settings' in data.keys():
 			options = data
 			data = {**default_data, 'isResult': options.pop('isResult')}
-			print(options)
 			save('data/options.json', options)
 
 	if data != default_data:
-		data = compatible(data, default_data)
+		data = mend_dict_item(data, default_data)
 
 	save('data/data.json', data)
 	return data
