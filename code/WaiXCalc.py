@@ -13,14 +13,14 @@ from functions import *
 from settings import *
 
 # WaiXCalc (WaiX Calculator)
-# Version 1.8.1 (4.10.1)
+# Version 1.8.2+97a8a7c2 (4.10.2)
 # By WaiZhong
 # MIT License
 # Source https://github.com/WaiZhong/WaiXCalc
 # Python 3.9.12
 # PyQt 5.15.6
 
-version = '1.8.1'
+version = '1.8.2'
 
 
 class WaiX(QMainWindow):
