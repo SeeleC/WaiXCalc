@@ -13,7 +13,7 @@ from functions import *
 from settings import *
 
 # WaiXCalc (WaiX Calculator)
-# Version 1.8.2+97a8a7c2 (4.10.2)
+# Version 1.8.2 (4.10.2)
 # By WaiZhong
 # MIT License
 # Source https://github.com/WaiZhong/WaiXCalc
