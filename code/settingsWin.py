@@ -250,18 +250,11 @@ class SettingsWin(QTabWidget):
 		self.autoCheck = False
 
 	def clear_history(self):
-		if QMessageBox.question(
-				self,
-				self.trans['window.hint.title'],
-				self.trans['settings.2.hint.1'],
-				QMessageBox.Ok | QMessageBox.Cancel,
-				QMessageBox.Cancel
-		) == QMessageBox.Ok:
-			self.data['history'] = []
-			save('data/data.json', self.data)
-			QMessageBox.information(
-				self,
-				self.trans['window.hint.title'],
-				self.trans['settings.2.hint.2'],
-				QMessageBox.Ok, QMessageBox.Ok
-			)
+		self.data['history'] = []
+		save('data/data.json', self.data)
+		QMessageBox.information(
+			self,
+			self.trans['window.hint.title'],
+			self.trans['settings.2.hint.2'],
+			QMessageBox.Ok, QMessageBox.Ok
+		)
