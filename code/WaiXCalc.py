@@ -145,8 +145,12 @@ class WaiX(QMainWindow):
 		if self.options['qss_code']:
 			self.setStyleSheet(self.options['qss_code'])
 
+		if self.options['latest_pos_x'] or self.options['latest_pos_y']:
+			self.move(self.options['latest_pos_x'], self.options['latest_pos_y'])
+		else:
+			self.center()
+
 		self.statusBar()
-		self.center()
 		self.show()
 
 	def about(self):
@@ -232,6 +236,10 @@ class WaiX(QMainWindow):
 		self.data['frontBracketIndex'] = self.b_idx
 		self.data['calcFormulaStep'] = self.calc_f_step
 		self.data['frontBracketIndexStep'] = self.b_idx_step
+
+		self.options['latest_pos_x'] = self.pos().x()
+		self.options['latest_pos_y'] = self.pos().y()
+
 		save('data/options.json', self.options)
 		save('data/data.json', self.data)
 

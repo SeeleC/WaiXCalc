@@ -18,6 +18,8 @@ default_options = {
 	'font': 'Segoe UI',
 	'qss_code': '',
 	'window_title': 'WaiXCalc',
+	'latest_pos_x': 0,
+	'latest_pos_y': 0,
 }
 
 default_data = {
