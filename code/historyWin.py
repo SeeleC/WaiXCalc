@@ -23,7 +23,7 @@ class HistoryWin(QWidget):
 		text = QTextEdit()
 		text.setFont(textFont)
 		text.setText(''.join([i[:-1] + '\n' for i in [i + ' ' for i in self.history]]))
-		if not self.options['settings']['settings.2.option']:
+		if not self.options['settings.2.option']:
 			text.append(self.trans['text.history.disabled'])
 		text.setReadOnly(True)
 
