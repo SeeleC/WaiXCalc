@@ -5,10 +5,8 @@ from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
 from PyQt5.QtCore import Qt
 from sys import argv, exit
 
-from historyWin import HistoryWin
-from settingsWin import SettingsWin
-from openedFormulaWin import OpenedFormulaWin
-from helpWin import HelpWin
+from WaiX_Calculator.code.settingsWin import SettingsWin
+from WaiX_Calculator.code.openedFormulaWin import OpenedFormulaWin
 from functions import *
 from settings import *
 
@@ -31,6 +29,7 @@ class WaiX(QMainWindow):
 		self.options: dict = get_options()
 		self.trans: dict = get_trans()
 		self.data = get_data()
+		self.history = get_history()
 
 		self.isResult: bool = self.data['isResult']
 		self.formula: list = self.data['formula']
@@ -421,14 +420,30 @@ class WaiX(QMainWindow):
 			self.text_update()
 
 	def openHelpWin(self):
-		self.newWin = HelpWin()
+		self.newWin = QMessageBox()
+		self.newWin.setWindowTitle(self.trans['window.help.title'])
+		self.newWin.setWindowFlag(Qt.WindowCloseButtonHint)
+		self.newWin.setWindowIcon(QIcon('resource/images/ico.JPG'))
+
+		self.newWin.setText(self.trans['text.help.content'])
+		self.newWin.setStandardButtons(QMessageBox.Ok)
 		self.newWin.show()
 
 	def openHistoryWin(self):
 		history = get_history()
 
 		if len(history) != 0:
-			self.newWin = HistoryWin()
+			self.newWin = QMessageBox()
+			self.newWin.setWindowTitle(self.trans['window.history.title'])
+			self.newWin.setWindowFlag(Qt.WindowCloseButtonHint)
+			self.newWin.setWindowIcon(QIcon('resource/images/ico.JPG'))
+
+			text = ''.join([i[:-1] + '\n\n' for i in [i + ' ' for i in self.history]]).rstrip()
+			if not self.options['settings.2.option']:
+				text += self.trans['text.history.disabled']
+
+			self.newWin.setText(text)
+			self.newWin.setStandardButtons(QMessageBox.Ok)
 			self.newWin.show()
 		else:
 			QMessageBox.information(
