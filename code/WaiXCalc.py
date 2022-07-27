@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
 from PyQt5.QtCore import Qt
+from win32mica import ApplyMica, MICAMODE
 from sys import argv, exit
 
 from WaiX_Calculator.code.settingsWin import SettingsWin
@@ -142,8 +143,9 @@ class WaiX(QMainWindow):
 		self.resize(672, 0)
 		self.setMaximumSize(self.width(), self.height())
 
-		if self.options['qss_code']:
-			self.setStyleSheet(self.options['qss_code'])
+		if self.options['settings.4.option']:
+			self.setAttribute(Qt.WA_TranslucentBackground)
+			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 		if self.options['latest_pos_x'] or self.options['latest_pos_y']:
 			self.move(self.options['latest_pos_x'], self.options['latest_pos_y'])

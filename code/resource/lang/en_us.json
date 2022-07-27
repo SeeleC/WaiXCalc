@@ -54,10 +54,10 @@
   "settings.3.title": "Language",
 
   "settings.4.title": "Style",
+  "settings.4.option": "Show Windows 11 Visual Effects",
+  "settings.4.hint": "Relaunch To Apply Changes",
   "settings.4.text.1": "Font: ",
-  "settings.4.text.2": "Global QSS Code",
-  "settings.4.text.3": "Window Title",
-  "settings.4.hint": "Reboot to Enable Modifications",
+  "settings.4.text.2": "Window Title",
 
   "text.open.page": "Page %d / %d",
   "button.open.copyCurrent": "Copy",

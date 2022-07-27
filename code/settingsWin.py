@@ -17,10 +17,12 @@ class SettingsWin(QTabWidget):
 		self.options = get_options()
 		self.data = get_data()
 		self.trans = get_trans()
-		self.check = self.options
+		self.check = {
+			i: j for i, j in self.options.items()
+		}
 		self.names = {
 			j: i
-			for _ in range(1, 4)
+			for _ in range(1, 5)
 			for i, j in get_trans_entry(self.trans, f'settings.{_}').items()
 		}
 		self.languages = get_trans_info()
@@ -134,6 +136,9 @@ class SettingsWin(QTabWidget):
 	def styleTab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
 
+		self.checkboxes['settings.4.option'] = QCheckBox(self.trans['settings.4.option'])
+		l = self.addOptionEntry(l, self.checkboxes['settings.4.option'])
+
 		hbox = QHBoxLayout()
 
 		cblbl = QLabel(self.trans['settings.4.text.1'])
@@ -151,10 +156,7 @@ class SettingsWin(QTabWidget):
 		l.addLayout(hbox)
 
 		self.window_title = QLineEdit()
-		self.addEnterEntry(l, self.trans['settings.4.text.3'], self.window_title, self.options['window_title'])
-
-		self.qss_code = QLineEdit()
-		self.addEnterEntry(l, self.trans['settings.4.text.2'], self.qss_code, self.options['qss_code'])
+		self.addEnterEntry(l, self.trans['settings.4.text.2'], self.window_title, self.options['window_title'])
 
 		return l
 
@@ -203,7 +205,10 @@ class SettingsWin(QTabWidget):
 		if sender.text() in [self.trans['button.ok'], self.trans['button.cancel'], self.trans['button.apply']]:
 			if sender.text() in [self.trans['button.ok'], self.trans['button.apply']]:
 
-				for i in self.check:
+				if self.checkboxes['settings.4.option'].isChecked() != self.options['settings.4.option']:
+					QMessageBox.information(self, self.trans['window.hint.title'], self.trans['settings.4.hint'], QMessageBox.Ok, QMessageBox.Ok)
+
+				for i in self.check.keys():
 					self.options[i] = self.check[i]
 
 				for i in self.radiobuttons.values():
@@ -217,10 +222,6 @@ class SettingsWin(QTabWidget):
 					self.options['font'] = self.cb.currentText()
 					save('data/options.json', self.options)
 					self.font_signal.emit(True)
-
-				if self.qss_code.text() != self.options['qss_code']:
-					self.options['qss_code'] = self.qss_code.text()
-					QMessageBox.information(self, self.trans['window.hint.title'], self.trans['settings.4.hint'], QMessageBox.Ok)
 
 				if self.window_title.text() != self.options['window_title']:
 					self.options['window_title'] = self.window_title.text()
@@ -246,7 +247,6 @@ class SettingsWin(QTabWidget):
 			if name == 'settings.1.option.1':
 				for i in range(2):
 					self.checkboxes[f'settings.1.option.{i + 2}'].setEnabled(bool)
-
 		self.autoCheck = False
 
 	def clear_history(self):

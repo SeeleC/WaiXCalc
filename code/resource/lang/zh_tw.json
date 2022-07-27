@@ -54,10 +54,10 @@
   "settings.3.title": "多語言",
 
   "settings.4.title": "外觀",
+  "settings.4.option": "啓用 Windows 11 的視覺效果",
+  "settings.4.hint": "重啓以應用更改",
   "settings.4.text.1": "字體: ",
-  "settings.4.text.2": "全局 QSS 代碼",
-  "settings.4.text.3": "窗口標題",
-  "settings.4.hint": "需要重啓以應用 QSS 的修改",
+  "settings.4.text.2": "窗口標題",
 
   "text.open.page": "%d / %d 頁",
   "button.open.copyCurrent": "複製當前",
