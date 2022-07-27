@@ -9,43 +9,6 @@ from os import mkdir, listdir, remove
 from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widthes, bracket_lst, default_options, default_data
 
 
-def mend_dict_item(d, rd) -> dict[str, dict]:
-	for i in rd.keys():
-		try:
-			d[i] = d[i]
-		except KeyError:
-			d[i] = rd[i]
-	return d
-
-
-def get_options() -> dict[Union[dict[str], str]]:
-	"""
-	获取data/options.json的内容，具有向下兼容性
-	"""
-	try:
-		with open('data/options.json', 'r', encoding='utf-8') as f:
-			data = load(f)
-	except FileNotFoundError:
-		try:
-			listdir('data')
-		except FileNotFoundError:
-			mkdir('data')
-		data = default_options
-	else:
-		if 'settings' in data.keys():
-			settings = data.pop('settings')
-			data = {**settings, **data}
-		elif 'options' in data.keys():
-			settings = data.pop('options')
-			data = {**settings, **data}
-
-	if data != default_options:
-		data = mend_dict_item(data, default_options)
-
-	save('data/options.json', data)
-	return data
-
-
 def get_data() -> dict[Union[str, list, bool]]:
 	"""
 	获取data/data.json的内容，具有向下兼容性
@@ -90,6 +53,34 @@ def get_history() -> list[str]:
 	return hdata
 
 
+def get_options() -> dict[Union[dict[str], str]]:
+	"""
+	获取data/options.json的内容，具有向下兼容性
+	"""
+	try:
+		with open('data/options.json', 'r', encoding='utf-8') as f:
+			data = load(f)
+	except FileNotFoundError:
+		try:
+			listdir('data')
+		except FileNotFoundError:
+			mkdir('data')
+		data = default_options
+	else:
+		if 'settings' in data.keys():
+			settings = data.pop('settings')
+			data = {**settings, **data}
+		elif 'options' in data.keys():
+			settings = data.pop('options')
+			data = {**settings, **data}
+
+	if data != default_options:
+		data = mend_dict_item(data, default_options)
+
+	save('data/options.json', data)
+	return data
+
+
 def get_trans() -> dict[str]:
 	"""
 	获取翻译文件
@@ -127,6 +118,15 @@ def get_trans_info() -> dict[str]:
 				res = load(f)
 				data = {**data, **{res['language.name']: res['language.id']}}
 	return data
+
+
+def mend_dict_item(d, rd) -> dict[str, dict]:
+	for i in rd.keys():
+		try:
+			d[i] = d[i]
+		except KeyError:
+			d[i] = rd[i]
+	return d
 
 
 def save(filename: str, data) -> None:
