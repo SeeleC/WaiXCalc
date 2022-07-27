@@ -202,9 +202,7 @@ class WaiX(QMainWindow):
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
 				if self.options['settings.2.option']:
-					history = get_history()
-					history.append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
-					save('data/history.json', history)
+					self.history.append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
 
 				self.clear_edit()
 				self.formula = [str(result)]
@@ -242,6 +240,7 @@ class WaiX(QMainWindow):
 
 		save('data/options.json', self.options)
 		save('data/data.json', self.data)
+		save('data/history.json', self.history)
 
 	def copy(self):
 		self.clipboard.setText(''.join([i for i in self.formula]).strip())
@@ -430,9 +429,7 @@ class WaiX(QMainWindow):
 		self.newWin.show()
 
 	def openHistoryWin(self):
-		history = get_history()
-
-		if len(history) != 0:
+		if len(self.history) != 0:
 			self.newWin = QMessageBox()
 			self.newWin.setWindowTitle(self.trans['window.history.title'])
 			self.newWin.setWindowFlag(Qt.WindowCloseButtonHint)
