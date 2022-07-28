@@ -1,13 +1,14 @@
 from PyQt5.QtWidgets import (
-	QWidget, QApplication, QMainWindow, QFileDialog, QAction, QMessageBox, QDesktopWidget, QVBoxLayout
+	QApplication, QMainWindow, QFileDialog, QAction, QDesktopWidget, QVBoxLayout
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
 from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
 from sys import argv, exit
 
-from WaiX_Calculator.code.settingsWin import SettingsWin
-from WaiX_Calculator.code.openedFormulaWin import OpenedFormulaWin
+from settingsWin import SettingsWin
+from openedFormulaWin import OpenedFormulaWin
+from historyWin import HistoryWin
 from functions import *
 from settings import *
 
@@ -423,7 +424,6 @@ class WaiX(QMainWindow):
 	def openHelpWin(self):
 		self.newWin = QMessageBox()
 		self.newWin.setWindowTitle(self.trans['window.help.title'])
-		self.newWin.setWindowFlag(Qt.WindowCloseButtonHint)
 		self.newWin.setWindowIcon(QIcon('resource/images/ico.JPG'))
 
 		self.newWin.setText(self.trans['text.help.content'])
@@ -432,17 +432,7 @@ class WaiX(QMainWindow):
 
 	def openHistoryWin(self):
 		if len(self.history) != 0:
-			self.newWin = QMessageBox()
-			self.newWin.setWindowTitle(self.trans['window.history.title'])
-			self.newWin.setWindowFlag(Qt.WindowCloseButtonHint)
-			self.newWin.setWindowIcon(QIcon('resource/images/ico.JPG'))
-
-			text = ''.join([i[:-1] + '\n\n' for i in [i + ' ' for i in self.history]]).rstrip()
-			if not self.options['settings.2.option']:
-				text += self.trans['text.history.disabled']
-
-			self.newWin.setText(text)
-			self.newWin.setStandardButtons(QMessageBox.Ok)
+			self.newWin = HistoryWin()
 			self.newWin.show()
 		else:
 			QMessageBox.information(
