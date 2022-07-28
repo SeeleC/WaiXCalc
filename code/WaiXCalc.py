@@ -13,7 +13,6 @@ from functions import *
 from settings import *
 
 # WaiXCalc (WaiX Calculator)
-# Version 1.8.3 (4.10.3.5)
 # By WaiZhong
 # MIT License
 # Source https://github.com/WaiZhong/WaiXCalc
@@ -21,7 +20,7 @@ from settings import *
 # Python 3.9.12
 # PyQt 5.15.6
 
-version = '1.8.3'
+__version__ = '1.8.3'
 
 
 class WaiX(QMainWindow):
@@ -160,7 +159,7 @@ class WaiX(QMainWindow):
 		QMessageBox.about(
 			self,
 			self.trans['window.about.title'],
-			f'WaiXCalc\nBy Github@WaiZhong\nVersion {version}\n'
+			f'WaiXCalc\nBy Github@WaiZhong\nVersion {__version__}\n'
 		)
 
 	def bracket(self, l_idx):
@@ -506,8 +505,8 @@ class WaiX(QMainWindow):
 		self.setWindowTitle(self.options['window_title'])
 
 	def whole_formula(self):
-		p_formula = [i + ' ' for i in self.formula]
-		QMessageBox.information(self, self.trans['window.whole.title'], ''.join(p_formula))
+		f = [i + ' ' for i in self.formula]
+		QMessageBox.information(self, self.trans['window.whole.title'], ''.join(f))
 
 
 if __name__ == '__main__':
