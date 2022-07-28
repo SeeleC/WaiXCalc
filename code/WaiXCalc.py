@@ -30,7 +30,6 @@ class WaiX(QMainWindow):
 		self.options: dict = get_options()
 		self.trans: dict = get_trans()
 		self.data = get_data()
-		self.history = get_history()
 
 		self.isResult: bool = self.data['isResult']
 		self.formula: list = self.data['formula']
@@ -204,7 +203,9 @@ class WaiX(QMainWindow):
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
 				if self.options['settings.2.option']:
-					self.history.append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
+					history = get_history()
+					history.append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
+					save('data/history.json', history)
 
 				self.clear_edit()
 				self.formula = [str(result)]
@@ -242,7 +243,6 @@ class WaiX(QMainWindow):
 
 		save('data/options.json', self.options)
 		save('data/data.json', self.data)
-		save('data/history.json', self.history)
 
 	def copy(self):
 		self.clipboard.setText(''.join([i for i in self.formula]).strip())
@@ -430,7 +430,8 @@ class WaiX(QMainWindow):
 		self.newWin.show()
 
 	def openHistoryWin(self):
-		if len(self.history) != 0:
+		history = get_history()
+		if len(history) != 0:
 			self.newWin = HistoryWin()
 			self.newWin.show()
 		else:
