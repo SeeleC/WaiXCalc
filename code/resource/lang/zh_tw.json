@@ -24,11 +24,9 @@
   "option.helpMenu.1": "幫助(&H)",
   "option.helpMenu.2": "歷史記錄(&I)",
   "option.helpMenu.3": "完整算式(&W)",
-  "option.helpMenu.4": "關於(&A)",
   "statusTip.helpMenu.1": "顯示幫助内容",
   "statusTip.helpMenu.2": "計算的歷史記錄",
   "statusTip.helpMenu.3": "查看當前的完整算式",
-  "statusTip.helpMenu.4": "關於WaiXCalc",
 
   "window.main.title": "WaiXCalc",
   "window.settings.title": "設置",
@@ -37,7 +35,6 @@
   "window.history.title": "歷史",
   "window.help.title": "幫助",
   "window.whole.title": "完整算式",
-  "window.about.title": "關於",
   "window.hint.title": "提示",
 
   "settings.1.title": "計算",
@@ -58,6 +55,9 @@
   "settings.4.hint": "重啓以應用更改",
   "settings.4.text.1": "字體: ",
   "settings.4.text.2": "窗口標題",
+
+  "settings.5.title": "關於",
+  "settings.5.button": "關於Qt",
 
   "text.open.page": "%d / %d 頁",
   "button.open.copyCurrent": "複製當前",

@@ -24,11 +24,9 @@
   "option.helpMenu.1": "&Help",
   "option.helpMenu.2": "H&istory",
   "option.helpMenu.3": "&Whole formula",
-  "option.helpMenu.4": "&About",
   "statusTip.helpMenu.1": "Show help contents",
   "statusTip.helpMenu.2": "View accumulated history",
   "statusTip.helpMenu.3": "View the current full formula",
-  "statusTip.helpMenu.4": "About WaiXCalc",
 
   "window.main.title": "WaiXCalc",
   "window.settings.title": "Settings",
@@ -37,7 +35,6 @@
   "window.history.title": "History",
   "window.help.title": "Help",
   "window.whole.title": "Whole",
-  "window.about.title": "About",
   "window.hint.title": "Hint",
 
   "settings.1.title": "Calculate",
@@ -58,6 +55,9 @@
   "settings.4.hint": "Relaunch To Apply Changes",
   "settings.4.text.1": "Font: ",
   "settings.4.text.2": "Window Title",
+
+  "settings.5.title": "About",
+  "settings.5.button": "About Qt",
 
   "text.open.page": "Page %d / %d",
   "button.open.copyCurrent": "Copy",

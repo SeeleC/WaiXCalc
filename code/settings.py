@@ -1,5 +1,7 @@
 from PyQt5.QtGui import QFont
 
+__version__ = '1.8.3'
+
 symbol_lst = ['+', '-', '×', '÷', '^']
 symbol_lst_2 = ['.', '/']
 bracket_lst = [['(', '[', '{'], [')', ']', '}']]
