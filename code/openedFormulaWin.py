@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (
 	)
 from PyQt5.QtGui import QIcon
 
-from functions import calculate, get_trans
+from functions import calculate, get_trans, get_translated_messagebox
 from settings import font, textFont
 
 
@@ -134,17 +134,23 @@ class OpenedFormulaWin(QWidget):
 	def copy(self):
 		content = ''.join(self.formulas[self.now_page - 1]) + ' = ' + str(self.results[self.now_page - 1])
 		self.clipboard.setText(content.replace(' ', ''))
-		QMessageBox.information(
-			self, self.trans['window.hint.title'], self.trans['hint.open.copyCurrent']
-		)
+		get_translated_messagebox(
+			QMessageBox.Icon.Information,
+			self.trans['window.hint.title'],
+			self.trans['hint.open.copyCurrent'],
+			self
+		).show()
 
 	def copy_all(self):
 		self.clipboard.setText(
 			''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
 		)
-		QMessageBox.information(
-			self, self.trans['window.hint.title'], self.trans['hint.open.copyAll']
-		)
+		get_translated_messagebox(
+			QMessageBox.Icon.Information,
+			self.trans['window.hint.title'],
+			self.trans['hint.open.copyAll'],
+			self
+		).show()
 
 	def save_result(self):
 		path = QFileDialog.getSaveFileName(self, '保存', 'result', '*.txt;;All Files(*)')
@@ -153,6 +159,9 @@ class OpenedFormulaWin(QWidget):
 				f.write(
 					''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
 				)
-		QMessageBox.information(
-			self, self.trans['window.hint.title'], self.trans['hint.open.export']
-		)
+		get_translated_messagebox(
+			QMessageBox.Icon.Information,
+			self.trans['window.hint.title'],
+			self.trans['hint.open.export'],
+			self
+		).show()
