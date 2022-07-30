@@ -317,25 +317,25 @@ class WaiX(QMainWindow):
 					self.symbol('÷')
 			else:
 				self.symbol('÷')
-		elif e.key() == Qt.Key_1 or e.key() == Qt.Key_Launch1:
+		elif e.key() == Qt.Key_1:
 			self.number('1')
-		elif e.key() == Qt.Key_2 or e.key() == Qt.Key_Launch2:
+		elif e.key() == Qt.Key_2:
 			self.number('2')
-		elif e.key() == Qt.Key_3 or e.key() == Qt.Key_Launch3:
+		elif e.key() == Qt.Key_3:
 			self.number('3')
-		elif e.key() == Qt.Key_4 or e.key() == Qt.Key_Launch4:
+		elif e.key() == Qt.Key_4:
 			self.number('4')
-		elif e.key() == Qt.Key_5 or e.key() == Qt.Key_Launch5:
+		elif e.key() == Qt.Key_5:
 			self.number('5')
-		elif e.key() == Qt.Key_6 or e.key() == Qt.Key_Launch6:
+		elif e.key() == Qt.Key_6:
 			self.number('6')
-		elif e.key() == Qt.Key_7 or e.key() == Qt.Key_Launch6:
+		elif e.key() == Qt.Key_7:
 			self.number('7')
-		elif e.key() == Qt.Key_8 or e.key() == Qt.Key_Launch8:
+		elif e.key() == Qt.Key_8:
 			self.number('8')
-		elif e.key() == Qt.Key_9 or e.key() == Qt.Key_Launch9:
+		elif e.key() == Qt.Key_9:
 			self.number('9')
-		elif e.key() == Qt.Key_0 or e.key() == Qt.Key_Launch0:
+		elif e.key() == Qt.Key_0:
 			self.number('0')
 
 	def language_update(self):
