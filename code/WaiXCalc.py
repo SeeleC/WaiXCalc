@@ -20,8 +20,6 @@ from settings import *
 # Python 3.9.12
 # PyQt 5.15.6
 
-__version__ = '1.8.3'
-
 
 class WaiX(QMainWindow):
 	def __init__(self):
@@ -82,13 +80,12 @@ class WaiX(QMainWindow):
 				self.trans['option.helpMenu.1'],
 				self.trans['option.helpMenu.2'],
 				self.trans['option.helpMenu.3'],
-				self.trans['option.helpMenu.4']
 			],
 		]
 		menuShortcuts = [
 						['Ctrl+O', 'Ctrl+S', 'Ctrl+Q', ''],
 						['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Del'],
-						['', 'Ctrl+H', 'Ctrl+F', 'Ctrl+A']
+						['', 'Ctrl+H', 'Ctrl+F']
 		]
 		menuStatustips = [
 			[
@@ -106,13 +103,12 @@ class WaiX(QMainWindow):
 				self.trans['statusTip.helpMenu.1'],
 				self.trans['statusTip.helpMenu.2'],
 				self.trans['statusTip.helpMenu.3'],
-				self.trans['statusTip.helpMenu.4'],
 			],
 		]
 		menufuncs = [
 					[self.openNewFormulaWin, self.openSettingsWin, self.close],
 					[self.cut, self.copy, self.paste, self.delete],
-					[self.openHelpWin, self.openHistoryWin, self.whole_formula, self.about]
+					[self.openHelpWin, self.openHistoryWin, self.whole_formula]
 		]
 		self.action_lst = []
 		for menu, names, shortcuts, statustips, funcs in zip(
@@ -122,15 +118,11 @@ class WaiX(QMainWindow):
 
 				if name == '':
 					continue
-				elif name == self.trans['statusTip.fileMenu.2'] or name == self.trans['statusTip.fileMenu.3'] or\
-					name == self.trans['statusTip.helpMenu.2'] or name == self.trans['statusTip.helpMenu.4']:
+				elif name == self.trans['option.fileMenu.2'] or name == self.trans['option.fileMenu.3'] or\
+					name == self.trans['option.helpMenu.2']:
 					menu.addSeparator()
 
-				if name == self.trans['option.helpMenu.4']:
-					action = QAction(QIcon('resource/images/image.JPG'), name, self)
-				else:
-					action = QAction(name, self)
-
+				action = QAction(name, self)
 				action.setShortcut(shortcut)
 				action.setStatusTip(statusTip)
 				action.triggered.connect(func)

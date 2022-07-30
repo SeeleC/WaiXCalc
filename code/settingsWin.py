@@ -2,10 +2,10 @@ from PyQt5.QtWidgets import (
 	QTabWidget, QWidget, QVBoxLayout, QRadioButton, QCheckBox, QHBoxLayout, QScrollArea, QPushButton, QMessageBox,
 	QLabel, QLineEdit, QComboBox
 )
-from PyQt5.QtGui import QIcon, QFontDatabase
+from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal
 
-from settings import font
+from settings import font, __version__, textFont
 from functions import save, get_trans, get_options, get_trans_entry, get_trans_info, get_data
 
 
@@ -48,8 +48,10 @@ class SettingsWin(QTabWidget):
 		self.addNewTab(lyt, self.trans['settings.2.title'])
 		lyt = self.languageTab()
 		self.addNewTab(lyt, self.trans['settings.3.title'])
-		self.setFont(font)
+		lyt = self.aboutTab()
+		self.addNewTab(lyt, self.trans['settings.5.title'])
 
+		self.setFont(font)
 		self.apply.setEnabled(False)
 
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
@@ -160,6 +162,38 @@ class SettingsWin(QTabWidget):
 
 		return l
 
+	def aboutTab(self) -> QVBoxLayout:
+		outer_vbox = QVBoxLayout()
+		outer_vbox.addStretch(1)
+
+		hbox = QHBoxLayout()
+		hbox.addStretch(1)
+
+		inner_vbox = QVBoxLayout()
+		inner_vbox.addStretch(1)
+
+		image = QLabel()
+		image.setPixmap(QPixmap('resource\\images\\ico.JPG'))
+		image.setFixedSize(100, 100)
+		image.setScaledContents(True)
+		inner_vbox.addWidget(image)
+
+		label = QLabel(f'WaiXCalc\nBy Github@WaiZhong\nVersion {__version__}\n')
+		label.setFont(textFont)
+		inner_vbox.addWidget(label)
+
+		button = QPushButton(self.trans['settings.5.button'])
+		button.setFont(font)
+		button.clicked.connect(self.clicked)
+		inner_vbox.addWidget(button)
+
+		inner_vbox.addStretch(1)
+		hbox.addLayout(inner_vbox)
+		hbox.addStretch(1)
+		outer_vbox.addLayout(hbox)
+		outer_vbox.addStretch(1)
+		return outer_vbox
+
 	def checked(self):
 		sender = self.sender()
 
@@ -234,6 +268,8 @@ class SettingsWin(QTabWidget):
 
 			if sender.text() in [self.trans['button.ok'], self.trans['button.cancel']]:
 				self.close()
+		elif sender.text() == self.trans['settings.5.button']:
+			QMessageBox.aboutQt(self, self.trans['settings.5.button'])
 
 	def update_status(self):
 		self.autoCheck = True
