@@ -308,7 +308,7 @@ class WaiX(QMainWindow):
 				self.formula_update(self.formula[-1] + '.')
 				self.text_update()
 		elif e.key() == Qt.Key_Slash:
-			if self.options['settings']['settings.1.option.1']:
+			if self.options['settings.1.option.1']:
 				if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
 					self.formula_update(self.formula[-1] + '/')
 					self.text_update()
