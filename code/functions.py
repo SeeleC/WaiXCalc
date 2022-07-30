@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLabel, QMessageBox, QWidget
 from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from re import match
@@ -6,7 +7,7 @@ from typing import Union
 from json import load, dump
 from os import mkdir, listdir, remove
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widthes, bracket_lst, default_options, default_data
+from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data
 
 
 def get_data() -> dict[Union[str, list, bool]]:
@@ -120,6 +121,24 @@ def get_trans_info() -> dict[str]:
 	return data
 
 
+def get_translated_messagebox(
+		icon: Union[QMessageBox.Icon, QPixmap],
+		title: str,
+		text: str,
+		parent: QWidget = None
+):
+	if isinstance(icon, QMessageBox.Icon):
+		box = QMessageBox(icon, title, text, QMessageBox.Ok, parent)
+	else:
+		box = QMessageBox(QMessageBox.Icon.NoIcon, title, text, QMessageBox.Ok, parent)
+		box.setIconPixmap(icon)
+
+	ok = box.button(QMessageBox.Ok)
+	ok.setText(get_trans()['button.ok'])
+
+	return box
+
+
 def mend_dict_item(d, rd) -> dict[str, dict]:
 	for i in rd.keys():
 		try:
@@ -145,7 +164,7 @@ def text_update(string: str, label: QLabel) -> None:
 	weight = 0
 	for i in range(len(string)):
 		if string[i] not in symbol_lst and string[i] not in bracket_lst[0] and string[i] not in bracket_lst[1]:
-			weight += num_widthes[string[i]]
+			weight += num_widths[string[i]]
 			if weight >= 636:
 				label.setText('...' + string[-i + 2:])
 				break

@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal
 
 from settings import font, __version__, textFont
-from functions import save, get_trans, get_options, get_trans_entry, get_trans_info, get_data
+from functions import save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_translated_messagebox
 
 
 class SettingsWin(QTabWidget):
@@ -240,11 +240,14 @@ class SettingsWin(QTabWidget):
 			if sender.text() in [self.trans['button.ok'], self.trans['button.apply']]:
 
 				if self.checkboxes['settings.4.option'].isChecked() != self.options['settings.4.option']:
-					QMessageBox.information(self, self.trans['window.hint.title'], self.trans['settings.4.hint'], QMessageBox.Ok, QMessageBox.Ok)
-
+					get_translated_messagebox(
+						QMessageBox.Icon.Information,
+						self.trans['window.hint.title'],
+						self.trans['settings.4.hint'],
+						self
+					).show()
 				for i in self.check.keys():
 					self.options[i] = self.check[i]
-
 				for i in self.radiobuttons.values():
 					if i.isChecked() and self.languages[i.text()] != self.options['language']:
 						self.options['language'] = self.languages[i.text()]
@@ -288,9 +291,9 @@ class SettingsWin(QTabWidget):
 	def clear_history(self):
 		self.data['history'] = []
 		save('data/data.json', self.data)
-		QMessageBox.information(
-			self,
+		get_translated_messagebox(
+			QMessageBox.Icon.Information,
 			self.trans['window.hint.title'],
 			self.trans['settings.2.hint.2'],
-			QMessageBox.Ok, QMessageBox.Ok
-		)
+			self
+		).show()

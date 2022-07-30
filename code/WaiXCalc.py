@@ -146,13 +146,6 @@ class WaiX(QMainWindow):
 		self.statusBar()
 		self.show()
 
-	def about(self):
-		QMessageBox.about(
-			self,
-			self.trans['window.about.title'],
-			f'WaiXCalc\nBy Github@WaiZhong\nVersion {__version__}\n'
-		)
-
 	def bracket(self, l_idx):
 		if l_idx == 0 and (self.formula[-1] in symbol_lst or self.formula == ['0']):
 			if self.formula == ['0']:
@@ -363,7 +356,6 @@ class WaiX(QMainWindow):
 				self.trans['option.helpMenu.1'],
 				self.trans['option.helpMenu.2'],
 				self.trans['option.helpMenu.3'],
-				self.trans['option.helpMenu.4']
 			],
 		]
 		menuStatustips = [
@@ -382,7 +374,6 @@ class WaiX(QMainWindow):
 				self.trans['statusTip.helpMenu.1'],
 				self.trans['statusTip.helpMenu.2'],
 				self.trans['statusTip.helpMenu.3'],
-				self.trans['statusTip.helpMenu.4'],
 			],
 		]
 
@@ -413,13 +404,12 @@ class WaiX(QMainWindow):
 			self.text_update()
 
 	def openHelpWin(self):
-		self.newWin = QMessageBox()
-		self.newWin.setWindowTitle(self.trans['window.help.title'])
-		self.newWin.setWindowIcon(QIcon('resource/images/ico.JPG'))
-
-		self.newWin.setText(self.trans['text.help.content'])
-		self.newWin.setStandardButtons(QMessageBox.Ok)
-		self.newWin.show()
+		get_translated_messagebox(
+			QMessageBox.Icon.NoIcon,
+			self.trans['window.help.title'],
+			self.trans['text.help.content'],
+			self
+		).show()
 
 	def openHistoryWin(self):
 		history = get_history()
@@ -427,12 +417,12 @@ class WaiX(QMainWindow):
 			self.newWin = HistoryWin()
 			self.newWin.show()
 		else:
-			QMessageBox.information(
-				self,
+			get_translated_messagebox(
+				QMessageBox.Icon.Information,
 				self.trans['hint.history.empty.title'],
 				self.trans['hint.history.empty.content'],
-				QMessageBox.Ok, QMessageBox.Ok
-			)
+				self
+			).show()
 
 	def openNewFormulaWin(self):
 		file = QFileDialog.getOpenFileName(self, self.trans['window.selectFile.title'], '', '*.txt;;All Files(*)')
@@ -443,9 +433,12 @@ class WaiX(QMainWindow):
 				formulas = [get_formula(i) for i in f_formulas if isformula(get_formula(i))]
 		except (FileNotFoundError, IndexError) as e:
 			if type(e) == IndexError:
-				QMessageBox.warning(
-					self, self.trans['window.hint.title'], self.trans['hint.open.error']
-				)
+				get_translated_messagebox(
+					QMessageBox.Icon.Warning,
+					self.trans['window.hint.title'],
+					self.trans['hint.open.error'],
+					self
+				).show()
 		else:
 			self.newWin = OpenedFormulaWin(formulas)
 			self.newWin.show()
@@ -499,7 +492,12 @@ class WaiX(QMainWindow):
 
 	def whole_formula(self):
 		f = [i + ' ' for i in self.formula]
-		QMessageBox.information(self, self.trans['window.whole.title'], ''.join(f))
+		get_translated_messagebox(
+			QMessageBox.Icon.NoIcon,
+			self.trans['window.whole.title'],
+			''.join(f),
+			self
+		).show()
 
 
 if __name__ == '__main__':
