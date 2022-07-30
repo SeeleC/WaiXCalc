@@ -289,8 +289,7 @@ class SettingsWin(QTabWidget):
 		self.autoCheck = False
 
 	def clear_history(self):
-		self.data['history'] = []
-		save('data/data.json', self.data)
+		save('data/history.json', [])
 		get_translated_messagebox(
 			QMessageBox.Icon.Information,
 			self.trans['window.hint.title'],
