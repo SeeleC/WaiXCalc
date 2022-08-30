@@ -44,13 +44,13 @@ class WaiX(QMainWindow):
 		tFont.setFamily(self.options['font'])
 		mFont.setFamily(self.options['font'])
 
-		self.initUI()
+		self.init_ui()
 		self.show()
 
 		if self.calc_formula == ['0'] and self.formula != self.calc_formula:
 			self.clear_edit()
 
-	def initUI(self):
+	def init_ui(self):
 		vbox = QVBoxLayout()
 		widget = QWidget()
 		widget.setLayout(vbox)
