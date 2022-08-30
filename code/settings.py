@@ -37,11 +37,14 @@ default_data = {
 font = QFont()
 font.setPointSize(8)
 
-mwFont = QFont()
-mwFont.setPointSize(24)
+hFont = QFont()
+hFont.setPointSize(24)
 
-textFont = QFont()
-textFont.setPointSize(10)
+tFont = QFont()
+tFont.setPointSize(10)
+
+mFont = QFont()
+mFont.setPointSize(9)
 
 # tipFont = QFont()
 # tipFont.setPointSize(4)

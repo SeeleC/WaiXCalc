@@ -40,8 +40,9 @@ class WaiX(QMainWindow):
 		self.clipboard = QApplication.clipboard()
 
 		font.setFamily(self.options['font'])
-		mwFont.setFamily(self.options['font'])
-		textFont.setFamily(self.options['font'])
+		hFont.setFamily(self.options['font'])
+		tFont.setFamily(self.options['font'])
+		mFont.setFamily(self.options['font'])
 
 		self.initUI()
 		self.show()
@@ -57,13 +58,14 @@ class WaiX(QMainWindow):
 
 		self.textEdit = QLabel()
 		self.text_update()
-		self.textEdit.setFont(mwFont)
+		self.textEdit.setFont(hFont)
 		vbox.addWidget(self.textEdit)
 
-		menubar = self.menuBar()
-		fileMenu = menubar.addMenu(self.trans['menubar.fileMenu.title'])
-		editMenu = menubar.addMenu(self.trans['menubar.editMenu.title'])
-		helpMenu = menubar.addMenu(self.trans['menubar.helpMenu.title'])
+		self.menubar = self.menuBar()
+		self.menubar.setFont(mFont)
+		fileMenu = self.menubar.addMenu(self.trans['menubar.fileMenu.title'])
+		editMenu = self.menubar.addMenu(self.trans['menubar.editMenu.title'])
+		helpMenu = self.menubar.addMenu(self.trans['menubar.helpMenu.title'])
 
 		self.menus = [fileMenu, editMenu, helpMenu]
 		names, statustips = get_menu_items(self.trans)
@@ -125,6 +127,7 @@ class WaiX(QMainWindow):
 			action.triggered.connect(function)
 			menu.addAction(action)
 			self.actions.append(action)
+		menu.setFont(mFont)
 
 	def bracket(self, l_idx):
 		if l_idx == 0 and (self.formula[-1] in symbol_lst or self.formula == ['0']):
@@ -228,10 +231,15 @@ class WaiX(QMainWindow):
 		self.options = get_options()
 
 		font.setFamily(self.options['font'])
-		mwFont.setFamily(self.options['font'])
-		textFont.setFamily(self.options['font'])
+		hFont.setFamily(self.options['font'])
+		tFont.setFamily(self.options['font'])
+		mFont.setFamily(self.options['font'])
 
-		self.textEdit.setFont(mwFont)
+		self.textEdit.setFont(hFont)
+		self.menubar.setFont(mFont)
+
+		for m in self.menus:
+			m.setFont(mFont)
 
 	def formula_update(self, content):
 		self.isResult = False

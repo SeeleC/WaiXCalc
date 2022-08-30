@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTex
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 
-from settings import font, textFont
+from settings import font, tFont
 from functions import get_trans, get_options, get_history
 
 
@@ -21,7 +21,7 @@ class HistoryWin(QWidget):
         layout = QVBoxLayout()
 
         text = QTextEdit()
-        text.setFont(textFont)
+        text.setFont(tFont)
         text.setText(''.join([i[:-1] + '\n\n' for i in [i + ' ' for i in self.history]]).rstrip())
         if not self.options['settings.2.option']:
             text.append('\n\n' + self.trans['text.history.disabled'])

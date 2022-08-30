@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIcon
 
 from functions import calculate, get_trans, get_translated_messagebox
-from settings import font, textFont
+from settings import font, tFont
 
 
 class OpenedFormulaWin(QWidget):
@@ -57,7 +57,7 @@ class OpenedFormulaWin(QWidget):
 
 		self.formula_text = QTextEdit()
 		self.formula_text.setText(''.join(self.formulas[0]))
-		self.formula_text.setFont(textFont)
+		self.formula_text.setFont(tFont)
 		self.formula_text.setReadOnly(True)
 		body.addWidget(self.formula_text, 0, 0, 4, 4)
 
@@ -67,7 +67,7 @@ class OpenedFormulaWin(QWidget):
 
 		self.result_text = QTextEdit()
 		self.result_text.setText(str(self.results[0]))
-		self.result_text.setFont(textFont)
+		self.result_text.setFont(tFont)
 		self.result_text.setReadOnly(True)
 		body.addWidget(self.result_text, 0, 6, 4, 4)
 

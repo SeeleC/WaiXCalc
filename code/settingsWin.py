@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal
 
-from settings import font, __version__, textFont
+from settings import __version__, tFont, font
 from functions import save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_translated_messagebox
 
 
@@ -60,7 +60,6 @@ class SettingsWin(QTabWidget):
 		self.setMaximumSize(self.width(), self.height())
 
 	def addOptionEntry(self, layout: QVBoxLayout, widget: QCheckBox) -> QVBoxLayout:
-		widget.setFont(font)
 		if isinstance(widget, QCheckBox):
 			widget.stateChanged.connect(self.checked)
 		else:
@@ -73,13 +72,11 @@ class SettingsWin(QTabWidget):
 		return layout
 
 	def addEnterEntry(self, layout: QVBoxLayout, title: str, widget: QLineEdit, text: str = '') -> QVBoxLayout:
-		widget.setFont(font)
 		widget.setText(text)
 
 		hbox = QHBoxLayout()
 
 		title_label = QLabel(title + ':')
-		title_label.setFont(font)
 		hbox.addWidget(title_label)
 		hbox.addStretch(1)
 
@@ -118,7 +115,6 @@ class SettingsWin(QTabWidget):
 		l = self.addOptionEntry(l, self.checkboxes['settings.2.option'])
 
 		btn = QPushButton(self.trans['settings.2.button'])
-		btn.setFont(font)
 		btn.clicked.connect(self.clear_history)
 		l.addWidget(btn)
 		return l
@@ -144,7 +140,6 @@ class SettingsWin(QTabWidget):
 		hbox = QHBoxLayout()
 
 		cblbl = QLabel(self.trans['settings.4.text.1'])
-		cblbl.setFont(font)
 		hbox.addWidget(cblbl)
 
 		self.cb = QComboBox()
@@ -179,11 +174,10 @@ class SettingsWin(QTabWidget):
 		inner_vbox.addWidget(image)
 
 		label = QLabel(f'WaiXCalc\nBy Github@WaiZhong\nVersion {__version__}\n')
-		label.setFont(textFont)
+		label.setFont(tFont)
 		inner_vbox.addWidget(label)
 
 		button = QPushButton(self.trans['settings.5.button'])
-		button.setFont(font)
 		button.clicked.connect(self.clicked)
 		inner_vbox.addWidget(button)
 
@@ -211,16 +205,13 @@ class SettingsWin(QTabWidget):
 		hbox = QHBoxLayout()
 
 		ok = QPushButton(self.trans['button.ok'])
-		ok.setFont(font)
 		ok.setShortcut('Return')
 		ok.clicked.connect(self.clicked)
 
 		cancel = QPushButton(self.trans['button.cancel'])
-		cancel.setFont(font)
 		cancel.clicked.connect(self.clicked)
 
 		self.apply = QPushButton(self.trans['button.apply'])
-		self.apply.setFont(font)
 		self.apply.clicked.connect(self.clicked)
 
 		if mode == 0:
