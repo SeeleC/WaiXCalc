@@ -7,7 +7,7 @@ from typing import Union
 from json import load, dump
 from os import mkdir, listdir, remove
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data
+from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, font
 
 
 def get_data() -> dict[Union[str, list, bool]]:
@@ -177,6 +177,8 @@ def get_translated_messagebox(
 
 	ok = box.button(QMessageBox.Ok)
 	ok.setText(get_trans()['button.ok'])
+
+	box.setFont(font)
 
 	return box
 
