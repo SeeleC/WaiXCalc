@@ -35,7 +35,7 @@ default_data = {
 }
 
 font = QFont()
-font.setPointSize(8)
+# font.setPointSize(8)
 
 hFont = QFont()
 hFont.setPointSize(24)
