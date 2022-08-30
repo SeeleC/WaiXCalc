@@ -91,8 +91,8 @@ class WaiX(QMainWindow):
 			self.setAttribute(Qt.WA_TranslucentBackground)
 			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
-		if self.options['latest_pos_x'] or self.options['latest_pos_y']:
-			self.move(self.options['latest_pos_x'], self.options['latest_pos_y'])
+		if self.data['latest_pos_x'] or self.data['latest_pos_y']:
+			self.move(self.data['latest_pos_x'], self.data['latest_pos_y'])
 		else:
 			self.center()
 

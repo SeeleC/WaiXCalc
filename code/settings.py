@@ -20,8 +20,6 @@ default_options = {
 	'language': 'en_us',
 	'font': 'Segoe UI',
 	'window_title': 'WaiXCalc',
-	'latest_pos_x': 0,
-	'latest_pos_y': 0,
 }
 
 default_data = {
@@ -31,7 +29,8 @@ default_data = {
 	'frontBracketIndex': [],
 	'frontBracketIndexStep': [],
 	'isResult': False,
-	'history': [],
+	'latest_pos_x': 0,
+	'latest_pos_y': 0,
 }
 
 font = QFont()
