@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
 from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
 from sys import argv, exit
+from asyncio import run, create_task
 
 from settingsWin import SettingsWin
 from openedFormulaWin import OpenedFormulaWin
@@ -43,6 +44,7 @@ class WaiX(QMainWindow):
 		textFont.setFamily(self.options['font'])
 
 		self.initUI()
+		self.show()
 
 		if self.calc_formula == ['0'] and self.formula != self.calc_formula:
 			self.clear_edit()
@@ -64,70 +66,19 @@ class WaiX(QMainWindow):
 		helpMenu = menubar.addMenu(self.trans['menubar.helpMenu.title'])
 
 		self.menus = [fileMenu, editMenu, helpMenu]
-		menuNames = [
-			[
-				self.trans['option.fileMenu.1'],
-				self.trans['option.fileMenu.2'],
-				self.trans['option.fileMenu.3']
-			],
-			[
-				self.trans['option.editMenu.1'],
-				self.trans['option.editMenu.2'],
-				self.trans['option.editMenu.3'],
-				self.trans['option.editMenu.4']
-			],
-			[
-				self.trans['option.helpMenu.1'],
-				self.trans['option.helpMenu.2'],
-				self.trans['option.helpMenu.3'],
-			],
+		names, statustips = get_menu_items(self.trans)
+		functions = [
+			[self.openNewFormulaWin, self.openSettingsWin, self.close],
+			[self.cut, self.copy, self.paste, self.delete],
+			[self.openHelpWin, self.openHistoryWin, self.whole_formula]
 		]
-		menuShortcuts = [
-						['Ctrl+O', 'Ctrl+S', 'Ctrl+Q', ''],
-						['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Del'],
-						['', 'Ctrl+H', 'Ctrl+F']
+		shortcuts = [
+			['Ctrl+O', 'Ctrl+S', 'Ctrl+Q', ''],
+			['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Del'],
+			['', 'Ctrl+H', 'Ctrl+F']
 		]
-		menuStatustips = [
-			[
-				self.trans['statusTip.fileMenu.1'],
-				self.trans['statusTip.fileMenu.2'],
-				self.trans['statusTip.fileMenu.3'],
-			],
-			[
-				self.trans['statusTip.editMenu.1'],
-				self.trans['statusTip.editMenu.2'],
-				self.trans['statusTip.editMenu.3'],
-				self.trans['statusTip.editMenu.4'],
-			],
-			[
-				self.trans['statusTip.helpMenu.1'],
-				self.trans['statusTip.helpMenu.2'],
-				self.trans['statusTip.helpMenu.3'],
-			],
-		]
-		menufuncs = [
-					[self.openNewFormulaWin, self.openSettingsWin, self.close],
-					[self.cut, self.copy, self.paste, self.delete],
-					[self.openHelpWin, self.openHistoryWin, self.whole_formula]
-		]
-		self.action_lst = []
-		for menu, names, shortcuts, statustips, funcs in zip(
-				self.menus, menuNames, menuShortcuts, menuStatustips, menufuncs
-		):
-			for name, shortcut, statusTip, func in zip(names, shortcuts, statustips, funcs):
-
-				if name == '':
-					continue
-				elif name == self.trans['option.fileMenu.2'] or name == self.trans['option.fileMenu.3'] or\
-					name == self.trans['option.helpMenu.2']:
-					menu.addSeparator()
-
-				action = QAction(name, self)
-				action.setShortcut(shortcut)
-				action.setStatusTip(statusTip)
-				action.triggered.connect(func)
-				menu.addAction(action)
-				self.action_lst.append(action)
+		self.actions = []
+		run(self.init_menubar(names, statustips, functions, shortcuts))
 
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
 		self.setWindowTitle(self.options['window_title'])
@@ -145,6 +96,36 @@ class WaiX(QMainWindow):
 
 		self.statusBar()
 		self.show()
+
+	async def init_menubar(self, names, status_tips, functions, shortcuts):
+		task1 = create_task(
+			self.init_menu(self.menus[0], names[0], status_tips[0], shortcuts[0], functions[0])
+		)
+		task2 = create_task(
+			self.init_menu(self.menus[1], names[1], status_tips[1], shortcuts[1], functions[1])
+		)
+		task3 = create_task(
+			self.init_menu(self.menus[2], names[2], status_tips[2], shortcuts[2], functions[2])
+		)
+
+		await task1
+		await task2
+		await task3
+
+	async def init_menu(self, menu, names, status_tips, shortcuts, functions):
+		for name, status_tip, shortcut, function in zip(names, status_tips, shortcuts, functions):
+			if name == '':
+				continue
+			elif name == self.trans['option.fileMenu.2'] or name == self.trans['option.fileMenu.3'] or \
+					name == self.trans['option.helpMenu.2']:
+				menu.addSeparator()
+
+			action = QAction(name, self)
+			action.setShortcut(shortcut)
+			action.setStatusTip(status_tip)
+			action.triggered.connect(function)
+			menu.addAction(action)
+			self.actions.append(action)
 
 	def bracket(self, l_idx):
 		if l_idx == 0 and (self.formula[-1] in symbol_lst or self.formula == ['0']):
@@ -339,52 +320,16 @@ class WaiX(QMainWindow):
 			self.number('0')
 
 	def language_update(self):
-		self.trans = get_trans()
-		menuNames = [
-			[
-				self.trans['option.fileMenu.1'],
-				self.trans['option.fileMenu.2'],
-				self.trans['option.fileMenu.3'],
-			],
-			[
-				self.trans['option.editMenu.1'],
-				self.trans['option.editMenu.2'],
-				self.trans['option.editMenu.3'],
-				self.trans['option.editMenu.4']
-			],
-			[
-				self.trans['option.helpMenu.1'],
-				self.trans['option.helpMenu.2'],
-				self.trans['option.helpMenu.3'],
-			],
-		]
-		menuStatustips = [
-			[
-				self.trans['statusTip.fileMenu.1'],
-				self.trans['statusTip.fileMenu.2'],
-				self.trans['statusTip.fileMenu.3'],
-			],
-			[
-				self.trans['statusTip.editMenu.1'],
-				self.trans['statusTip.editMenu.2'],
-				self.trans['statusTip.editMenu.3'],
-				self.trans['statusTip.editMenu.4'],
-			],
-			[
-				self.trans['statusTip.helpMenu.1'],
-				self.trans['statusTip.helpMenu.2'],
-				self.trans['statusTip.helpMenu.3'],
-			],
-		]
+		menu_names, menu_status_tips = get_menu_items(refresh_translate=True)
 
 		for idx, name in zip([0, 1, 2], ['file', 'edit', 'help']):
 			self.menus[idx].setTitle(self.trans[f'menubar.{name}Menu.title'])
 
 		idx = 0
-		for names, statustips in zip(menuNames, menuStatustips):
+		for names, statustips in zip(menu_names, menu_status_tips):
 			for name, statustip in zip(names, statustips):
-				self.action_lst[idx].setText(name)
-				self.action_lst[idx].setStatusTip(statustip)
+				self.actions[idx].setText(name)
+				self.actions[idx].setStatusTip(statustip)
 				idx += 1
 
 	def number(self, num: str):

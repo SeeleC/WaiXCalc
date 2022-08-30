@@ -54,6 +54,48 @@ def get_history() -> list[str]:
 	return hdata
 
 
+def get_menu_items(trans: dict = None, refresh_translate: bool = False):
+	if refresh_translate:
+		trans = get_trans()
+	names = [
+		[
+			trans['option.fileMenu.1'],
+			trans['option.fileMenu.2'],
+			trans['option.fileMenu.3']
+		],
+		[
+			trans['option.editMenu.1'],
+			trans['option.editMenu.2'],
+			trans['option.editMenu.3'],
+			trans['option.editMenu.4']
+		],
+		[
+			trans['option.helpMenu.1'],
+			trans['option.helpMenu.2'],
+			trans['option.helpMenu.3'],
+		],
+	]
+	statustips = [
+		[
+			trans['statusTip.fileMenu.1'],
+			trans['statusTip.fileMenu.2'],
+			trans['statusTip.fileMenu.3'],
+		],
+		[
+			trans['statusTip.editMenu.1'],
+			trans['statusTip.editMenu.2'],
+			trans['statusTip.editMenu.3'],
+			trans['statusTip.editMenu.4'],
+		],
+		[
+			trans['statusTip.helpMenu.1'],
+			trans['statusTip.helpMenu.2'],
+			trans['statusTip.helpMenu.3'],
+		],
+	]
+	return names, statustips
+
+
 def get_options() -> dict[Union[dict[str], str]]:
 	"""
 	获取data/options.json的内容，具有向下兼容性
