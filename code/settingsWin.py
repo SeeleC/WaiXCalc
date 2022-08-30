@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal
+from asyncio import run, create_task
 
 from settings import __version__, tFont, font
 from functions import save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_translated_messagebox
@@ -32,24 +33,15 @@ class SettingsWin(QTabWidget):
 		self.changeLanguage = False
 		self.changedFont = ''
 
-		self.initUI()
+		self.init_ui()
 
 	language_signal = pyqtSignal(bool)
 	font_signal = pyqtSignal(bool)
 	options_signal = pyqtSignal(bool)
 	title_signal = pyqtSignal(bool)
 
-	def initUI(self):
-		lyt = self.calculateTab()
-		self.addNewTab(lyt, self.trans['settings.1.title'])
-		lyt = self.styleTab()
-		self.addNewTab(lyt, self.trans['settings.4.title'])
-		lyt = self.historyTab()
-		self.addNewTab(lyt, self.trans['settings.2.title'])
-		lyt = self.languageTab()
-		self.addNewTab(lyt, self.trans['settings.3.title'])
-		lyt = self.aboutTab()
-		self.addNewTab(lyt, self.trans['settings.5.title'])
+	def init_ui(self):
+		run(self.init_tabs())
 
 		self.setFont(font)
 		self.apply.setEnabled(False)
@@ -58,6 +50,33 @@ class SettingsWin(QTabWidget):
 		self.setWindowTitle(self.trans['window.settings.title'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
+
+	async def init_tabs(self):
+		task1 = create_task(
+			self.init_tab(self.trans['settings.1.title'], self.calculateTab)
+		)
+		task2 = create_task(
+			self.init_tab(self.trans['settings.4.title'], self.styleTab)
+		)
+		task3 = create_task(
+			self.init_tab(self.trans['settings.2.title'], self.historyTab)
+		)
+		task4 = create_task(
+			self.init_tab(self.trans['settings.3.title'], self.languageTab)
+		)
+		task5 = create_task(
+			self.init_tab(self.trans['settings.5.title'], self.aboutTab)
+		)
+
+		await task1
+		await task2
+		await task3
+		await task4
+		await task5
+
+	async def init_tab(self, title, function):
+		lyt = function()
+		self.addNewTab(lyt, title)
 
 	def addOptionEntry(self, layout: QVBoxLayout, widget: QCheckBox) -> QVBoxLayout:
 		if isinstance(widget, QCheckBox):
