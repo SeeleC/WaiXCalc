@@ -333,10 +333,10 @@ class WaiX(QMainWindow):
 			self.menus[idx].setTitle(self.trans[f'menubar.{name}Menu.title'])
 
 		idx = 0
-		for names, statustips in zip(menu_names, menu_status_tips):
-			for name, statustip in zip(names, statustips):
+		for names, status_tips in zip(menu_names, menu_status_tips):
+			for name, status_tip in zip(names, status_tips):
 				self.actions[idx].setText(name)
-				self.actions[idx].setStatusTip(statustip)
+				self.actions[idx].setStatusTip(status_tip)
 				idx += 1
 
 	def number(self, num: str):
