@@ -6,6 +6,7 @@ from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
 from sys import argv, exit
 from asyncio import run, create_task
+from time import time
 
 from settingsWin import SettingsWin
 from openedFormulaWin import OpenedFormulaWin
@@ -43,8 +44,10 @@ class WaiX(QMainWindow):
 		mwFont.setFamily(self.options['font'])
 		textFont.setFamily(self.options['font'])
 
+		self.s = time()
 		self.initUI()
 		self.show()
+		print(time() - self.s)
 
 		if self.calc_formula == ['0'] and self.formula != self.calc_formula:
 			self.clear_edit()
@@ -95,7 +98,6 @@ class WaiX(QMainWindow):
 			self.center()
 
 		self.statusBar()
-		self.show()
 
 	async def init_menubar(self, names, status_tips, functions, shortcuts):
 		task1 = create_task(
