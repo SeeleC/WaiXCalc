@@ -25,27 +25,25 @@ class OpenedFormulaWin(QWidget):
 		self.initUI()
 
 	def initUI(self):
+		self.setFont(font)
 		layout = QVBoxLayout()
 		self.now_page = 1
 
 		head = QHBoxLayout()
 
-		self.last_page_btn = QPushButton('⟨⟨')
+		self.last_page_btn = QPushButton('<<')
 		self.last_page_btn.clicked.connect(self.last_page)
-		self.last_page_btn.setFont(font)
 		self.last_page_btn.setShortcut('Right')
 		self.last_page_btn.setEnabled(False)
 		head.addWidget(self.last_page_btn)
 		head.addStretch(1)
 
 		self.title = QLabel(self.trans['text.open.page'] % (self.now_page, len(self.formulas)))
-		self.title.setFont(font)
 		head.addWidget(self.title)
 		head.addStretch(1)
 
-		self.next_page_btn = QPushButton('⟩⟩')
+		self.next_page_btn = QPushButton('>>')
 		self.next_page_btn.clicked.connect(self.next_page)
-		self.next_page_btn.setFont(font)
 		self.next_page_btn.setShortcut('Left')
 		if len(self.formulas) <= 1:
 			self.next_page_btn.setEnabled(False)
@@ -62,7 +60,7 @@ class OpenedFormulaWin(QWidget):
 		body.addWidget(self.formula_text, 0, 0, 4, 4)
 
 		equal = QLabel('=')
-		equal.setFont(font)
+		equal.setFont(tFont)
 		body.addWidget(equal, 0, 5)
 
 		self.result_text = QTextEdit()
@@ -78,17 +76,14 @@ class OpenedFormulaWin(QWidget):
 
 		copy_btn = QPushButton(self.trans['button.open.copyCurrent'])
 		copy_btn.clicked.connect(self.copy)
-		copy_btn.setFont(font)
 		base.addWidget(copy_btn)
 
 		copy_all_btn = QPushButton(self.trans['button.open.copyAll'])
 		copy_all_btn.clicked.connect(self.copy_all)
-		copy_all_btn.setFont(font)
 		base.addWidget(copy_all_btn)
 
 		save_result_btn = QPushButton(self.trans['button.open.export'])
 		save_result_btn.clicked.connect(self.save_result)
-		save_result_btn.setFont(font)
 		base.addWidget(save_result_btn)
 
 		layout.addLayout(base)
