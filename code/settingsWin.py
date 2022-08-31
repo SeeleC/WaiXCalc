@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal
 from asyncio import run, create_task
+from sys import getwindowsversion
 
 from settings import __version__, tFont, font
 from functions import save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_translated_messagebox
@@ -153,6 +154,9 @@ class SettingsWin(QTabWidget):
 
 		self.checkboxes['settings.4.option'] = QCheckBox(self.trans['settings.4.option'])
 		l = self.addOptionEntry(l, self.checkboxes['settings.4.option'])
+
+		if getwindowsversion().build < 22000:
+			self.checkboxes['settings.4.option'].setEnabled(False)
 
 		hbox = QHBoxLayout()
 
