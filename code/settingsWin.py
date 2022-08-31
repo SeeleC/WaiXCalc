@@ -44,8 +44,6 @@ class SettingsWin(QTabWidget):
 		run(self.init_tabs())
 
 		self.setFont(font)
-		self.apply.setEnabled(False)
-
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
 		self.setWindowTitle(self.trans['window.settings.title'])
 		self.resize(600, 400)
@@ -112,7 +110,7 @@ class SettingsWin(QTabWidget):
 		inner.addStretch()
 		s.setLayout(inner)
 		outer.addWidget(s)
-		self.addBottomButton(outer, 0)
+		self.addBottomButton(outer)
 		widget.setLayout(outer)
 
 		self.update_status()
@@ -211,8 +209,6 @@ class SettingsWin(QTabWidget):
 		sender = self.sender()
 
 		if not self.autoCheck:
-			self.apply.setEnabled(True)
-
 			self.check[self.names[sender.text()]] = sender.isChecked()
 			if sender.text() == self.trans['settings.1.option.2']:
 				self.check['settings.1.option.3'] = False
@@ -230,24 +226,15 @@ class SettingsWin(QTabWidget):
 		cancel = QPushButton(self.trans['button.cancel'])
 		cancel.clicked.connect(self.clicked)
 
-		self.apply = QPushButton(self.trans['button.apply'])
-		self.apply.clicked.connect(self.clicked)
-
-		if mode == 0:
-			hbox.addStretch(1)
-			hbox.addWidget(ok)
-			hbox.addWidget(cancel)
-		elif mode == 1:
-			hbox.addStretch(1)
-			hbox.addWidget(ok)
-			hbox.addWidget(cancel)
-			hbox.addWidget(self.apply)
+		hbox.addStretch(1)
+		hbox.addWidget(ok)
+		hbox.addWidget(cancel)
 		layout.addLayout(hbox)
 
 	def clicked(self):
 		sender = self.sender()
-		if sender.text() in [self.trans['button.ok'], self.trans['button.cancel'], self.trans['button.apply']]:
-			if sender.text() in [self.trans['button.ok'], self.trans['button.apply']]:
+		if sender.text() in [self.trans['button.ok'], self.trans['button.cancel']]:
+			if sender.text() == self.trans['button.ok']:
 
 				if self.checkboxes['settings.4.option'].isChecked() != self.options['settings.4.option']:
 					get_translated_messagebox(
@@ -275,7 +262,6 @@ class SettingsWin(QTabWidget):
 					save('data/options.json', self.options)
 					self.title_signal.emit(True)
 
-				self.apply.setEnabled(False)
 				save('data/options.json', self.options)
 				self.options_signal.emit(True)
 
