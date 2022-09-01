@@ -131,11 +131,11 @@ class SettingsWin(QTabWidget):
 
 	def historyTab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
-		for i, j in get_trans_entry(self.trans, 'settings.2.option').items():
-			self.checkboxes[i] = QCheckBox(j)
-			l = self.addOptionEntry(l, self.checkboxes[i])
-		# self.checkboxes['settings.2.option.1'] = QCheckBox(self.trans['settings.2.option.1'])
-		# l = self.addOptionEntry(l, self.checkboxes['settings.2.option.1'])
+		# for i, j in get_trans_entry(self.trans, 'settings.2.option').items():
+		# 	self.checkboxes[i] = QCheckBox(j)
+		# 	l = self.addOptionEntry(l, self.checkboxes[i])
+		self.checkboxes['settings.2.option'] = QCheckBox(self.trans['settings.2.option'])
+		l = self.addOptionEntry(l, self.checkboxes['settings.2.option'])
 
 		btn = QPushButton(self.trans['settings.2.button'])
 		btn.clicked.connect(self.clear_history)
