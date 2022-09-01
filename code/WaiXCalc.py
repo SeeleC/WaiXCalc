@@ -327,7 +327,8 @@ class WaiX(QMainWindow):
 			self.number('0')
 
 	def language_update(self):
-		menu_names, menu_status_tips = get_menu_items(refresh_translate=True)
+		self.trans = get_trans()
+		menu_names, menu_status_tips = get_menu_items(self.trans)
 
 		for idx, name in zip([0, 1, 2], ['file', 'edit', 'help']):
 			self.menus[idx].setTitle(self.trans[f'menubar.{name}Menu.title'])

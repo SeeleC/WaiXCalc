@@ -49,9 +49,7 @@ def get_history() -> list[str]:
 	return hdata
 
 
-def get_menu_items(trans: dict = None, refresh_translate: bool = False):
-	if refresh_translate:
-		trans = get_trans()
+def get_menu_items(trans: dict):
 	names = [
 		[
 			trans['option.fileMenu.1'],
