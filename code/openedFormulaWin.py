@@ -1,9 +1,11 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
 	QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QGridLayout, QTextEdit, QMessageBox, QFileDialog, QApplication
 	)
 from PyQt5.QtGui import QIcon
+from win32mica import ApplyMica, MICAMODE
 
-from functions import calculate, get_trans, get_translated_messagebox
+from functions import calculate, get_trans, get_translated_messagebox, get_options
 from settings import font, tFont
 
 
@@ -14,6 +16,7 @@ class OpenedFormulaWin(QWidget):
 		self.formulas = formulas
 		self.results = []
 		self.trans = get_trans()
+		self.options = get_options()
 
 		self.clipboard = QApplication.clipboard()
 		
@@ -87,6 +90,10 @@ class OpenedFormulaWin(QWidget):
 		base.addWidget(save_result_btn)
 
 		layout.addLayout(base)
+
+		if self.options['settings.4.option']:
+			self.setAttribute(Qt.WA_TranslucentBackground)
+			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 		self.setLayout(layout)
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))

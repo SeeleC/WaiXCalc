@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
+from win32mica import ApplyMica, MICAMODE
 
 from settings import font, tFont
 from functions import get_trans, get_options, get_history
@@ -39,6 +40,10 @@ class HistoryWin(QWidget):
 
         layout.addWidget(text)
         layout.addLayout(hbox)
+
+        if self.options['settings.4.option']:
+            self.setAttribute(Qt.WA_TranslucentBackground)
+            ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
         self.setLayout(layout)
         self.setWindowTitle(self.trans['window.history.title'])

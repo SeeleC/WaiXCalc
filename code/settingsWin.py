@@ -6,6 +6,7 @@ from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal
 from asyncio import run, create_task
 from sys import getwindowsversion
+from win32mica import ApplyMica, MICAMODE
 
 from settings import __version__, tFont, font
 from functions import save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_translated_messagebox
@@ -43,6 +44,10 @@ class SettingsWin(QTabWidget):
 
 	def init_ui(self):
 		run(self.init_tabs())
+
+		if self.options['settings.4.option']:
+			self.setAttribute(Qt.WA_TranslucentBackground)
+			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 		self.setFont(font)
 		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
