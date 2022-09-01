@@ -25,9 +25,9 @@ class OpenedFormulaWin(QWidget):
 				self.results.append(calculate(i))
 			except (ZeroDivisionError, ValueError):
 				self.results.append(self.trans['text.main.error'])
-		self.initUI()
+		self.init_ui()
 
-	def initUI(self):
+	def init_ui(self):
 		self.setFont(font)
 		layout = QVBoxLayout()
 		self.now_page = 1

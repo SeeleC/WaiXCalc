@@ -57,19 +57,19 @@ class SettingsWin(QTabWidget):
 
 	async def init_tabs(self):
 		task1 = create_task(
-			self.init_tab(self.trans['settings.1.title'], self.calculateTab)
+			self.init_tab(self.trans['settings.1.title'], self.calculate_tab)
 		)
 		task2 = create_task(
-			self.init_tab(self.trans['settings.4.title'], self.styleTab)
+			self.init_tab(self.trans['settings.4.title'], self.style_tab)
 		)
 		task3 = create_task(
-			self.init_tab(self.trans['settings.2.title'], self.historyTab)
+			self.init_tab(self.trans['settings.2.title'], self.history_tab)
 		)
 		task4 = create_task(
-			self.init_tab(self.trans['settings.3.title'], self.languageTab)
+			self.init_tab(self.trans['settings.3.title'], self.language_tab)
 		)
 		task5 = create_task(
-			self.init_tab(self.trans['settings.5.title'], self.aboutTab)
+			self.init_tab(self.trans['settings.5.title'], self.about_tab)
 		)
 
 		await task1
@@ -80,9 +80,9 @@ class SettingsWin(QTabWidget):
 
 	async def init_tab(self, title, function):
 		lyt = function()
-		self.addNewTab(lyt, title)
+		self.add_tab(lyt, title)
 
-	def addOptionEntry(self, layout: QVBoxLayout, widget: QCheckBox) -> QVBoxLayout:
+	def add_option_entry(self, layout: QVBoxLayout, widget: QCheckBox) -> QVBoxLayout:
 		if isinstance(widget, QCheckBox):
 			widget.stateChanged.connect(self.checked)
 		else:
@@ -94,7 +94,7 @@ class SettingsWin(QTabWidget):
 		layout.addLayout(hbox)
 		return layout
 
-	def addEnterEntry(self, layout: QVBoxLayout, title: str, widget: QLineEdit, text: str = '') -> QVBoxLayout:
+	def add_enter_entry(self, layout: QVBoxLayout, title: str, widget: QLineEdit, text: str = '') -> QVBoxLayout:
 		widget.setText(text)
 
 		hbox = QHBoxLayout()
@@ -108,7 +108,7 @@ class SettingsWin(QTabWidget):
 
 		return layout
 
-	def addNewTab(self, inner: QVBoxLayout, name: str):
+	def add_tab(self, inner: QVBoxLayout, name: str):
 		widget = QWidget()
 		outer = QVBoxLayout()
 		s = QScrollArea()
@@ -116,49 +116,49 @@ class SettingsWin(QTabWidget):
 		inner.addStretch()
 		s.setLayout(inner)
 		outer.addWidget(s)
-		self.addBottomButton(outer)
+		self.add_bottom_button(outer)
 		widget.setLayout(outer)
 
 		self.update_status()
 		self.addTab(widget, name)
 
-	def calculateTab(self) -> QVBoxLayout:
+	def calculate_tab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
 		for i, j in get_trans_entry(self.trans, 'settings.1.option').items():
 			self.checkboxes[i] = QCheckBox(j)
-			l = self.addOptionEntry(l, self.checkboxes[i])
+			l = self.add_option_entry(l, self.checkboxes[i])
 		return l
 
-	def historyTab(self) -> QVBoxLayout:
+	def history_tab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
 		# for i, j in get_trans_entry(self.trans, 'settings.2.option').items():
 		# 	self.checkboxes[i] = QCheckBox(j)
 		# 	l = self.addOptionEntry(l, self.checkboxes[i])
 		self.checkboxes['settings.2.option'] = QCheckBox(self.trans['settings.2.option'])
-		l = self.addOptionEntry(l, self.checkboxes['settings.2.option'])
+		l = self.add_option_entry(l, self.checkboxes['settings.2.option'])
 
 		btn = QPushButton(self.trans['settings.2.button'])
 		btn.clicked.connect(self.clear_history)
 		l.addWidget(btn)
 		return l
 
-	def languageTab(self) -> QVBoxLayout:
+	def language_tab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
 
 		for name, id in get_trans_info().items():
 			self.radiobuttons[id] = QRadioButton(name)
-			l = self.addOptionEntry(l, self.radiobuttons[id])
+			l = self.add_option_entry(l, self.radiobuttons[id])
 
 			if id == self.options['language']:
 				self.radiobuttons[id].setChecked(True)
 
 		return l
 
-	def styleTab(self) -> QVBoxLayout:
+	def style_tab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
 
 		self.checkboxes['settings.4.option'] = QCheckBox(self.trans['settings.4.option'])
-		l = self.addOptionEntry(l, self.checkboxes['settings.4.option'])
+		l = self.add_option_entry(l, self.checkboxes['settings.4.option'])
 
 		if getwindowsversion().build < 22000:
 			self.checkboxes['settings.4.option'].setEnabled(False)
@@ -179,11 +179,11 @@ class SettingsWin(QTabWidget):
 		l.addLayout(hbox)
 
 		self.window_title = QLineEdit()
-		self.addEnterEntry(l, self.trans['settings.4.text.2'], self.window_title, self.options['window_title'])
+		self.add_enter_entry(l, self.trans['settings.4.text.2'], self.window_title, self.options['window_title'])
 
 		return l
 
-	def aboutTab(self) -> QVBoxLayout:
+	def about_tab(self) -> QVBoxLayout:
 		outer_vbox = QVBoxLayout()
 		outer_vbox.addStretch(1)
 
@@ -225,7 +225,7 @@ class SettingsWin(QTabWidget):
 				self.check['settings.1.option.2'] = False
 			self.update_status()
 
-	def addBottomButton(self, layout: QVBoxLayout):
+	def add_bottom_button(self, layout: QVBoxLayout):
 		hbox = QHBoxLayout()
 
 		ok = QPushButton(self.trans['button.ok'])

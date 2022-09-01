@@ -16,9 +16,9 @@ class HistoryWin(QWidget):
         self.history = get_history()
         self.trans = get_trans()
 
-        self.initUI()
+        self.init_ui()
 
-    def initUI(self):
+    def init_ui(self):
         layout = QVBoxLayout()
 
         text = QTextEdit()
