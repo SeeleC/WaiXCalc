@@ -12,29 +12,24 @@ from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_
 
 def get_data() -> dict[Union[str, list, bool]]:
 	"""
-	获取data/data.json的内容，具有向下兼容性
+	获取data/cache.json的内容，具有一定的向下兼容性
 	"""
 	try:
-		with open('data/formula_data.json', 'r', encoding='utf-8') as f:
+		with open('data/data.json', 'r', encoding='utf-8') as f:
 			data: dict = load(f)
 	except FileNotFoundError:
 		try:
-			with open('data/data.json', 'r', encoding='utf-8') as f:
+			with open('data/cache.json', 'r', encoding='utf-8') as f:
 				data = load(f)
 		except FileNotFoundError:
 			data = default_data
 	else:
-		remove('data/formula_data.json')
-
-		if 'settings' in data.keys():
-			options = data
-			data = {**default_data, 'isResult': options.pop('isResult')}
-			save('data/options.json', options)
+		remove('data/data.json')
 
 	if data != default_data:
 		data = mend_dict_item(data, default_data)
 
-	save('data/data.json', data)
+	save('data/cache.json', data)
 	return data
 
 
@@ -168,7 +163,7 @@ def get_translated_messagebox(
 		title: str,
 		text: str,
 		parent: QWidget = None
-):
+	):
 	if isinstance(icon, QMessageBox.Icon):
 		box = QMessageBox(icon, title, text, QMessageBox.Ok, parent)
 	else:
