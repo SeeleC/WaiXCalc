@@ -47,5 +47,5 @@ class HistoryWin(QWidget):
 
         self.setLayout(layout)
         self.setWindowTitle(self.trans['window.history.title'])
-        self.setWindowIcon(QIcon('resource/images/ico.JPG'))
+        self.setWindowIcon(QIcon('resource/images/icon.jpg'))
         self.resize(600, 400)

@@ -82,7 +82,7 @@ class WaiX(QMainWindow):
 		self.actions = []
 		run(self.init_menubar(names, statustips, functions, shortcuts))
 
-		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
+		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.setWindowTitle(self.options['window_title'])
 		self.resize(672, 0)
 		self.setMaximumSize(self.width(), self.height())

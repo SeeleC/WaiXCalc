@@ -96,7 +96,7 @@ class OpenedFormulaWin(QWidget):
 			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 		self.setLayout(layout)
-		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
+		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.setWindowTitle(self.trans['window.open.title'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())

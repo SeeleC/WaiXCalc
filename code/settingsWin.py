@@ -50,7 +50,7 @@ class SettingsWin(QTabWidget):
 			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 		self.setFont(font)
-		self.setWindowIcon(QIcon('resource/images/ico.JPG'))
+		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.setWindowTitle(self.trans['window.settings.title'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
@@ -194,7 +194,7 @@ class SettingsWin(QTabWidget):
 		inner_vbox.addStretch(1)
 
 		image = QLabel()
-		image.setPixmap(QPixmap('resource\\images\\ico.JPG'))
+		image.setPixmap(QPixmap('resource\\images\\icon.jpg'))
 		image.setFixedSize(100, 100)
 		image.setScaledContents(True)
 		inner_vbox.addWidget(image)
