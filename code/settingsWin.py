@@ -131,11 +131,11 @@ class SettingsWin(QTabWidget):
 
 	def historyTab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
-		# for i, j in self.trans['settings']['settingsTab2']['options'].items():
-		# 	self.checkboxes[i] = QCheckBox(j)
-		# 	l = self.addEntry(l, self.checkboxes[i])
-		self.checkboxes['settings.2.option'] = QCheckBox(self.trans['settings.2.option'])
-		l = self.addOptionEntry(l, self.checkboxes['settings.2.option'])
+		for i, j in get_trans_entry(self.trans, 'settings.2.option').items():
+			self.checkboxes[i] = QCheckBox(j)
+			l = self.addOptionEntry(l, self.checkboxes[i])
+		# self.checkboxes['settings.2.option.1'] = QCheckBox(self.trans['settings.2.option.1'])
+		# l = self.addOptionEntry(l, self.checkboxes['settings.2.option.1'])
 
 		btn = QPushButton(self.trans['settings.2.button'])
 		btn.clicked.connect(self.clear_history)
@@ -225,7 +225,7 @@ class SettingsWin(QTabWidget):
 				self.check['settings.1.option.2'] = False
 			self.update_status()
 
-	def addBottomButton(self, layout: QVBoxLayout, mode: int = 0):
+	def addBottomButton(self, layout: QVBoxLayout):
 		hbox = QHBoxLayout()
 
 		ok = QPushButton(self.trans['button.ok'])

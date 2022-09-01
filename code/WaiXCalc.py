@@ -210,7 +210,7 @@ class WaiX(QMainWindow):
 		self.options['latest_pos_y'] = self.pos().y()
 
 		save('data/options.json', self.options)
-		save('data/data.json', self.data)
+		save('data/cache.json', self.data)
 
 	def copy(self):
 		self.clipboard.setText(''.join([i for i in self.formula]).strip())
