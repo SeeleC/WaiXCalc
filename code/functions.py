@@ -307,7 +307,7 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
 		if float(formula[0]) % 1 == 0:
 			result = int(float(formula[0]))
 		else:
-			result = formula[0]
+			result = float(formula[0])
 		return result
 	except ValueError:
 		return formula[0]
