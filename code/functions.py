@@ -103,6 +103,9 @@ def get_options() -> dict[Union[dict[str], str]]:
 			settings = data.pop('options')
 			data = {**settings, **data}
 
+		if 'settings.2.option' in data.keys():
+			data['settings.2.option.1'] = data.pop('settings.2.option')
+
 	if data != default_options:
 		data = mend_dict_item(data, default_options)
 

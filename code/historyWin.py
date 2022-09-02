@@ -1,9 +1,8 @@
-from os import remove
-
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QLabel, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
+from os import remove
 
 from settings import font, tFont
 from functions import get_trans, get_options, get_reversed_list, get_translated_messagebox

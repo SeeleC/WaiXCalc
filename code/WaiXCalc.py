@@ -171,7 +171,7 @@ class WaiX(QMainWindow):
 				elif self.options['settings.1.option.3']:
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
-				if self.options['settings.2.option']:
+				if self.options['settings.2.option.1']:
 					self.history.append(''.join([i + ' ' for i in self.formula]) + '= ' + str(result))
 
 				self.clear_edit()
@@ -210,6 +210,8 @@ class WaiX(QMainWindow):
 
 		save('data/options.json', self.options)
 		save('data/cache.json', self.data)
+		if self.options['settings.2.option.2']:
+			save('data/history.json', self.history)
 
 	def copy(self):
 		self.clipboard.setText(''.join([i for i in self.formula]).strip())
