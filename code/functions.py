@@ -133,7 +133,7 @@ def get_options() -> dict[Union[dict[str], str]]:
 
 
 def get_reversed_list(lst: list):
-	lst2 = lst[:0:-1]
+	lst2 = lst[::-1]
 	return lst2
 
 
