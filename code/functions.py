@@ -116,6 +116,11 @@ def get_options() -> dict[Union[dict[str], str]]:
 	return data
 
 
+def get_reversed_list(lst: list):
+	lst.reverse()
+	return lst
+
+
 def get_trans() -> dict[str]:
 	"""
 	获取翻译文件

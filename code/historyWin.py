@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
 
 from settings import font, tFont
-from functions import get_trans, get_options, get_history
+from functions import get_trans, get_options, get_history, get_reversed_list
 
 
 class HistoryWin(QWidget):
@@ -27,7 +27,7 @@ class HistoryWin(QWidget):
         widget = QWidget()
         widget.setLayout(inner)
 
-        for i in [f + ' ' for f in self.history]:
+        for i in [f + ' ' for f in get_reversed_list(self.history)]:
             self.add_entry(i, inner)
         inner.addStretch(1)
 
