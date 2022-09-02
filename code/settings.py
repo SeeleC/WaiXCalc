@@ -21,6 +21,7 @@ default_options = {
 	'language': 'en_us',
 	'font': 'Segoe UI',
 	'window_title': 'WaiXCalc',
+	'enableDarkMode': False
 }
 
 default_data = {

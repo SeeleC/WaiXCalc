@@ -47,7 +47,10 @@ class SettingsWin(QTabWidget):
 
 		if self.options['settings.4.option']:
 			self.setAttribute(Qt.WA_TranslucentBackground)
-			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
+			if self.options['enableDarkMode']:
+				ApplyMica(int(self.winId()), MICAMODE.DARK)
+			else:
+				ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 		self.setFont(font)
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))

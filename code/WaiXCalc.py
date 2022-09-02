@@ -45,6 +45,8 @@ class WaiX(QMainWindow):
 		tFont.setFamily(self.options['font'])
 		mFont.setFamily(self.options['font'])
 
+		self.options['enableDarkMode'] = detect_dark_mode()
+
 		self.init_ui()
 		self.show()
 
@@ -90,7 +92,10 @@ class WaiX(QMainWindow):
 
 		if self.options['settings.4.option']:
 			self.setAttribute(Qt.WA_TranslucentBackground)
-			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
+			if self.options['enableDarkMode']:
+				ApplyMica(int(self.winId()), MICAMODE.DARK)
+			else:
+				ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 		if self.data['latest_pos_x'] or self.data['latest_pos_y']:
 			self.move(self.data['latest_pos_x'], self.data['latest_pos_y'])

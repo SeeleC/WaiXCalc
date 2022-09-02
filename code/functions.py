@@ -6,8 +6,27 @@ from re import match
 from typing import Union
 from json import load, dump
 from os import mkdir, listdir, remove
+from winreg import ConnectRegistry, HKEY_CURRENT_USER, OpenKey, EnumValue
 
 from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, font
+
+
+def detect_dark_mode(): 
+	registry = ConnectRegistry(None, HKEY_CURRENT_USER)
+	reg_keypath = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize'
+	try:
+		reg_key = OpenKey(registry, reg_keypath)
+	except FileNotFoundError:
+		return False
+
+	for i in range(1024):
+		try:
+			value_name, value, _ = EnumValue(reg_key, i)
+			if value_name == 'AppsUseLightTheme':
+				return value == 0
+		except OSError:
+			break
+	return False
 
 
 def get_data() -> dict[Union[str, list, bool]]:
