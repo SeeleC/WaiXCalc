@@ -8,6 +8,8 @@ from json import load, dump
 from os import mkdir, listdir, remove
 from winreg import ConnectRegistry, HKEY_CURRENT_USER, OpenKey, EnumValue
 
+from win32mica import ApplyMica, MICAMODE
+
 from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, font
 
 
@@ -180,7 +182,8 @@ def get_translated_messagebox(
 		icon: Union[QMessageBox.Icon, QPixmap],
 		title: str,
 		text: str,
-		parent: QWidget = None
+		parent: QWidget = None,
+		dark_mode: bool = False
 	):
 	if isinstance(icon, QMessageBox.Icon):
 		box = QMessageBox(icon, title, text, QMessageBox.Ok, parent)
@@ -192,6 +195,11 @@ def get_translated_messagebox(
 	ok.setText(get_trans()['button.ok'])
 
 	box.setFont(font)
+
+	if dark_mode:
+		ApplyMica(int(box.winId()), MICAMODE.DARK)
+	else:
+		ApplyMica(int(box.winId()), MICAMODE.LIGHT)
 
 	return box
 

@@ -91,5 +91,6 @@ class HistoryWin(QWidget):
             QMessageBox.Icon.NoIcon,
             self.trans['hint.history.title'],
             self.trans['hint.history.clear'],
-            self
+            self,
+            self.options['enableDarkMode']
         ).show()

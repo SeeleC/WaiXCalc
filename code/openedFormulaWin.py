@@ -143,7 +143,8 @@ class OpenedFormulaWin(QWidget):
 			QMessageBox.Icon.Information,
 			self.trans['window.hint.title'],
 			self.trans['hint.open.copyCurrent'],
-			self
+			self,
+			self.options['enableDarkMode']
 		).show()
 
 	def copy_all(self):
@@ -154,7 +155,8 @@ class OpenedFormulaWin(QWidget):
 			QMessageBox.Icon.Information,
 			self.trans['window.hint.title'],
 			self.trans['hint.open.copyAll'],
-			self
+			self,
+			self.options['enableDarkMode']
 		).show()
 
 	def save_result(self):
@@ -168,5 +170,6 @@ class OpenedFormulaWin(QWidget):
 			QMessageBox.Icon.Information,
 			self.trans['window.hint.title'],
 			self.trans['hint.open.export'],
-			self
+			self,
+			self.options['enableDarkMode']
 		).show()

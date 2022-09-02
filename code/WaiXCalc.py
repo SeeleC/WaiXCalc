@@ -46,6 +46,7 @@ class WaiX(QMainWindow):
 		mFont.setFamily(self.options['font'])
 
 		self.options['enableDarkMode'] = detect_dark_mode()
+		save('data/options.json', self.options)
 
 		self.init_ui()
 		self.show()
@@ -367,7 +368,8 @@ class WaiX(QMainWindow):
 			QMessageBox.Icon.NoIcon,
 			self.trans['window.help.title'],
 			self.trans['text.help.content'],
-			self
+			self,
+			self.options['enableDarkMode']
 		).show()
 
 	def openHistoryWin(self):
@@ -379,7 +381,8 @@ class WaiX(QMainWindow):
 				QMessageBox.Icon.Information,
 				self.trans['hint.history.title'],
 				self.trans['hint.history.empty'],
-				self
+				self,
+				self.options['enableDarkMode']
 			).show()
 
 	def openNewFormulaWin(self):
@@ -395,7 +398,8 @@ class WaiX(QMainWindow):
 					QMessageBox.Icon.Warning,
 					self.trans['window.hint.title'],
 					self.trans['hint.open.error'],
-					self
+					self,
+					self.options['enableDarkMode']
 				).show()
 		else:
 			self.newWin = OpenedFormulaWin(formulas)
@@ -454,7 +458,8 @@ class WaiX(QMainWindow):
 			QMessageBox.Icon.NoIcon,
 			self.trans['window.whole.title'],
 			''.join(f),
-			self
+			self,
+			self.options['enableDarkMode']
 		).show()
 
 

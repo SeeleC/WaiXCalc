@@ -247,7 +247,8 @@ class SettingsWin(QTabWidget):
 						QMessageBox.Icon.Information,
 						self.trans['window.hint.title'],
 						self.trans['settings.4.hint'],
-						self
+						self,
+						self.options['enableDarkMode']
 					).show()
 
 				for i in self.check.keys():
