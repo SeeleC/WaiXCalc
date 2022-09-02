@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QScrollArea, QLabel
-from PyQt5.QtGui import QIcon, QKeySequence
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QLabel
+from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
 
