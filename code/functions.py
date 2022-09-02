@@ -44,8 +44,7 @@ def get_history() -> list[str]:
 			save('data/options.json', options)
 		else:
 			hdata = []
-
-	save('data/history.json', hdata)
+		save('data/history.json', hdata)
 	return hdata
 
 
