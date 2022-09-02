@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QTextEdit, QScrollArea, QLabel
+from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
 
@@ -19,33 +19,60 @@ class HistoryWin(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        layout = QVBoxLayout()
+        outer = QVBoxLayout()
 
-        text = QTextEdit()
-        text.setFont(tFont)
-        text.setText(''.join([i[:-1] + '\n\n' for i in [i + ' ' for i in self.history]]).rstrip())
-        if not self.options['settings.2.option']:
-            text.append('\n\n' + self.trans['text.history.disabled'])
-        text.setReadOnly(True)
+        area = QScrollArea()
+        area.setWidgetResizable(True)
+        inner = QVBoxLayout()
+        widget = QWidget()
+        widget.setLayout(inner)
+
+        for i in [f + ' ' for f in self.history]:
+            self.add_entry(i, inner)
+        inner.addStretch(1)
+
+        area.setWidget(widget)
+        outer.addWidget(area)
 
         hbox = QHBoxLayout()
 
         ok = QPushButton(self.trans['button.back'])
         ok.setFont(font)
-        ok.setShortcut('Return')
+        ok.setShortcut('Escape')
         ok.clicked.connect(self.close)
 
         hbox.addStretch(1)
         hbox.addWidget(ok)
 
-        layout.addWidget(text)
-        layout.addLayout(hbox)
+        outer.addLayout(hbox)
 
         if self.options['settings.4.option']:
             self.setAttribute(Qt.WA_TranslucentBackground)
             ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
-        self.setLayout(layout)
+        self.setLayout(outer)
         self.setWindowTitle(self.trans['window.history.title'])
         self.setWindowIcon(QIcon('resource/images/icon.jpg'))
         self.resize(600, 400)
+
+    def add_entry(self, formula, layout):
+        f, r = formula.split(' = ')
+
+        f_box = QHBoxLayout()
+        f_box.addStretch(1)
+
+        f_label = QLabel(f + ' =')
+        f_label.setFont(font)
+        f_label.setStyleSheet('color:#838383;')
+        f_box.addWidget(f_label)
+
+        r_box = QHBoxLayout()
+        r_box.addStretch(1)
+
+        r_label = QLabel(r)
+        r_label.setFont(tFont)
+        r_label.setStyleSheet('color:#0c0c0c;')
+        r_box.addWidget(r_label)
+
+        layout.addLayout(f_box)
+        layout.addLayout(r_box)
