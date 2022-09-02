@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
 from os import remove
 
-from settings import font, tFont
+from settings import rFont, tFont
 from functions import get_trans, get_options, get_reversed_list, get_translated_messagebox
 
 
@@ -20,7 +20,7 @@ class HistoryWin(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setFont(font)
+        self.setFont(rFont)
         outer = QVBoxLayout()
 
         self.area = QScrollArea()
@@ -72,7 +72,7 @@ class HistoryWin(QWidget):
             box = QHBoxLayout()
             box.addStretch(1)
             label = QLabel(text)
-            label.setFont(font)
+            label.setFont(rFont)
             label.setStyleSheet(color)
             label.setWordWrap(True)
             box.addWidget(label)

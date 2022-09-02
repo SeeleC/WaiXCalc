@@ -10,7 +10,7 @@ from winreg import ConnectRegistry, HKEY_CURRENT_USER, OpenKey, EnumValue
 
 from win32mica import ApplyMica, MICAMODE
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, font
+from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, rFont
 
 
 def detect_dark_mode(): 
@@ -194,7 +194,7 @@ def get_translated_messagebox(
 	ok = box.button(QMessageBox.Ok)
 	ok.setText(get_trans()['button.ok'])
 
-	box.setFont(font)
+	box.setFont(rFont)
 
 	if dark_mode:
 		ApplyMica(int(box.winId()), MICAMODE.DARK)

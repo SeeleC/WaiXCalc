@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon
 from win32mica import ApplyMica, MICAMODE
 
 from functions import calculate, get_trans, get_translated_messagebox, get_options
-from settings import font, tFont
+from settings import rFont, tFont
 
 
 class OpenedFormulaWin(QWidget):
@@ -28,7 +28,7 @@ class OpenedFormulaWin(QWidget):
 		self.init_ui()
 
 	def init_ui(self):
-		self.setFont(font)
+		self.setFont(rFont)
 		layout = QVBoxLayout()
 		self.now_page = 1
 

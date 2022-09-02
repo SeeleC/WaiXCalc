@@ -35,7 +35,7 @@ default_data = {
 	'latest_pos_y': 0,
 }
 
-font = QFont()
+rFont = QFont()
 # font.setPointSize(8)
 
 hFont = QFont()

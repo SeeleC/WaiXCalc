@@ -40,7 +40,7 @@ class WaiX(QMainWindow):
 
 		self.clipboard = QApplication.clipboard()
 
-		font.setFamily(self.options['font'])
+		rFont.setFamily(self.options['font'])
 		hFont.setFamily(self.options['font'])
 		tFont.setFamily(self.options['font'])
 		mFont.setFamily(self.options['font'])
@@ -237,7 +237,7 @@ class WaiX(QMainWindow):
 	def font_update(self):
 		self.options = get_options()
 
-		font.setFamily(self.options['font'])
+		rFont.setFamily(self.options['font'])
 		hFont.setFamily(self.options['font'])
 		tFont.setFamily(self.options['font'])
 		mFont.setFamily(self.options['font'])

@@ -8,7 +8,7 @@ from asyncio import run, create_task
 from sys import getwindowsversion
 from win32mica import ApplyMica, MICAMODE
 
-from settings import __version__, tFont, font
+from settings import __version__, tFont, rFont
 from functions import save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_translated_messagebox
 
 
@@ -52,7 +52,7 @@ class SettingsWin(QTabWidget):
 			else:
 				ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
-		self.setFont(font)
+		self.setFont(rFont)
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.setWindowTitle(self.trans['window.settings.title'])
 		self.resize(600, 400)
