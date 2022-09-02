@@ -84,7 +84,11 @@ class HistoryWin(QWidget):
 
     def clear_history(self):
         self.history.clear()
-        remove('data/history.json')
+
+        try:
+            remove('data/history.json')
+        except FileNotFoundError:
+            pass
 
         self.close()
         get_translated_messagebox(
