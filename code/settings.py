@@ -12,7 +12,7 @@ num_widths = {
 }  # weight / 640
 
 default_options = {
-	'settings.1.option.1': True,
+	'settings.1.option.1': False,
 	'settings.1.option.2': False,
 	'settings.1.option.3': False,
 	'settings.2.option.1': True,
