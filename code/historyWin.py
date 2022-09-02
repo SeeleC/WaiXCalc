@@ -1,19 +1,21 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QLabel
+from os import remove
+
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QLabel, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
 
 from settings import font, tFont
-from functions import get_trans, get_options, get_history, get_reversed_list
+from functions import get_trans, get_options, get_reversed_list, get_translated_messagebox
 
 
 class HistoryWin(QWidget):
-    def __init__(self):
+    def __init__(self, history):
         super().__init__()
         self.setWindowFlag(Qt.WindowCloseButtonHint)
 
-        self.options = get_options()
-        self.history = get_history()
+        self.options: dict = get_options()
+        self.history: list = history
         self.trans = get_trans()
 
         self.init_ui()
@@ -22,8 +24,8 @@ class HistoryWin(QWidget):
         self.setFont(font)
         outer = QVBoxLayout()
 
-        area = QScrollArea()
-        area.setWidgetResizable(True)
+        self.area = QScrollArea()
+        self.area.setWidgetResizable(True)
         inner = QVBoxLayout()
         widget = QWidget()
         widget.setLayout(inner)
@@ -32,8 +34,8 @@ class HistoryWin(QWidget):
             self.add_entry(i, inner)
         inner.addStretch(1)
 
-        area.setWidget(widget)
-        outer.addWidget(area)
+        self.area.setWidget(widget)
+        outer.addWidget(self.area)
 
         hbox = QHBoxLayout()
         hbox.addStretch(1)
@@ -82,10 +84,13 @@ class HistoryWin(QWidget):
         layout.addLayout(r_box)
 
     def clear_history(self):
-        save('data/history.json', [])
+        self.history.clear()
+        remove('data/history.json')
+
+        self.close()
         get_translated_messagebox(
-            QMessageBox.Icon.Information,
-            self.trans['window.hint.title'],
-            self.trans['settings.2.hint.2'],
+            QMessageBox.Icon.NoIcon,
+            self.trans['hint.history.title'],
+            self.trans['hint.history.clear'],
             self
         ).show()

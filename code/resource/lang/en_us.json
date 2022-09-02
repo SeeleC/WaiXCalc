@@ -66,8 +66,9 @@
   "hint.open.export": "Exported!",
   "hint.open.error": "Error",
 
-  "hint.history.empty.title": "History",
-  "hint.history.empty.content": "Empty!",
+  "hint.history.title": "History",
+  "hint.history.empty": "No history yet",
+  "hint.history.clear": "Cleared!",
 
   "hint.create.tooShort": "Too short!",
 

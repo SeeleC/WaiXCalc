@@ -29,6 +29,7 @@ class WaiX(QMainWindow):
 		self.options: dict = get_options()
 		self.trans: dict = get_trans()
 		self.data = get_data()
+		self.history = get_history()
 
 		self.isResult: bool = self.data['isResult']
 		self.formula: list = self.data['formula']
@@ -171,9 +172,7 @@ class WaiX(QMainWindow):
 					result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
 
 				if self.options['settings.2.option']:
-					history = get_history()
-					history.append(''.join([i + ' ' for i in self.formula]) + '= ' + str(result))
-					save('data/history.json', history)
+					self.history.append(''.join([i + ' ' for i in self.formula]) + '= ' + str(result))
 
 				self.clear_edit()
 				self.formula = [str(result)]
@@ -365,15 +364,14 @@ class WaiX(QMainWindow):
 		).show()
 
 	def openHistoryWin(self):
-		history = get_history()
-		if len(history) != 0:
-			self.newWin = HistoryWin()
+		if len(self.history) != 0:
+			self.newWin = HistoryWin(self.history)
 			self.newWin.show()
 		else:
 			get_translated_messagebox(
 				QMessageBox.Icon.Information,
-				self.trans['hint.history.empty.title'],
-				self.trans['hint.history.empty.content'],
+				self.trans['hint.history.title'],
+				self.trans['hint.history.empty'],
 				self
 			).show()
 

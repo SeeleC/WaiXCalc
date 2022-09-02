@@ -36,16 +36,10 @@ def get_data() -> dict[Union[str, list, bool]]:
 def get_history() -> list[str]:
 	try:
 		with open('data/history.json', 'r', encoding='utf-8') as f:
-			hdata = load(f)
+			return load(f)
 	except FileNotFoundError:
-		options = get_options()
-		if 'history' in options.keys():
-			hdata = options.pop('history')
-			save('data/options.json', options)
-		else:
-			hdata = []
-		save('data/history.json', hdata)
-	return hdata
+		pass
+	return []
 
 
 def get_menu_items(trans: dict):

@@ -66,8 +66,9 @@
   "hint.open.export": "已复制!",
   "hint.open.error": "错误",
 
-  "hint.history.empty.title": "历史",
-  "hint.history.empty.content": "历史为空",
+  "hint.history.title": "历史",
+  "hint.history.empty": "尚无历史记录",
+  "hint.history.clear": "已清空历史记录",
 
   "hint.create.tooShort": "算式过短!",
 
