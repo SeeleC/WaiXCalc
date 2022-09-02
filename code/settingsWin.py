@@ -237,8 +237,8 @@ class SettingsWin(QTabWidget):
 	def clicked(self):
 		sender = self.sender()
 		if sender.text() in [self.trans['button.ok'], self.trans['button.cancel']]:
+			self.close()
 			if sender.text() == self.trans['button.ok']:
-
 				if self.checkboxes['settings.4.option'].isChecked() != self.options['settings.4.option']:
 					get_translated_messagebox(
 						QMessageBox.Icon.Information,
@@ -246,6 +246,7 @@ class SettingsWin(QTabWidget):
 						self.trans['settings.4.hint'],
 						self
 					).show()
+
 				for i in self.check.keys():
 					self.options[i] = self.check[i]
 				for i in self.radiobuttons.values():
@@ -267,22 +268,16 @@ class SettingsWin(QTabWidget):
 
 				save('data/options.json', self.options)
 				self.options_signal.emit(True)
-
-			if sender.text() in [self.trans['button.ok'], self.trans['button.cancel']]:
-				self.close()
 		elif sender.text() == self.trans['settings.5.button']:
 			QMessageBox.aboutQt(self, self.trans['settings.5.button'])
 
 	def update_status(self):
 		self.autoCheck = True
-		bools = [self.check[i] for i in self.check]
-		for bool, name in zip(bools, self.check.keys()):
-			try:
-				self.checkboxes[name].setChecked(bool)
-			except KeyError:
-				pass
+		for value, name in zip(self.check.values(), self.check.keys()):
+			if name in self.checkboxes.keys():
+				self.checkboxes[name].setChecked(value)
 
-			if name == 'settings.1.option.1':
-				for i in range(2):
-					self.checkboxes[f'settings.1.option.{i + 2}'].setEnabled(bool)
+				if name == 'settings.1.option.1':
+					for i in range(2):
+						self.checkboxes[f'settings.1.option.{i + 2}'].setEnabled(value)
 		self.autoCheck = False
