@@ -71,6 +71,7 @@ class HistoryWin(QWidget):
             label = QLabel(text)
             label.setFont(font)
             label.setStyleSheet(color)
+            label.setWordWrap(True)
             box.addWidget(label)
             layout.addLayout(box)
 
