@@ -172,7 +172,7 @@ class WaiX(QMainWindow):
 
 				if self.options['settings.2.option']:
 					history = get_history()
-					history.append(''.join([i + ' ' for i in self.formula]) + '=' + ' ' + str(result))
+					history.append(''.join([i + ' ' for i in self.formula]) + '= ' + str(result))
 					save('data/history.json', history)
 
 				self.clear_edit()

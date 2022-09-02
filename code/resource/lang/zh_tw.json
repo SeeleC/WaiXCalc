@@ -43,10 +43,8 @@
   "settings.1.option.3": "僅顯示小數結果",
 
   "settings.2.title": "歷史",
-  "settings.2.option": "使用歷史記錄",
-  "settings.2.button": "清空歷史..",
-  "settings.2.hint.1": "確定要清空歷史嗎",
-  "settings.2.hint.2": "已經清空歷史",
+  "settings.2.option.1": "啟用歷史記錄",
+  "settings.2.option.2": "保留歷史記錄",
 
   "settings.3.title": "多語言",
 
@@ -69,7 +67,7 @@
   "hint.open.error": "錯誤",
 
   "hint.history.empty.title": "歷史",
-  "hint.history.empty.content": "歷史為空",
+  "hint.history.empty.content": "沒有歷史記錄！",
 
   "hint.create.tooShort": "算式過短！",
 
@@ -81,5 +79,6 @@
 
   "button.ok": "確定",
   "button.cancel": "取消",
-  "button.back": "返回"
+  "button.back": "返回",
+  "button.clear_history": "清空"
 }

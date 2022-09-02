@@ -43,10 +43,8 @@
   "settings.1.option.3": "Only Decimal Result",
 
   "settings.2.title": "History",
-  "settings.2.option": "Enable Record History",
-  "settings.2.button": "Clear History",
-  "settings.2.hint.1": "Are you sure?",
-  "settings.2.hint.2": "Cleared!",
+  "settings.2.option.1": "Enable Record History",
+  "settings.2.option.2": "Keep History",
 
   "settings.3.title": "Language",
 
@@ -81,5 +79,6 @@
 
   "button.ok": "OK",
   "button.cancel": "Cancel",
-  "button.back": "Back"
+  "button.back": "Back",
+  "button.clear_history": "Clear"
 }

@@ -19,6 +19,7 @@ class HistoryWin(QWidget):
         self.init_ui()
 
     def init_ui(self):
+        self.setFont(font)
         outer = QVBoxLayout()
 
         area = QScrollArea()
@@ -35,13 +36,16 @@ class HistoryWin(QWidget):
         outer.addWidget(area)
 
         hbox = QHBoxLayout()
+        hbox.addStretch(1)
+
+        clear = QPushButton(self.trans['button.clear_history'])
+        clear.clicked.connect(self.clear_history)
 
         ok = QPushButton(self.trans['button.back'])
-        ok.setFont(font)
         ok.setShortcut('Escape')
         ok.clicked.connect(self.close)
 
-        hbox.addStretch(1)
+        hbox.addWidget(clear)
         hbox.addWidget(ok)
 
         outer.addLayout(hbox)
@@ -76,3 +80,12 @@ class HistoryWin(QWidget):
 
         layout.addLayout(f_box)
         layout.addLayout(r_box)
+
+    def clear_history(self):
+        save('data/history.json', [])
+        get_translated_messagebox(
+            QMessageBox.Icon.Information,
+            self.trans['window.hint.title'],
+            self.trans['settings.2.hint.2'],
+            self
+        ).show()

@@ -43,10 +43,8 @@
   "settings.1.option.3": "仅显示小数结果",
 
   "settings.2.title": "历史",
-  "settings.2.option": "启用历史记录",
-  "settings.2.button": "清空历史..",
-  "settings.2.hint.1": "确定要清空历史吗",
-  "settings.2.hint.2": "已清空历史",
+  "settings.2.option.1": "启用历史记录",
+  "settings.2.option.2": "保留历史记录",
 
   "settings.3.title": "语言",
 
@@ -81,5 +79,6 @@
 
   "button.ok": "确定",
   "button.cancel": "取消",
-  "button.back": "返回"
+  "button.back": "返回",
+  "button.clear_history": "清空"
 }

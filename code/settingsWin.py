@@ -131,15 +131,9 @@ class SettingsWin(QTabWidget):
 
 	def history_tab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
-		# for i, j in get_trans_entry(self.trans, 'settings.2.option').items():
-		# 	self.checkboxes[i] = QCheckBox(j)
-		# 	l = self.addOptionEntry(l, self.checkboxes[i])
-		self.checkboxes['settings.2.option'] = QCheckBox(self.trans['settings.2.option'])
-		l = self.add_option_entry(l, self.checkboxes['settings.2.option'])
-
-		btn = QPushButton(self.trans['settings.2.button'])
-		btn.clicked.connect(self.clear_history)
-		l.addWidget(btn)
+		for i, j in get_trans_entry(self.trans, 'settings.2.option').items():
+			self.checkboxes[i] = QCheckBox(j)
+			l = self.add_option_entry(l, self.checkboxes[i])
 		return l
 
 	def language_tab(self) -> QVBoxLayout:
@@ -292,12 +286,3 @@ class SettingsWin(QTabWidget):
 				for i in range(2):
 					self.checkboxes[f'settings.1.option.{i + 2}'].setEnabled(bool)
 		self.autoCheck = False
-
-	def clear_history(self):
-		save('data/history.json', [])
-		get_translated_messagebox(
-			QMessageBox.Icon.Information,
-			self.trans['window.hint.title'],
-			self.trans['settings.2.hint.2'],
-			self
-		).show()
