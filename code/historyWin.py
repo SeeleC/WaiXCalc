@@ -62,25 +62,17 @@ class HistoryWin(QWidget):
 
     def add_entry(self, formula, layout):
         f, r = formula.split(' = ')
+        texts = [f+' =', r]
+        colors = ['color:#838383;', 'color:#0c0c0c;']
 
-        f_box = QHBoxLayout()
-        f_box.addStretch(1)
-
-        f_label = QLabel(f + ' =')
-        f_label.setFont(font)
-        f_label.setStyleSheet('color:#838383;')
-        f_box.addWidget(f_label)
-
-        r_box = QHBoxLayout()
-        r_box.addStretch(1)
-
-        r_label = QLabel(r)
-        r_label.setFont(tFont)
-        r_label.setStyleSheet('color:#0c0c0c;')
-        r_box.addWidget(r_label)
-
-        layout.addLayout(f_box)
-        layout.addLayout(r_box)
+        for text, color in zip(texts, colors):
+            box = QHBoxLayout()
+            box.addStretch(1)
+            label = QLabel(text)
+            label.setFont(font)
+            label.setStyleSheet(color)
+            box.addWidget(label)
+            layout.addLayout(box)
 
     def clear_history(self):
         self.history.clear()
