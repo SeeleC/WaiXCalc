@@ -114,8 +114,8 @@ def get_options() -> dict[Union[dict[str], str]]:
 
 
 def get_reversed_list(lst: list):
-	lst.reverse()
-	return lst
+	lst2 = lst[:0:-1]
+	return lst2
 
 
 def get_trans() -> dict[str]:
