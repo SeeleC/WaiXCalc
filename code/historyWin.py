@@ -67,12 +67,13 @@ class HistoryWin(QWidget):
         f, r = formula.split(' = ')
         texts = [f+' =', r]
         colors = ['color:#838383;', 'color:#0c0c0c;']
+        fonts = [rFont, tFont]
 
-        for text, color in zip(texts, colors):
+        for text, color, font in zip(texts, colors, fonts):
             box = QHBoxLayout()
             box.addStretch(1)
             label = QLabel(text)
-            label.setFont(rFont)
+            label.setFont(font)
             label.setStyleSheet(color)
             label.setWordWrap(True)
             box.addWidget(label)
