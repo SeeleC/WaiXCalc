@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import (
 	QApplication, QMainWindow, QFileDialog, QAction, QDesktopWidget, QVBoxLayout
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 from sys import argv, exit
 from asyncio import run, create_task
 
@@ -44,8 +44,13 @@ class WaiX(QMainWindow):
 		tFont.setFamily(self.options['font'])
 		mFont.setFamily(self.options['font'])
 
-		self.options['enableDarkMode'] = detect_dark_mode()
-		save('data/options.json', self.options)
+		if not self.options['dark_mode']:
+			self.options['dark_mode'] = detect_dark_mode()
+			save('data/options.json', self.options)
+
+		self.timer = QTimer()
+		self.timer.timeout.connect(self.detect_dark_mode)
+		self.timer.start(300)
 
 		self.init_ui()
 		self.show()
@@ -91,11 +96,7 @@ class WaiX(QMainWindow):
 		self.setMaximumSize(self.width(), self.height())
 
 		if self.options['settings.4.option']:
-			self.setAttribute(Qt.WA_TranslucentBackground)
-			if self.options['enableDarkMode']:
-				ApplyMica(int(self.winId()), MICAMODE.DARK)
-			else:
-				ApplyMica(int(self.winId()), MICAMODE.LIGHT)
+			self.apply_mica()
 
 		if self.data['latest_pos_x'] or self.data['latest_pos_y']:
 			self.move(self.data['latest_pos_x'], self.data['latest_pos_y'])
@@ -134,6 +135,13 @@ class WaiX(QMainWindow):
 			menu.addAction(action)
 			self.actions.append(action)
 		menu.setFont(mFont)
+
+	def apply_mica(self):
+		self.setAttribute(Qt.WA_TranslucentBackground)
+		if self.data['enableDarkMode'] or self.options['dark_mode'] == 'dark':
+			ApplyMica(int(self.winId()), MICAMODE.DARK)
+		else:
+			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 	def bracket(self, l_idx):
 		if l_idx == 0 and (self.formula[-1] in symbol_lst or self.formula == ['0']):
@@ -232,6 +240,17 @@ class WaiX(QMainWindow):
 		else:
 			self.clear_edit()
 		self.text_update()
+
+	def detect_dark_mode(self):
+		if self.options['dark_mode'] == 'auto' and detect_dark_mode() != self.data['enableDarkMode']:
+			if detect_dark_mode():
+				self.data['enableDarkMode'] = True
+			else:
+				self.data['enableDarkMode'] = False
+
+			save('data/cache.json', self.data)
+			if self.options['settings.4.option']:
+				self.apply_mica()
 
 	def font_update(self):
 		self.options = get_options()

@@ -21,7 +21,7 @@ default_options = {
 	'language': 'en_us',
 	'font': 'Segoe UI',
 	'window_title': 'WaiXCalc',
-	'enableDarkMode': False
+	'dark_mode': ''
 }
 
 default_data = {
@@ -33,6 +33,7 @@ default_data = {
 	'isResult': False,
 	'latest_pos_x': 0,
 	'latest_pos_y': 0,
+	'enableDarkMode': False
 }
 
 rFont = QFont()
