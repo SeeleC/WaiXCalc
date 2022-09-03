@@ -437,7 +437,6 @@ class WaiX(QMainWindow):
 
 	def options_update(self):
 		self.options = get_options()
-		print(self.options)
 
 	def paste(self):
 		text: str = self.clipboard.text()
