@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
 from PyQt5.QtCore import Qt
-from win32mica import ApplyMica, MICAMODE
 from sys import argv, exit
 from asyncio import run, create_task
 

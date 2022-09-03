@@ -37,10 +37,10 @@ class SettingsWin(QTabWidget):
 
 		self.init_ui()
 
-	language_signal = pyqtSignal(bool)
-	font_signal = pyqtSignal(bool)
-	options_signal = pyqtSignal(bool)
-	title_signal = pyqtSignal(bool)
+	language_signal = pyqtSignal()
+	font_signal = pyqtSignal()
+	options_signal = pyqtSignal()
+	title_signal = pyqtSignal()
 
 	def init_ui(self):
 		run(self.init_tabs())
@@ -257,21 +257,21 @@ class SettingsWin(QTabWidget):
 					if i.isChecked() and self.languages[i.text()] != self.options['language']:
 						self.options['language'] = self.languages[i.text()]
 						save('data/options.json', self.options)
-						self.language_signal.emit(True)
+						self.language_signal.emit()
 						break
 
 				if self.cb.currentText() != self.options['font']:
 					self.options['font'] = self.cb.currentText()
 					save('data/options.json', self.options)
-					self.font_signal.emit(True)
+					self.font_signal.emit()
 
 				if self.window_title.text() != self.options['window_title']:
 					self.options['window_title'] = self.window_title.text()
 					save('data/options.json', self.options)
-					self.title_signal.emit(True)
+					self.title_signal.emit()
 
 				save('data/options.json', self.options)
-				self.options_signal.emit(True)
+				self.options_signal.emit()
 		elif sender.text() == self.trans['settings.5.button']:
 			QMessageBox.aboutQt(self, self.trans['settings.5.button'])
 
