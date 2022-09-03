@@ -147,7 +147,7 @@ class OpenedFormulaWin(QWidget):
 			self.trans['window.hint.title'],
 			self.trans['hint.open.copyCurrent'],
 			self,
-			self.options['enableDarkMode']
+			self.data['enableDarkMode']
 		).show()
 
 	def copy_all(self):
@@ -159,7 +159,7 @@ class OpenedFormulaWin(QWidget):
 			self.trans['window.hint.title'],
 			self.trans['hint.open.copyAll'],
 			self,
-			self.options['enableDarkMode']
+			self.data['enableDarkMode']
 		).show()
 
 	def save_result(self):
@@ -174,5 +174,5 @@ class OpenedFormulaWin(QWidget):
 			self.trans['window.hint.title'],
 			self.trans['hint.open.export'],
 			self,
-			self.options['enableDarkMode']
+			self.data['enableDarkMode']
 		).show()

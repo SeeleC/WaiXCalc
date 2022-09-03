@@ -390,7 +390,7 @@ class WaiX(QMainWindow):
 			self.trans['window.help.title'],
 			self.trans['text.help.content'],
 			self,
-			self.options['enableDarkMode']
+			self.data['enableDarkMode']
 		).show()
 
 	def openHistoryWin(self):
@@ -403,7 +403,7 @@ class WaiX(QMainWindow):
 				self.trans['hint.history.title'],
 				self.trans['hint.history.empty'],
 				self,
-				self.options['enableDarkMode']
+				self.data['enableDarkMode']
 			).show()
 
 	def openNewFormulaWin(self):
@@ -420,7 +420,7 @@ class WaiX(QMainWindow):
 					self.trans['window.hint.title'],
 					self.trans['hint.open.error'],
 					self,
-					self.options['enableDarkMode']
+					self.data['enableDarkMode']
 				).show()
 		else:
 			self.newWin = OpenedFormulaWin(formulas)
@@ -481,7 +481,7 @@ class WaiX(QMainWindow):
 			self.trans['window.whole.title'],
 			''.join(f),
 			self,
-			self.options['enableDarkMode']
+			self.data['enableDarkMode']
 		).show()
 
 

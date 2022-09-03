@@ -5,7 +5,7 @@ from win32mica import ApplyMica, MICAMODE
 from os import remove
 
 from settings import rFont, tFont
-from functions import get_trans, get_options, get_reversed_list, get_translated_messagebox
+from functions import get_trans, get_options, get_reversed_list, get_translated_messagebox, get_data
 
 
 class HistoryWin(QWidget):
@@ -14,6 +14,7 @@ class HistoryWin(QWidget):
         self.setWindowFlag(Qt.WindowCloseButtonHint)
 
         self.options: dict = get_options()
+        self.data = get_data()
         self.history: list = history
         self.trans = get_trans()
 
@@ -96,5 +97,5 @@ class HistoryWin(QWidget):
             self.trans['hint.history.title'],
             self.trans['hint.history.clear'],
             self,
-            self.options['enableDarkMode']
+            self.data['enableDarkMode']
         ).show()
