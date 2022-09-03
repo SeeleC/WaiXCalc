@@ -92,17 +92,20 @@ class OpenedFormulaWin(QWidget):
 		layout.addLayout(base)
 
 		if self.options['settings.4.option']:
-			self.setAttribute(Qt.WA_TranslucentBackground)
-			if self.options['enableDarkMode']:
-				ApplyMica(int(self.winId()), MICAMODE.DARK)
-			else:
-				ApplyMica(int(self.winId()), MICAMODE.LIGHT)
+			self.apply_mica()
 
 		self.setLayout(layout)
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.setWindowTitle(self.trans['window.open.title'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
+
+	def apply_mica(self):
+		self.setAttribute(Qt.WA_TranslucentBackground)
+		if self.data['enableDarkMode'] or self.options['settings.4.selector.2'] == 'colorMode.dark':
+			ApplyMica(int(self.winId()), MICAMODE.DARK)
+		else:
+			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 	def next_page(self):
 		self.now_page += 1

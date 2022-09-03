@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import (
 	QApplication, QMainWindow, QFileDialog, QAction, QDesktopWidget, QVBoxLayout
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import QTimer
 from sys import argv, exit
 from asyncio import run, create_task
 
@@ -44,8 +44,11 @@ class WaiX(QMainWindow):
 		tFont.setFamily(self.options['font'])
 		mFont.setFamily(self.options['font'])
 
-		if not self.options['dark_mode']:
-			self.options['dark_mode'] = detect_dark_mode()
+		if not self.options['settings.4.selector.2']:
+			if detect_dark_mode():
+				self.options['settings.4.selector.2'] = 'colorMode.dark'
+			else:
+				self.options['settings.4.selector.2'] = 'colorMode.light'
 			save('data/options.json', self.options)
 
 		self.timer = QTimer()
@@ -138,7 +141,7 @@ class WaiX(QMainWindow):
 
 	def apply_mica(self):
 		self.setAttribute(Qt.WA_TranslucentBackground)
-		if self.data['enableDarkMode'] or self.options['dark_mode'] == 'dark':
+		if self.data['enableDarkMode'] or self.options['settings.4.selector.2'] == 'colorMode.dark':
 			ApplyMica(int(self.winId()), MICAMODE.DARK)
 		else:
 			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
@@ -242,7 +245,7 @@ class WaiX(QMainWindow):
 		self.text_update()
 
 	def detect_dark_mode(self):
-		if self.options['dark_mode'] == 'auto' and detect_dark_mode() != self.data['enableDarkMode']:
+		if self.options['settings.4.selector.2'] == 'colorMode.auto' and detect_dark_mode() != self.data['enableDarkMode']:
 			if detect_dark_mode():
 				self.data['enableDarkMode'] = True
 			else:
@@ -433,6 +436,7 @@ class WaiX(QMainWindow):
 
 	def options_update(self):
 		self.options = get_options()
+		print(self.options)
 
 	def paste(self):
 		text: str = self.clipboard.text()

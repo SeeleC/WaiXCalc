@@ -18,10 +18,10 @@ default_options = {
 	'settings.2.option.1': True,
 	'settings.2.option.2': True,
 	'settings.4.option': False,
+	'settings.4.selector.2': '',
 	'language': 'en_us',
 	'font': 'Segoe UI',
 	'window_title': 'WaiXCalc',
-	'dark_mode': ''
 }
 
 default_data = {

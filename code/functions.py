@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QMessageBox, QWidget
 from decimal import Decimal, InvalidOperation
@@ -7,7 +8,6 @@ from typing import Union
 from json import load, dump
 from os import mkdir, listdir, remove
 from winreg import ConnectRegistry, HKEY_CURRENT_USER, OpenKey, EnumValue
-
 from win32mica import ApplyMica, MICAMODE
 
 from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, rFont

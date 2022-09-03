@@ -51,8 +51,9 @@
   "settings.4.title": "外觀",
   "settings.4.option": "啓用 Windows 11 的視覺效果",
   "settings.4.hint": "重啓以應用更改",
-  "settings.4.text.1": "字體: ",
-  "settings.4.text.2": "窗口標題",
+  "settings.4.selector.1": "字體",
+  "settings.4.selector.2": "應用程序主題",
+  "settings.4.text": "窗口標題",
 
   "settings.5.title": "關於",
   "settings.5.button": "關於Qt",
@@ -81,5 +82,9 @@
   "button.ok": "確定",
   "button.cancel": "取消",
   "button.back": "返回",
-  "button.clear_history": "清空"
+  "button.clear_history": "清空",
+
+  "colorMode.light": "淺色",
+  "colorMode.dark": "深色",
+  "colorMode.auto": "使用系統設置"
 }

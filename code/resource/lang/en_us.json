@@ -51,8 +51,9 @@
   "settings.4.title": "Style",
   "settings.4.option": "Show Windows 11 Visual Effects",
   "settings.4.hint": "Relaunch to Apply Changes",
-  "settings.4.text.1": "Font: ",
-  "settings.4.text.2": "Window Title",
+  "settings.4.selector.1": "Font",
+  "settings.4.selector.2": "Color Mode",
+  "settings.4.text": "Window Title",
 
   "settings.5.title": "About",
   "settings.5.button": "About Qt",
@@ -81,5 +82,9 @@
   "button.ok": "OK",
   "button.cancel": "Cancel",
   "button.back": "Back",
-  "button.clear_history": "Clear"
+  "button.clear_history": "Clear",
+
+  "colorMode.light": "Light",
+  "colorMode.dark": "Dark",
+  "colorMode.auto": "Auto"
 }

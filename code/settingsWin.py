@@ -1,3 +1,4 @@
+from typing import Iterable
 from PyQt5.QtWidgets import (
 	QTabWidget, QWidget, QVBoxLayout, QRadioButton, QCheckBox, QHBoxLayout, QScrollArea, QPushButton, QMessageBox,
 	QLabel, QLineEdit, QComboBox
@@ -28,9 +29,14 @@ class SettingsWin(QTabWidget):
 			for _ in range(1, 5)
 			for i, j in get_trans_entry(self.trans, f'settings.{_}').items()
 		}
+		self.color_modes = {
+			j: i
+			for i, j in get_trans_entry(self.trans, 'colorMode').items()
+		}
 		self.languages = get_trans_info()
 		self.checkboxes: dict[str: QCheckBox] = {}
 		self.radiobuttons: dict[str: QRadioButton] = {}
+		self.selectors: dict[str: QComboBox] = {}
 		self.autoCheck = False
 		self.changeLanguage = False
 		self.changedFont = ''
@@ -46,11 +52,7 @@ class SettingsWin(QTabWidget):
 		run(self.init_tabs())
 
 		if self.options['settings.4.option']:
-			self.setAttribute(Qt.WA_TranslucentBackground)
-			if self.options['enableDarkMode']:
-				ApplyMica(int(self.winId()), MICAMODE.DARK)
-			else:
-				ApplyMica(int(self.winId()), MICAMODE.LIGHT)
+			self.apply_mica()
 
 		self.setFont(rFont)
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
@@ -111,6 +113,20 @@ class SettingsWin(QTabWidget):
 
 		return layout
 
+	def add_selector_entry(self, layout: QVBoxLayout, title: str, items: Iterable, current_text: str):
+		hbox = QHBoxLayout()
+
+		label = QLabel(title + ' :')
+		hbox.addWidget(label)
+
+		self.selectors[title] = QComboBox()
+		self.selectors[title].addItems(items)
+		self.selectors[title].setCurrentText(current_text)
+		hbox.addWidget(self.selectors[title])
+
+		hbox.addStretch(1)
+		layout.addLayout(hbox)
+
 	def add_tab(self, inner: QVBoxLayout, name: str):
 		widget = QWidget()
 		outer = QVBoxLayout()
@@ -124,6 +140,13 @@ class SettingsWin(QTabWidget):
 
 		self.update_status()
 		self.addTab(widget, name)
+
+	def apply_mica(self):
+		self.setAttribute(Qt.WA_TranslucentBackground)
+		if self.data['enableDarkMode'] or self.options['settings.4.selector.2'] == 'colorMode.dark':
+			ApplyMica(int(self.winId()), MICAMODE.DARK)
+		else:
+			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 	def calculate_tab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
@@ -160,23 +183,18 @@ class SettingsWin(QTabWidget):
 		if getwindowsversion().build < 22000:
 			self.checkboxes['settings.4.option'].setEnabled(False)
 
-		hbox = QHBoxLayout()
+		self.add_selector_entry(
+			l,
+			self.trans['settings.4.selector.2'],
+			[self.trans[i] for i in get_trans_entry(self.trans, 'colorMode')],
+			self.trans[self.options['settings.4.selector.2']]
+		)
 
-		cblbl = QLabel(self.trans['settings.4.text.1'])
-		hbox.addWidget(cblbl)
-
-		self.cb = QComboBox()
 		database = QFontDatabase()
-		self.cb.addItems(database.families())
-		self.cb.setCurrentText(self.options['font'])
-		hbox.addWidget(self.cb)
-
-		hbox.addStretch(1)
-
-		l.addLayout(hbox)
+		self.add_selector_entry(l, self.trans['settings.4.selector.1'], database.families(), self.options['font'])
 
 		self.window_title = QLineEdit()
-		self.add_enter_entry(l, self.trans['settings.4.text.2'], self.window_title, self.options['window_title'])
+		self.add_enter_entry(l, self.trans['settings.4.text'], self.window_title, self.options['window_title'])
 
 		return l
 
@@ -259,9 +277,12 @@ class SettingsWin(QTabWidget):
 						save('data/options.json', self.options)
 						self.language_signal.emit()
 						break
+				for i in self.selectors.keys():
+					if self.names[i] in self.options.keys():
+						self.options[self.names[i]] = self.color_modes[self.selectors[i].currentText()]
 
-				if self.cb.currentText() != self.options['font']:
-					self.options['font'] = self.cb.currentText()
+				if self.selectors[self.trans['settings.4.selector.1']].currentText() != self.options['font']:
+					self.options['font'] = self.selectors[self.trans['settings.4.selector.1']].currentText()
 					save('data/options.json', self.options)
 					self.font_signal.emit()
 
