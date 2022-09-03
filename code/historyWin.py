@@ -73,6 +73,7 @@ class HistoryWin(QWidget):
             label.setFont(font)
             label.setStyleSheet(color)
             label.setWordWrap(True)
+            label.setAlignment(Qt.AlignRight)
             box.addWidget(label)
             layout.addLayout(box)
 
