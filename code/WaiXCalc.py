@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import (
 	QApplication, QMainWindow, QFileDialog, QAction, QDesktopWidget, QVBoxLayout
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt, QTimer
 from sys import argv, exit
 from asyncio import run, create_task
 
@@ -51,6 +51,8 @@ class WaiX(QMainWindow):
 				self.options['settings.4.selector.2'] = 'colorMode.light'
 			save('data/options.json', self.options)
 
+		self.detect_dark_mode()
+
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.detect_dark_mode)
 		self.timer.start(300)
@@ -92,6 +94,8 @@ class WaiX(QMainWindow):
 		]
 		self.actions = []
 		run(self.init_menubar(names, statustips, functions, shortcuts))
+
+		# self.init_theme()
 
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.setWindowTitle(self.options['window_title'])
@@ -246,13 +250,16 @@ class WaiX(QMainWindow):
 		self.text_update()
 
 	def detect_dark_mode(self):
-		if self.options['settings.4.selector.2'] == 'colorMode.auto' and detect_dark_mode() != self.data['enableDarkMode']:
-			if detect_dark_mode():
-				self.data['enableDarkMode'] = True
-			else:
-				self.data['enableDarkMode'] = False
-
+		if self.options['settings.4.selector.2'] == 'colorMode.dark':
+			self.data['enableDarkMode'] = True
+		elif self.options['settings.4.selector.2'] == 'colorMode.light':
+			self.data['enableDarkMode'] = False
+		elif self.options['settings.4.selector.2'] == 'colorMode.auto' and\
+			detect_dark_mode() != self.data['enableDarkMode']:
+			self.data['enableDarkMode'] = detect_dark_mode()
 			save('data/cache.json', self.data)
+
+			# self.init_theme()
 			if self.options['settings.4.option']:
 				self.apply_mica()
 
