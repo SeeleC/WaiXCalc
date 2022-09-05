@@ -98,7 +98,7 @@ class WaiX(QMainWindow):
 		load_theme(self)
 
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
-		self.setWindowTitle(self.options['window_title'])
+		self.title()
 		self.resize(672, 0)
 		self.setMaximumSize(self.width(), self.height())
 
@@ -460,9 +460,15 @@ class WaiX(QMainWindow):
 	def text_update(self):
 		text_update(self.formula[-1], self.textEdit)
 
+	def title(self):
+		if self.options['window_title'] != '':
+			self.setWindowTitle(self.options['window_title'])
+		else:
+			self.setWindowTitle(' ')
+
 	def title_update(self):
 		self.options = get_options()
-		self.setWindowTitle(self.options['window_title'])
+		self.title()
 
 	def whole_formula(self):
 		f = [i + ' ' for i in self.formula]
