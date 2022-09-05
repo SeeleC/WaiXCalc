@@ -49,7 +49,7 @@
   "settings.3.title": "语言",
 
   "settings.4.title": "外观",
-  "settings.4.option": "启用 Windows 11 的视觉效果",
+  "settings.4.option": "启用 Mica 效果",
   "settings.4.hint": "重启以应用更改",
   "settings.4.selector.1": "字体",
   "settings.4.selector.2": "应用程序主题",
