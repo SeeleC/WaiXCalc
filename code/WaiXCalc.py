@@ -192,7 +192,6 @@ class WaiX(QMainWindow):
 
 	def center(self):
 		qr = self.frameGeometry()
-		cp = QDesktopWidget().availableGeometry().center()
 		qr.moveCenter(qr.topLeft())
 
 	def clear_edit(self):
