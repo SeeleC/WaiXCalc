@@ -103,6 +103,7 @@ class WaiX(QMainWindow):
 		self.setMaximumSize(self.width(), self.height())
 
 		if self.data['latest_pos_x'] or self.data['latest_pos_y']:
+			print('m')
 			self.move(self.data['latest_pos_x'], self.data['latest_pos_y'])
 		else:
 			self.center()
@@ -192,7 +193,7 @@ class WaiX(QMainWindow):
 
 	def center(self):
 		qr = self.frameGeometry()
-		QDesktopWidget().availableGeometry().center()
+		cp = QDesktopWidget().availableGeometry().center()
 		qr.moveCenter(qr.topLeft())
 
 	def clear_edit(self):
@@ -216,8 +217,8 @@ class WaiX(QMainWindow):
 		self.data['calcFormulaStep'] = self.calc_f_step
 		self.data['frontBracketIndexStep'] = self.b_idx_step
 
-		self.options['latest_pos_x'] = self.pos().x()
-		self.options['latest_pos_y'] = self.pos().y()
+		self.data['latest_pos_x'] = self.pos().x()
+		self.data['latest_pos_y'] = self.pos().y()
 
 		save('data/options.json', self.options)
 		save('data/cache.json', self.data)
