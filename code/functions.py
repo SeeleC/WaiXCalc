@@ -195,7 +195,7 @@ def get_enhanced_messagebox(
 	ok.setFont(rFont)
 
 	box.setFont(rFont)
-	if get_options()['settings.4.option']:
+	if get_options()['settings.4.option'] and dark_mode:
 		apply_mica(box, dark_mode)
 
 	return box
