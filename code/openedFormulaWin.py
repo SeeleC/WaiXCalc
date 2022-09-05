@@ -85,15 +85,15 @@ class OpenedFormulaWin(SubWindow):
 		base.addStretch(1)
 
 		copy_btn = QPushButton(self.trans['button.open.copyCurrent'])
-		copy_btn.clicked.connect(self.copy)
+		copy_btn.clicked.connect(self.clicked)
 		base.addWidget(copy_btn)
 
 		copy_all_btn = QPushButton(self.trans['button.open.copyAll'])
-		copy_all_btn.clicked.connect(self.copy_all)
+		copy_all_btn.clicked.connect(self.clicked)
 		base.addWidget(copy_all_btn)
 
 		save_result_btn = QPushButton(self.trans['button.open.export'])
-		save_result_btn.clicked.connect(self.save_result)
+		save_result_btn.clicked.connect(self.clicked)
 		base.addWidget(save_result_btn)
 
 		layout.addLayout(base)
@@ -112,6 +112,21 @@ class OpenedFormulaWin(SubWindow):
 			ApplyMica(int(self.winId()), MICAMODE.DARK)
 		else:
 			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
+
+	def clicked(self):
+		sender = self.sender()
+		if sender.text() == self.trans['button.open.copyCurrent']:
+			self.copy(
+				''.join(self.formulas[self.now_page - 1]) + ' = ' + str(self.results[self.now_page - 1]),
+				'current'
+			)
+		elif sender.text() == self.trans['button.open.copyAll']:
+			self.copy(
+				''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))]),
+				'all'
+			)
+		elif sender.text() == self.trans['button.open.export']:
+			self.export()
 
 	def next_page(self):
 		self.now_page += 1
@@ -145,40 +160,27 @@ class OpenedFormulaWin(SubWindow):
 		self.formula_text.setReadOnly(True)
 		self.result_text.setReadOnly(True)
 
-	def copy(self):
-		content = ''.join(self.formulas[self.now_page - 1]) + ' = ' + str(self.results[self.now_page - 1])
+	def copy(self, content: str, range: str):
 		self.clipboard.setText(content.replace(' ', ''))
 		get_enhanced_messagebox(
 			QMessageBox.Icon.Information,
 			self.trans['window.hint.title'],
-			self.trans['hint.open.copyCurrent'],
+			self.trans[f'hint.open.copy{range.title()}'],
 			self,
 			self.data['enableDarkMode']
 		).show()
 
-	def copy_all(self):
-		self.clipboard.setText(
-			''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
-		)
-		get_enhanced_messagebox(
-			QMessageBox.Icon.Information,
-			self.trans['window.hint.title'],
-			self.trans['hint.open.copyAll'],
-			self,
-			self.data['enableDarkMode']
-		).show()
-
-	def save_result(self):
+	def export(self):
 		path = QFileDialog.getSaveFileName(self, '保存', 'result', '*.txt;;All Files(*)')
-		if path != '':
+		if path[0]:
 			with open(path[0], 'w') as f:
 				f.write(
 					''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
 				)
-		get_enhanced_messagebox(
-			QMessageBox.Icon.Information,
-			self.trans['window.hint.title'],
-			self.trans['hint.open.export'],
-			self,
-			self.data['enableDarkMode']
-		).show()
+			get_enhanced_messagebox(
+				QMessageBox.Icon.Information,
+				self.trans['window.hint.title'],
+				self.trans['hint.open.export'],
+				self,
+				self.data['enableDarkMode']
+			).show()
