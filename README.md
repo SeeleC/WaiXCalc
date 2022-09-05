@@ -10,7 +10,7 @@
 
     git clone git@github.com:WaiZhong/WaiXCalc.git
 
-## Required
+### Required
 
 - Python >= 3.9
 - PyQt5 >= 5.15.6
