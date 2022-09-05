@@ -1,7 +1,8 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
-	QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QGridLayout, QTextEdit, QMessageBox, QFileDialog, QApplication
-	)
+	QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QGridLayout, QTextEdit, QMessageBox, QFileDialog, QApplication,
+	QAction
+)
 from PyQt5.QtGui import QIcon
 from win32mica import ApplyMica, MICAMODE
 
@@ -99,6 +100,11 @@ class OpenedFormulaWin(SubWindow):
 		layout.addLayout(base)
 
 		load_theme(self)
+
+		close_action = QAction(self)
+		close_action.setShortcuts(['Return', 'Escape'])
+		close_action.triggered.connect(self.close)
+		self.addAction(close_action)
 
 		self.setLayout(layout)
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
