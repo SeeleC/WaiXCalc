@@ -39,10 +39,10 @@ class WaiX(QMainWindow):
 
 		self.clipboard = QApplication.clipboard()
 
-		rFont.setFamily(self.options['font'])
-		hFont.setFamily(self.options['font'])
-		tFont.setFamily(self.options['font'])
-		mFont.setFamily(self.options['font'])
+		rFont.setFamily(self.options['settings.4.selector.1'])
+		hFont.setFamily(self.options['settings.4.selector.1'])
+		tFont.setFamily(self.options['settings.4.selector.1'])
+		mFont.setFamily(self.options['settings.4.selector.1'])
 
 		if not self.options['settings.4.selector.2']:
 			if is_dark_mode():
@@ -103,7 +103,6 @@ class WaiX(QMainWindow):
 		self.setMaximumSize(self.width(), self.height())
 
 		if self.data['latest_pos_x'] or self.data['latest_pos_y']:
-			print('m')
 			self.move(self.data['latest_pos_x'], self.data['latest_pos_y'])
 		else:
 			self.center()
@@ -241,15 +240,16 @@ class WaiX(QMainWindow):
 		self.text_update()
 
 	def detect_color_mode(self):
+		self.options = get_options()
 		switch_color_mode(self)
 
 	def font_update(self):
 		self.options = get_options()
 
-		rFont.setFamily(self.options['font'])
-		hFont.setFamily(self.options['font'])
-		tFont.setFamily(self.options['font'])
-		mFont.setFamily(self.options['font'])
+		rFont.setFamily(self.options['settings.4.selector.1'])
+		hFont.setFamily(self.options['settings.4.selector.1'])
+		tFont.setFamily(self.options['settings.4.selector.1'])
+		mFont.setFamily(self.options['settings.4.selector.1'])
 
 		self.textEdit.setFont(hFont)
 		self.menubar.setFont(mFont)
@@ -418,10 +418,10 @@ class WaiX(QMainWindow):
 		self.newWin = SettingsWin()
 		self.detector.exit()
 		self.newWin.languageChanged.connect(self.language_update)
-		self.newWin.optionsChanged.connect(self.options_update)
 		self.newWin.fontChanged.connect(self.font_update)
 		self.newWin.titleChanged.connect(self.title_update)
-		self.newWin.colorModeChanged.connect(self.detect_color_mode)
+		self.newWin.colorOptionChanged.connect(self.detect_color_mode)
+		self.newWin.optionsChanged.connect(self.options_update)
 		self.newWin.windowClose.connect(self.detector.start)
 		self.newWin.show()
 

@@ -116,6 +116,8 @@ def get_options() -> dict[Union[dict[str], str]]:
 
 		if 'settings.2.option' in data.keys():
 			data['settings.2.option.1'] = data.pop('settings.2.option')
+		if 'font' in data.keys():
+			data['settings.4.selector.1'] = data.pop('font')
 
 	if data != default_options:
 		data = mend_dict_item(data, default_options)

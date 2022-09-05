@@ -54,7 +54,7 @@ class SettingsWin(QTabWidget):
 	fontChanged = pyqtSignal()
 	optionsChanged = pyqtSignal()
 	titleChanged = pyqtSignal()
-	colorModeChanged = pyqtSignal()
+	colorOptionChanged = pyqtSignal()
 	windowClose = pyqtSignal()
 
 	def init_ui(self):
@@ -121,19 +121,17 @@ class SettingsWin(QTabWidget):
 
 		return layout
 
-	def add_selector_entry(self, layout: QVBoxLayout, title: str, items: Iterable, current_text: str):
+	def add_selector_entry(self, layout: QVBoxLayout, title: str, flag: str, items: Iterable, current_text: str):
 		hbox = QHBoxLayout()
 
 		label = QLabel(title + ' :')
 		hbox.addWidget(label)
 
-		self.selectors[title] = QComboBox()
-		self.selectors[title].addItems(items)
-		self.selectors[title].setCurrentText(current_text)
-		self.selectors[title].setFont(rFont)
-		'''if self.data['enableDarkMode']:
-			self.selectors[title].setStyleSheet('border: 2px solid #7a7a7a; background-color: transparent;')'''
-		hbox.addWidget(self.selectors[title])
+		self.selectors[flag] = QComboBox()
+		self.selectors[flag].addItems(items)
+		self.selectors[flag].setCurrentText(current_text)
+		self.selectors[flag].setFont(rFont)
+		hbox.addWidget(self.selectors[flag])
 
 		hbox.addStretch(1)
 		layout.addLayout(hbox)
@@ -199,12 +197,15 @@ class SettingsWin(QTabWidget):
 		self.add_selector_entry(
 			l,
 			self.trans['settings.4.selector.2'],
+			'settings.4.selector.2',
 			[self.trans[i] for i in get_trans_entry(self.trans, 'colorMode')],
 			self.trans[self.options['settings.4.selector.2']]
 		)
 
 		database = QFontDatabase()
-		self.add_selector_entry(l, self.trans['settings.4.selector.1'], database.families(), self.options['font'])
+		self.add_selector_entry(
+			l, self.trans['settings.4.selector.1'], 'settings.4.selector.1', database.families(), self.options['settings.4.selector.1']
+		)
 
 		self.window_title = QLineEdit()
 		self.add_enter_entry(l, self.trans['settings.4.text'], self.window_title, self.options['window_title'])
@@ -291,13 +292,14 @@ class SettingsWin(QTabWidget):
 						self.languageChanged.emit()
 						break
 				for i in self.selectors.keys():
-					if self.names[i] in self.options.keys():
-						self.options[self.names[i]] = self.color_modes[self.selectors[i].currentText()]
-
-				if self.selectors[self.trans['settings.4.selector.1']].currentText() != self.options['font']:
-					self.options['font'] = self.selectors[self.trans['settings.4.selector.1']].currentText()
-					save('data/options.json', self.options)
-					self.fontChanged.emit()
+					if i == 'settings.4.selector.1' and self.selectors[i].currentText() != self.options['settings.4.selector.1']:
+						self.options['settings.4.selector.1'] = self.selectors[i].currentText()
+						save('data/options.json', self.options)
+						self.fontChanged.emit()
+					elif i == 'settings.4.selector.2' and self.selectors[i].currentText() != self.options[i]:
+						self.options[i] = self.color_modes[self.selectors[i].currentText()]
+						save('data/options.json', self.options)
+						self.colorOptionChanged.emit()
 
 				if self.window_title.text() != self.options['window_title']:
 					self.options['window_title'] = self.window_title.text()
