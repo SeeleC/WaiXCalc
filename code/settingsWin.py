@@ -262,6 +262,7 @@ class SettingsWin(QTabWidget):
 		ok.clicked.connect(self.clicked)
 
 		cancel = QPushButton(self.trans['button.cancel'])
+		cancel.setShortcut('Escape')
 		cancel.clicked.connect(self.clicked)
 
 		hbox.addStretch(1)
