@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QLabel, QMessageBox
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QLabel, QMessageBox, QAction
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
@@ -52,7 +52,6 @@ class HistoryWin(SubWindow):
         clear.clicked.connect(self.clear_history)
 
         ok = QPushButton(self.trans['button.back'])
-        ok.setShortcut('Escape')
         ok.clicked.connect(self.close)
 
         hbox.addWidget(clear)
@@ -62,8 +61,10 @@ class HistoryWin(SubWindow):
 
         load_theme(self)
 
-        '''self.setObjectName('history_window')
-        self.setStyleSheet('QWidget#history_window { background-color: #f9f9f9; }')'''
+        close_action = QAction(self)
+        close_action.setShortcuts(['Return', 'Escape'])
+        close_action.triggered.connect(self.close)
+        self.addAction(close_action)
 
         self.setLayout(outer)
         self.setWindowTitle(self.trans['window.history.title'])
