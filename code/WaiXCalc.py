@@ -51,8 +51,6 @@ class WaiX(QMainWindow):
 				self.options['settings.4.selector.2'] = 'colorMode.light'
 			save('data/options.json', self.options)
 
-		self.detect_color_mode()
-
 		self.detector = Detector(self)
 		self.detector.colorModeChanged.connect(self.detect_color_mode)
 		self.detector.start()
@@ -95,12 +93,12 @@ class WaiX(QMainWindow):
 		self.actions = []
 		run(self.init_menubar(names, statustips, functions, shortcuts))
 
-		load_theme(self)
-
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.title()
 		self.resize(672, 0)
 		self.setMaximumSize(self.width(), self.height())
+
+		self.detect_color_mode()
 
 		if self.data['latest_pos_x'] or self.data['latest_pos_y']:
 			self.move(self.data['latest_pos_x'], self.data['latest_pos_y'])
