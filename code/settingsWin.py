@@ -130,8 +130,9 @@ class SettingsWin(QTabWidget):
 		self.selectors[title] = QComboBox()
 		self.selectors[title].addItems(items)
 		self.selectors[title].setCurrentText(current_text)
-		if self.data['enableDarkMode']:
-			self.selectors[title].setStyleSheet('border: 2px solid #7a7a7a; background-color: transparent;')
+		self.selectors[title].setFont(rFont)
+		'''if self.data['enableDarkMode']:
+			self.selectors[title].setStyleSheet('border: 2px solid #7a7a7a; background-color: transparent;')'''
 		hbox.addWidget(self.selectors[title])
 
 		hbox.addStretch(1)
