@@ -75,7 +75,7 @@
 
   "text.history.disabled": "Record history is disabled",
 
-  "text.help.content": "1. Don't use full-width char when creating formula.<br>2. Use `:` or `//` to replace `/` when creating formula.<br>3. If you have any other questions, go and <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/new\"><span style=\"color: #3a96dd\">create a new issue</span><\\a>.<br>",
+  "text.help.content": "1. Input `:` or `//` to replace `/` when you are fraction calculating.<br>3. If you have any other questions, go and <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/new\"><span style=\"color: #3a96dd\">create a new issue</span><\\a>.<br>",
 
   "text.main.error": "Error",
 
