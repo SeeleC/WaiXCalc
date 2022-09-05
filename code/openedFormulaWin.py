@@ -1,15 +1,17 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
-	QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QGridLayout, QTextEdit, QMessageBox, QFileDialog, QApplication
+	QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QGridLayout, QTextEdit, QMessageBox, QFileDialog, QApplication
 	)
 from PyQt5.QtGui import QIcon
 from win32mica import ApplyMica, MICAMODE
 
-from functions import calculate, get_trans, get_translated_messagebox, get_options
+from colorModeDetect import Detector
+from subWindow import SubWindow
+from functions import calculate, get_trans, get_enhanced_messagebox, get_options, get_data, load_theme
 from settings import rFont, tFont
 
 
-class OpenedFormulaWin(QWidget):
+class OpenedFormulaWin(SubWindow):
 	def __init__(self, formulas):
 		super().__init__()
 
@@ -17,8 +19,13 @@ class OpenedFormulaWin(QWidget):
 		self.results = []
 		self.trans = get_trans()
 		self.options = get_options()
+		self.data = get_data()
 
 		self.clipboard = QApplication.clipboard()
+
+		self.detector = Detector(self)
+		self.detector.colorModeChanged.connect(self.detect_dark_mode)
+		self.detector.start()
 		
 		for i in formulas:
 			try:
@@ -91,8 +98,7 @@ class OpenedFormulaWin(QWidget):
 
 		layout.addLayout(base)
 
-		if self.options['settings.4.option']:
-			self.apply_mica()
+		load_theme(self)
 
 		self.setLayout(layout)
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
@@ -142,7 +148,7 @@ class OpenedFormulaWin(QWidget):
 	def copy(self):
 		content = ''.join(self.formulas[self.now_page - 1]) + ' = ' + str(self.results[self.now_page - 1])
 		self.clipboard.setText(content.replace(' ', ''))
-		get_translated_messagebox(
+		get_enhanced_messagebox(
 			QMessageBox.Icon.Information,
 			self.trans['window.hint.title'],
 			self.trans['hint.open.copyCurrent'],
@@ -154,7 +160,7 @@ class OpenedFormulaWin(QWidget):
 		self.clipboard.setText(
 			''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
 		)
-		get_translated_messagebox(
+		get_enhanced_messagebox(
 			QMessageBox.Icon.Information,
 			self.trans['window.hint.title'],
 			self.trans['hint.open.copyAll'],
@@ -169,7 +175,7 @@ class OpenedFormulaWin(QWidget):
 				f.write(
 					''.join([''.join(self.formulas[i]) + ' = ' + str(self.results[i]) + '\n' for i in range(len(self.formulas))])
 				)
-		get_translated_messagebox(
+		get_enhanced_messagebox(
 			QMessageBox.Icon.Information,
 			self.trans['window.hint.title'],
 			self.trans['hint.open.export'],

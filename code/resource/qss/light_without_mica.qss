@@ -1,0 +1,7 @@
+* {
+  font-family: %s;
+}
+
+QTabWidget {
+  selection-background-color: #f0f0f0;
+}

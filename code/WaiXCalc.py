@@ -2,10 +2,10 @@ from PyQt5.QtWidgets import (
 	QApplication, QMainWindow, QFileDialog, QAction, QDesktopWidget, QVBoxLayout
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
-from PyQt5.QtCore import Qt, QTimer
 from sys import argv, exit
 from asyncio import run, create_task
 
+from colorModeDetect import Detector
 from settingsWin import SettingsWin
 from openedFormulaWin import OpenedFormulaWin
 from historyWin import HistoryWin
@@ -45,18 +45,20 @@ class WaiX(QMainWindow):
 		mFont.setFamily(self.options['font'])
 
 		if not self.options['settings.4.selector.2']:
-			if detect_dark_mode():
+			if is_dark_mode():
 				self.options['settings.4.selector.2'] = 'colorMode.dark'
 			else:
 				self.options['settings.4.selector.2'] = 'colorMode.light'
 			save('data/options.json', self.options)
 
-		self.detect_dark_mode()
+		self.detect_color_mode()
 
-		self.timer = QTimer()
-		self.timer.timeout.connect(self.detect_dark_mode)
-		self.timer.start(300)
+		self.detector = Detector(self)
+		self.detector.colorModeChanged.connect(self.detect_color_mode)
+		self.detector.start()
 
+		self.widget = QWidget()
+		self.setCentralWidget(self.widget)
 		self.init_ui()
 		self.show()
 
@@ -65,9 +67,7 @@ class WaiX(QMainWindow):
 
 	def init_ui(self):
 		vbox = QVBoxLayout()
-		widget = QWidget()
-		widget.setLayout(vbox)
-		self.setCentralWidget(widget)
+		self.widget.setLayout(vbox)
 
 		self.textEdit = QLabel()
 		self.text_update()
@@ -95,15 +95,12 @@ class WaiX(QMainWindow):
 		self.actions = []
 		run(self.init_menubar(names, statustips, functions, shortcuts))
 
-		# self.init_theme()
+		load_theme(self)
 
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.setWindowTitle(self.options['window_title'])
 		self.resize(672, 0)
 		self.setMaximumSize(self.width(), self.height())
-
-		if self.options['settings.4.option']:
-			self.apply_mica()
 
 		if self.data['latest_pos_x'] or self.data['latest_pos_y']:
 			self.move(self.data['latest_pos_x'], self.data['latest_pos_y'])
@@ -142,13 +139,6 @@ class WaiX(QMainWindow):
 			menu.addAction(action)
 			self.actions.append(action)
 		menu.setFont(mFont)
-
-	def apply_mica(self):
-		self.setAttribute(Qt.WA_TranslucentBackground)
-		if self.data['enableDarkMode'] or self.options['settings.4.selector.2'] == 'colorMode.dark':
-			ApplyMica(int(self.winId()), MICAMODE.DARK)
-		else:
-			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 	def bracket(self, l_idx):
 		if l_idx == 0 and (self.formula[-1] in symbol_lst or self.formula == ['0']):
@@ -249,19 +239,8 @@ class WaiX(QMainWindow):
 			self.clear_edit()
 		self.text_update()
 
-	def detect_dark_mode(self):
-		if self.options['settings.4.selector.2'] == 'colorMode.dark':
-			self.data['enableDarkMode'] = True
-		elif self.options['settings.4.selector.2'] == 'colorMode.light':
-			self.data['enableDarkMode'] = False
-		elif self.options['settings.4.selector.2'] == 'colorMode.auto' and\
-			detect_dark_mode() != self.data['enableDarkMode']:
-			self.data['enableDarkMode'] = detect_dark_mode()
-			save('data/cache.json', self.data)
-
-			# self.init_theme()
-			if self.options['settings.4.option']:
-				self.apply_mica()
+	def detect_color_mode(self):
+		switch_color_mode(self)
 
 	def font_update(self):
 		self.options = get_options()
@@ -393,7 +372,7 @@ class WaiX(QMainWindow):
 			self.text_update()
 
 	def openHelpWin(self):
-		get_translated_messagebox(
+		get_enhanced_messagebox(
 			QMessageBox.Icon.NoIcon,
 			self.trans['window.help.title'],
 			self.trans['text.help.content'],
@@ -406,7 +385,7 @@ class WaiX(QMainWindow):
 			self.newWin = HistoryWin(self.history)
 			self.newWin.show()
 		else:
-			get_translated_messagebox(
+			get_enhanced_messagebox(
 				QMessageBox.Icon.Information,
 				self.trans['hint.history.title'],
 				self.trans['hint.history.empty'],
@@ -423,7 +402,7 @@ class WaiX(QMainWindow):
 				formulas = [get_formula(i) for i in f_formulas if isformula(get_formula(i))]
 		except (FileNotFoundError, IndexError) as e:
 			if type(e) == IndexError:
-				get_translated_messagebox(
+				get_enhanced_messagebox(
 					QMessageBox.Icon.Warning,
 					self.trans['window.hint.title'],
 					self.trans['hint.open.error'],
@@ -436,10 +415,13 @@ class WaiX(QMainWindow):
 
 	def openSettingsWin(self):
 		self.newWin = SettingsWin()
-		self.newWin.language_signal.connect(self.language_update)
-		self.newWin.options_signal.connect(self.options_update)
-		self.newWin.font_signal.connect(self.font_update)
-		self.newWin.title_signal.connect(self.title_update)
+		self.detector.exit()
+		self.newWin.languageChanged.connect(self.language_update)
+		self.newWin.optionsChanged.connect(self.options_update)
+		self.newWin.fontChanged.connect(self.font_update)
+		self.newWin.titleChanged.connect(self.title_update)
+		self.newWin.colorModeChanged.connect(self.detect_color_mode)
+		self.newWin.windowClose.connect(self.detector.start)
 		self.newWin.show()
 
 	def options_update(self):
@@ -483,7 +465,7 @@ class WaiX(QMainWindow):
 
 	def whole_formula(self):
 		f = [i + ' ' for i in self.formula]
-		get_translated_messagebox(
+		get_enhanced_messagebox(
 			QMessageBox.Icon.NoIcon,
 			self.trans['window.whole.title'],
 			''.join(f),

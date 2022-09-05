@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTextStream, QFile, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QMessageBox, QWidget
 from decimal import Decimal, InvalidOperation
@@ -6,29 +6,19 @@ from fractions import Fraction
 from re import match
 from typing import Union
 from json import load, dump
-from os import mkdir, listdir, remove
+from os import mkdir, listdir, remove, path
 from winreg import ConnectRegistry, HKEY_CURRENT_USER, OpenKey, EnumValue
 from win32mica import ApplyMica, MICAMODE
 
 from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, rFont
 
 
-def detect_dark_mode(): 
-	registry = ConnectRegistry(None, HKEY_CURRENT_USER)
-	reg_keypath = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize'
-	try:
-		reg_key = OpenKey(registry, reg_keypath)
-	except FileNotFoundError:
-		return False
-
-	for i in range(1024):
-		try:
-			value_name, value, _ = EnumValue(reg_key, i)
-			if value_name == 'AppsUseLightTheme':
-				return value == 0
-		except OSError:
-			break
-	return False
+def apply_mica(widget: QWidget, dark_mode):
+	widget.setAttribute(Qt.WA_TranslucentBackground)
+	if dark_mode:
+		ApplyMica(int(widget.winId()), MICAMODE.DARK)
+	else:
+		ApplyMica(int(widget.winId()), MICAMODE.LIGHT)
 
 
 def get_data() -> dict[Union[str, list, bool]]:
@@ -139,6 +129,13 @@ def get_reversed_list(lst: list):
 	return lst2
 
 
+def get_style(filename: str) -> str:
+	qss_file = QFile(path.abspath(filename))
+	qss_file.open(QFile.ReadOnly | QFile.Text)
+	text_stream = QTextStream(qss_file)
+	return text_stream.readAll()
+
+
 def get_trans() -> dict[str]:
 	"""
 	获取翻译文件
@@ -178,7 +175,7 @@ def get_trans_info() -> dict[str]:
 	return data
 
 
-def get_translated_messagebox(
+def get_enhanced_messagebox(
 		icon: Union[QMessageBox.Icon, QPixmap],
 		title: str,
 		text: str,
@@ -193,15 +190,47 @@ def get_translated_messagebox(
 
 	ok = box.button(QMessageBox.Ok)
 	ok.setText(get_trans()['button.ok'])
+	ok.setFont(rFont)
 
 	box.setFont(rFont)
-
-	if dark_mode:
-		ApplyMica(int(box.winId()), MICAMODE.DARK)
-	else:
-		ApplyMica(int(box.winId()), MICAMODE.LIGHT)
+	if get_options()['settings.4.option']:
+		apply_mica(box, dark_mode)
 
 	return box
+
+
+def is_dark_mode():
+	registry = ConnectRegistry(None, HKEY_CURRENT_USER)
+	reg_keypath = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize'
+	try:
+		reg_key = OpenKey(registry, reg_keypath)
+	except FileNotFoundError:
+		return False
+
+	for i in range(1024):
+		try:
+			value_name, value, _ = EnumValue(reg_key, i)
+			if value_name == 'AppsUseLightTheme':
+				return value == 0
+		except OSError:
+			break
+	return False
+
+
+def load_theme(widget: QWidget):
+	if widget.data['enableDarkMode']:
+		if widget.options['settings.4.option']:
+			widget.setStyleSheet(get_style('resource/qss/dark_with_mica.qss') % rFont.family())
+		else:
+			widget.setStyleSheet(get_style('resource/qss/dark_without_mica.qss') % rFont.family())
+	else:
+		if widget.options['settings.4.option']:
+			widget.setStyleSheet(get_style('resource/qss/light_with_mica.qss') % rFont.family())
+		else:
+			widget.setStyleSheet(get_style('resource/qss/light_without_mica.qss') % rFont.family())
+
+	if widget.options['settings.4.option']:
+		apply_mica(widget, widget.data['enableDarkMode'] or widget.options['settings.4.selector.2'] == 'colorMode.dark')
 
 
 def mend_dict_item(d, rd) -> dict[str, dict]:
@@ -219,6 +248,17 @@ def save(filename: str, data) -> None:
 	"""
 	with open(filename, 'w', encoding='utf-8') as f:
 		dump(data, f)
+
+
+def switch_color_mode(widget: QWidget):
+	if widget.options['settings.4.selector.2'] == 'colorMode.auto':
+		widget.data['enableDarkMode'] = is_dark_mode()
+	elif widget.options['settings.4.selector.2'] == 'colorMode.light':
+		widget.data['enableDarkMode'] = False
+	elif widget.options['settings.4.selector.2'] == 'colorMode.dark':
+		widget.data['enableDarkMode'] = True
+	save('data/cache.json', widget.data)
+	load_theme(widget)
 
 
 def text_update(string: str, label: QLabel) -> None:

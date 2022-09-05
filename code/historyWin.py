@@ -4,11 +4,14 @@ from PyQt5.QtCore import Qt
 from win32mica import ApplyMica, MICAMODE
 from os import remove
 
+from colorModeDetect import Detector
+from subWindow import SubWindow
 from settings import rFont, tFont
-from functions import get_trans, get_options, get_reversed_list, get_translated_messagebox, get_data
+from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme, \
+    switch_color_mode
 
 
-class HistoryWin(QWidget):
+class HistoryWin(SubWindow):
     def __init__(self, history):
         super().__init__()
         self.setWindowFlag(Qt.WindowCloseButtonHint)
@@ -18,6 +21,10 @@ class HistoryWin(QWidget):
         self.history: list = history
         self.trans = get_trans()
 
+        self.detector = Detector(self)
+        self.detector.colorModeChanged.connect(self.detect_dark_mode)
+        self.detector.start()
+
         self.init_ui()
 
     def init_ui(self):
@@ -25,6 +32,7 @@ class HistoryWin(QWidget):
         outer = QVBoxLayout()
 
         self.area = QScrollArea()
+        self.area.setAutoFillBackground(True)
         self.area.setWidgetResizable(True)
         inner = QVBoxLayout()
         widget = QWidget()
@@ -52,8 +60,10 @@ class HistoryWin(QWidget):
 
         outer.addLayout(hbox)
 
-        if self.options['settings.4.option']:
-            self.apply_mica()
+        load_theme(self)
+
+        '''self.setObjectName('history_window')
+        self.setStyleSheet('QWidget#history_window { background-color: #f9f9f9; }')'''
 
         self.setLayout(outer)
         self.setWindowTitle(self.trans['window.history.title'])
@@ -63,7 +73,10 @@ class HistoryWin(QWidget):
     def add_entry(self, formula, layout):
         f, r = formula.split(' = ')
         texts = [f+' =', r]
-        colors = ['color:#838383;', 'color:#0c0c0c;']
+        if self.data['enableDarkMode']:
+            colors = ['color:#838383;', 'color:#cccccc;']
+        else:
+            colors = ['color:#838383;', 'color:#0c0c0c;']
         fonts = [rFont, tFont]
 
         for text, color, font in zip(texts, colors, fonts):
@@ -93,7 +106,7 @@ class HistoryWin(QWidget):
             pass
 
         self.close()
-        get_translated_messagebox(
+        get_enhanced_messagebox(
             QMessageBox.Icon.NoIcon,
             self.trans['hint.history.title'],
             self.trans['hint.history.clear'],

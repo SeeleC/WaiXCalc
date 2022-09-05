@@ -1,16 +1,19 @@
 from typing import Iterable
 from PyQt5.QtWidgets import (
 	QTabWidget, QWidget, QVBoxLayout, QRadioButton, QCheckBox, QHBoxLayout, QScrollArea, QPushButton, QMessageBox,
-	QLabel, QLineEdit, QComboBox
+	QLabel, QLineEdit, QComboBox, QStyleFactory
 )
-from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap
+from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap, QCloseEvent
 from PyQt5.QtCore import Qt, pyqtSignal
 from asyncio import run, create_task
 from sys import getwindowsversion
-from win32mica import ApplyMica, MICAMODE
 
+from colorModeDetect import Detector
 from settings import __version__, tFont, rFont
-from functions import save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_translated_messagebox
+from functions import (
+	save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_enhanced_messagebox, load_theme,
+	switch_color_mode
+)
 
 
 class SettingsWin(QTabWidget):
@@ -41,18 +44,23 @@ class SettingsWin(QTabWidget):
 		self.changeLanguage = False
 		self.changedFont = ''
 
+		self.detector = Detector(self)
+		self.detector.colorModeChanged.connect(self.detect_dark_mode)
+		self.detector.start()
+
 		self.init_ui()
 
-	language_signal = pyqtSignal()
-	font_signal = pyqtSignal()
-	options_signal = pyqtSignal()
-	title_signal = pyqtSignal()
+	languageChanged = pyqtSignal()
+	fontChanged = pyqtSignal()
+	optionsChanged = pyqtSignal()
+	titleChanged = pyqtSignal()
+	colorModeChanged = pyqtSignal()
+	windowClose = pyqtSignal()
 
 	def init_ui(self):
 		run(self.init_tabs())
 
-		if self.options['settings.4.option']:
-			self.apply_mica()
+		load_theme(self)
 
 		self.setFont(rFont)
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
@@ -122,6 +130,8 @@ class SettingsWin(QTabWidget):
 		self.selectors[title] = QComboBox()
 		self.selectors[title].addItems(items)
 		self.selectors[title].setCurrentText(current_text)
+		if self.data['enableDarkMode']:
+			self.selectors[title].setStyleSheet('border: 2px solid #7a7a7a; background-color: transparent;')
 		hbox.addWidget(self.selectors[title])
 
 		hbox.addStretch(1)
@@ -138,15 +148,10 @@ class SettingsWin(QTabWidget):
 		self.add_bottom_button(outer)
 		widget.setLayout(outer)
 
+		widget.setFont(rFont)
+
 		self.update_status()
 		self.addTab(widget, name)
-
-	def apply_mica(self):
-		self.setAttribute(Qt.WA_TranslucentBackground)
-		if self.data['enableDarkMode'] or self.options['settings.4.selector.2'] == 'colorMode.dark':
-			ApplyMica(int(self.winId()), MICAMODE.DARK)
-		else:
-			ApplyMica(int(self.winId()), MICAMODE.LIGHT)
 
 	def calculate_tab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
@@ -154,6 +159,13 @@ class SettingsWin(QTabWidget):
 			self.checkboxes[i] = QCheckBox(j)
 			l = self.add_option_entry(l, self.checkboxes[i])
 		return l
+
+	def closeEvent(self, a0: QCloseEvent) -> None:
+		self.detector.exit()
+		self.windowClose.emit()
+
+	def detect_dark_mode(self):
+		switch_color_mode(self)
 
 	def history_tab(self) -> QVBoxLayout:
 		l = QVBoxLayout()
@@ -261,7 +273,7 @@ class SettingsWin(QTabWidget):
 			self.close()
 			if sender.text() == self.trans['button.ok']:
 				if self.checkboxes['settings.4.option'].isChecked() != self.options['settings.4.option']:
-					get_translated_messagebox(
+					get_enhanced_messagebox(
 						QMessageBox.Icon.Information,
 						self.trans['window.hint.title'],
 						self.trans['settings.4.hint'],
@@ -275,7 +287,7 @@ class SettingsWin(QTabWidget):
 					if i.isChecked() and self.languages[i.text()] != self.options['language']:
 						self.options['language'] = self.languages[i.text()]
 						save('data/options.json', self.options)
-						self.language_signal.emit()
+						self.languageChanged.emit()
 						break
 				for i in self.selectors.keys():
 					if self.names[i] in self.options.keys():
@@ -284,15 +296,15 @@ class SettingsWin(QTabWidget):
 				if self.selectors[self.trans['settings.4.selector.1']].currentText() != self.options['font']:
 					self.options['font'] = self.selectors[self.trans['settings.4.selector.1']].currentText()
 					save('data/options.json', self.options)
-					self.font_signal.emit()
+					self.fontChanged.emit()
 
 				if self.window_title.text() != self.options['window_title']:
 					self.options['window_title'] = self.window_title.text()
 					save('data/options.json', self.options)
-					self.title_signal.emit()
+					self.titleChanged.emit()
 
 				save('data/options.json', self.options)
-				self.options_signal.emit()
+				self.optionsChanged.emit()
 		elif sender.text() == self.trans['settings.5.button']:
 			QMessageBox.aboutQt(self, self.trans['settings.5.button'])
 

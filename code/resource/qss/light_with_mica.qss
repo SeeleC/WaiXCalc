@@ -1,0 +1,35 @@
+* {
+  font-family: %s;
+}
+
+/* QComboBox */
+
+/*QComboBox {
+  background-color: #ffffff;
+}
+
+QComboBox QAbstractItemView {
+  background-color: #ffffff;
+  selection-background-color: #0078d7;
+}
+
+QComboBox QAbstractItemView:selected {
+  background: #0078d7;
+  color: #ffffff;
+}
+
+QComboBox::indicator {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  selection-background-color: transparent;
+  color: transparent;
+  selection-color: transparent;
+}*/
+
+/* QTabWidget */
+
+QTabWidget::pane {
+  /* 不加这个mica失效 */
+  border-radius: 0px;
+}

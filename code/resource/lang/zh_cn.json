@@ -75,7 +75,7 @@
 
   "text.history.disabled": "记录历史已关闭",
 
-  "text.help.content": "1. 在“新建”界面中，不支持全角字符;<br>2. 在”新建“界面中，为了兼容分数，如须输入“÷”，请用“//”或“:”代替;<br>3. 如有其他问题请前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\">Issues<\\a><br>",
+  "text.help.content": "1. 在“新建”界面中，不支持全角字符;<br>2. 在”新建“界面中，为了兼容分数，如须输入“÷”，请用“//”或“:”代替;<br>3. 如有其他问题请前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a><br>",
 
   "text.main.error": "错误",
 
