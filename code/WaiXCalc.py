@@ -57,13 +57,13 @@ class WaiX(QMainWindow):
 
 		self.widget = QWidget()
 		self.setCentralWidget(self.widget)
-		self.init_ui()
+		self._init_ui()
 		self.show()
 
 		if self.calc_formula == ['0'] and self.formula != self.calc_formula:
 			self.clear_edit()
 
-	def init_ui(self):
+	def _init_ui(self):
 		vbox = QVBoxLayout()
 		self.widget.setLayout(vbox)
 
@@ -81,9 +81,9 @@ class WaiX(QMainWindow):
 		self.menus = [fileMenu, editMenu, helpMenu]
 		names, statustips = get_menu_items(self.trans)
 		functions = [
-			[self.openNewFormulaWin, self.openSettingsWin, self.close],
+			[self.read_formula_file, self.settings, self.close],
 			[self.cut, self.copy, self.paste, self.delete],
-			[self.openHelpWin, self.openHistoryWin, self.whole_formula]
+			[self.help, self.history, self.whole_formula]
 		]
 		shortcuts = [
 			['Ctrl+O', 'Ctrl+S', 'Ctrl+Q', ''],
@@ -91,7 +91,7 @@ class WaiX(QMainWindow):
 			['', 'Ctrl+H', 'Ctrl+F']
 		]
 		self.actions = []
-		run(self.init_menubar(names, statustips, functions, shortcuts))
+		run(self._init_menubar(names, statustips, functions, shortcuts))
 
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.title()
@@ -107,22 +107,22 @@ class WaiX(QMainWindow):
 
 		self.statusBar()
 
-	async def init_menubar(self, names, status_tips, functions, shortcuts):
+	async def _init_menubar(self, names, status_tips, functions, shortcuts):
 		task1 = create_task(
-			self.init_menu(self.menus[0], names[0], status_tips[0], shortcuts[0], functions[0])
+			self._init_menu(self.menus[0], names[0], status_tips[0], shortcuts[0], functions[0])
 		)
 		task2 = create_task(
-			self.init_menu(self.menus[1], names[1], status_tips[1], shortcuts[1], functions[1])
+			self._init_menu(self.menus[1], names[1], status_tips[1], shortcuts[1], functions[1])
 		)
 		task3 = create_task(
-			self.init_menu(self.menus[2], names[2], status_tips[2], shortcuts[2], functions[2])
+			self._init_menu(self.menus[2], names[2], status_tips[2], shortcuts[2], functions[2])
 		)
 
 		await task1
 		await task2
 		await task3
 
-	async def init_menu(self, menu, names, status_tips, shortcuts, functions):
+	async def _init_menu(self, menu, names, status_tips, shortcuts, functions):
 		for name, status_tip, shortcut, function in zip(names, status_tips, shortcuts, functions):
 			if name == '':
 				continue
@@ -259,6 +259,28 @@ class WaiX(QMainWindow):
 		self.formula[-1] = content
 		self.calc_formula[-1] = content
 
+	def help(self):
+		get_enhanced_messagebox(
+			QMessageBox.Icon.NoIcon,
+			self.trans['window.help.title'],
+			self.trans['text.help.content'],
+			self,
+			self.data['enableDarkMode']
+		).show()
+
+	def history(self):
+		if len(self.history) != 0:
+			self.newWin = HistoryWin(self.history)
+			self.newWin.show()
+		else:
+			get_enhanced_messagebox(
+				QMessageBox.Icon.Information,
+				self.trans['hint.history.title'],
+				self.trans['hint.history.empty'],
+				self,
+				self.data['enableDarkMode']
+			).show()
+
 	def keyPressEvent(self, e: QKeyEvent):
 		if e.key() == Qt.Key_Backspace:
 			self.isResult = False
@@ -369,59 +391,6 @@ class WaiX(QMainWindow):
 				self.formula_update(num)
 			self.text_update()
 
-	def openHelpWin(self):
-		get_enhanced_messagebox(
-			QMessageBox.Icon.NoIcon,
-			self.trans['window.help.title'],
-			self.trans['text.help.content'],
-			self,
-			self.data['enableDarkMode']
-		).show()
-
-	def openHistoryWin(self):
-		if len(self.history) != 0:
-			self.newWin = HistoryWin(self.history)
-			self.newWin.show()
-		else:
-			get_enhanced_messagebox(
-				QMessageBox.Icon.Information,
-				self.trans['hint.history.title'],
-				self.trans['hint.history.empty'],
-				self,
-				self.data['enableDarkMode']
-			).show()
-
-	def openNewFormulaWin(self):
-		file = QFileDialog.getOpenFileName(self, self.trans['window.selectFile.title'], '', '*.txt;;All Files(*)')
-		try:
-			with open(file[0], 'r') as f:
-				f_formula = f.read()
-				f_formulas = f_formula.split('\n')
-				formulas = [get_formula(i) for i in f_formulas if isformula(get_formula(i))]
-		except (FileNotFoundError, IndexError) as e:
-			if type(e) == IndexError:
-				get_enhanced_messagebox(
-					QMessageBox.Icon.Warning,
-					self.trans['window.hint.title'],
-					self.trans['hint.open.error'],
-					self,
-					self.data['enableDarkMode']
-				).show()
-		else:
-			self.newWin = OpenedFormulaWin(formulas)
-			self.newWin.show()
-
-	def openSettingsWin(self):
-		self.newWin = SettingsWin()
-		self.detector.exit()
-		self.newWin.languageChanged.connect(self.language_update)
-		self.newWin.fontChanged.connect(self.font_update)
-		self.newWin.titleChanged.connect(self.title_update)
-		self.newWin.colorOptionChanged.connect(self.detect_color_mode)
-		self.newWin.optionsChanged.connect(self.options_update)
-		self.newWin.windowClose.connect(self.detector.start)
-		self.newWin.show()
-
 	def options_update(self):
 		self.options = get_options()
 
@@ -443,6 +412,37 @@ class WaiX(QMainWindow):
 		elif self.formula[-1][0] == '-' and self.formula[-1] != '-':
 			self.formula_update(self.formula[-1].lstrip('-'))
 		self.text_update()
+
+	def read_formula_file(self):
+		file = QFileDialog.getOpenFileName(self, self.trans['window.selectFile.title'], '', '*.txt;;All Files(*)')
+		try:
+			with open(file[0], 'r') as f:
+				f_formula = f.read()
+				f_formulas = f_formula.split('\n')
+				formulas = [get_formula(i) for i in f_formulas if isformula(get_formula(i))]
+		except (FileNotFoundError, IndexError) as e:
+			if type(e) == IndexError:
+				get_enhanced_messagebox(
+					QMessageBox.Icon.Warning,
+					self.trans['window.hint.title'],
+					self.trans['hint.open.error'],
+					self,
+					self.data['enableDarkMode']
+				).show()
+		else:
+			self.newWin = OpenedFormulaWin(formulas)
+			self.newWin.show()
+
+	def settings(self):
+		self.newWin = SettingsWin()
+		self.detector.exit()
+		self.newWin.languageChanged.connect(self.language_update)
+		self.newWin.fontChanged.connect(self.font_update)
+		self.newWin.titleChanged.connect(self.title_update)
+		self.newWin.colorOptionChanged.connect(self.detect_color_mode)
+		self.newWin.optionsChanged.connect(self.options_update)
+		self.newWin.windowClose.connect(self.detector.start)
+		self.newWin.show()
 
 	def symbol(self, symbol):
 		self.isResult = False
