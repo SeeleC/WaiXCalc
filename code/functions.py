@@ -10,7 +10,9 @@ from os import mkdir, listdir, remove, path
 from winreg import ConnectRegistry, HKEY_CURRENT_USER, OpenKey, EnumValue
 from win32mica import ApplyMica, MICAMODE
 
-from settings import symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, rFont
+from settings import (
+	symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, rFont
+)
 
 
 def apply_mica(widget: QWidget, dark_mode):

@@ -7,8 +7,7 @@ from os import remove
 from colorModeDetect import Detector
 from subWindow import SubWindow
 from settings import rFont, tFont
-from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme, \
-    switch_color_mode
+from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme
 
 
 class HistoryWin(SubWindow):

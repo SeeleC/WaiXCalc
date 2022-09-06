@@ -1,7 +1,7 @@
 from typing import Iterable
 from PyQt5.QtWidgets import (
 	QTabWidget, QWidget, QVBoxLayout, QRadioButton, QCheckBox, QHBoxLayout, QScrollArea, QPushButton, QMessageBox,
-	QLabel, QLineEdit, QComboBox, QStyleFactory
+	QLabel, QLineEdit, QComboBox
 )
 from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap, QCloseEvent
 from PyQt5.QtCore import Qt, pyqtSignal

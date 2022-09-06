@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (
-	QApplication, QMainWindow, QFileDialog, QAction, QDesktopWidget, QVBoxLayout
+	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
 from sys import argv, exit
