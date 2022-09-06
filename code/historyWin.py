@@ -1,24 +1,29 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QLabel, QMessageBox, QAction
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QMessageBox, QAction
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from win32mica import ApplyMica, MICAMODE
 from os import remove
 
 from colorModeDetect import Detector
+from clickableQLabel import ClickableQLabel
 from subWindow import SubWindow
 from settings import rFont, tFont
 from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme
 
 
 class HistoryWin(SubWindow):
+    historyReversion = pyqtSignal()
+
     def __init__(self, history):
         super().__init__()
         self.setWindowFlag(Qt.WindowCloseButtonHint)
 
         self.options: dict = get_options()
         self.data = get_data()
-        self.history: list = history
         self.trans = get_trans()
+        self.history: list = history
+
+        self.focus_entry = ''
 
         self.detector = Detector(self)
         self.detector.colorModeChanged.connect(self.detect_dark_mode)
@@ -82,7 +87,8 @@ class HistoryWin(SubWindow):
         for text, color, font in zip(texts, colors, fonts):
             box = QHBoxLayout()
             box.addStretch(1)
-            label = QLabel(text)
+            label = ClickableQLabel(text)
+            label.clicked.connect(self.revert_history)
             label.setFont(font)
             label.setStyleSheet(color)
             label.setWordWrap(True)
@@ -113,3 +119,14 @@ class HistoryWin(SubWindow):
             self,
             self.data['enableDarkMode']
         ).show()
+
+    def revert_history(self):
+        sender = self.sender()
+
+        if '=' in sender.text():
+            self.focus_entry = sender.text()[:-2]
+        else:
+            self.focus_entry = sender.text()
+        self.historyReversion.emit()
+
+        self.close()

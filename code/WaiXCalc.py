@@ -271,6 +271,7 @@ class WaiX(QMainWindow):
 	def history(self):
 		if len(self.history_content) != 0:
 			self.newWin = HistoryWin(self.history_content)
+			self.newWin.historyReversion.connect(self.revert_history)
 			self.newWin.show()
 		else:
 			get_enhanced_messagebox(
@@ -432,6 +433,10 @@ class WaiX(QMainWindow):
 		else:
 			self.newWin = OpenedFormulaWin(formulas)
 			self.newWin.show()
+
+	def revert_history(self):
+		self.formula = self.newWin.focus_entry.split()
+		self.text_update()
 
 	def settings(self):
 		self.newWin = SettingsWin()
