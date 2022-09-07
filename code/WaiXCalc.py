@@ -17,9 +17,6 @@ from settings import *
 # MIT License
 # Source https://github.com/WaiZhong/WaiXCalc
 
-# Python 3.9.12
-# PyQt 5.15.6
-
 
 class WaiX(QMainWindow):
 	def __init__(self):
