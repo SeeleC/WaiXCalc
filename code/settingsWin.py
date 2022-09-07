@@ -228,7 +228,7 @@ class SettingsWin(QTabWidget):
 		image.setScaledContents(True)
 		inner_vbox.addWidget(image)
 
-		label = QLabel(f'WaiXCalc\nBy Github@WaiZhong\nVersion {__version__}\n')
+		label = QLabel(f'WaiXCalc\nBy Github@SeeleC\nVersion {__version__}\n')
 		label.setFont(tFont)
 		inner_vbox.addWidget(label)
 
