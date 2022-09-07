@@ -222,19 +222,17 @@ def is_dark_mode():
 
 
 def load_theme(widget: QWidget):
-	if widget.data['enableDarkMode']:
-		if widget.options['settings.4.option']:
+	if widget.options['settings.4.option']:
+		if widget.data['enableDarkMode']:
 			widget.setStyleSheet(get_style('resource/qss/dark_with_mica.qss'))
 		else:
-			widget.setStyleSheet(get_style('resource/qss/dark_without_mica.qss'))
-	else:
-		if widget.options['settings.4.option']:
 			widget.setStyleSheet(get_style('resource/qss/light_with_mica.qss'))
+		apply_mica(widget, widget.data['enableDarkMode'] or widget.options['settings.4.selector.2'] == 'colorMode.dark')
+	else:
+		if widget.data['enableDarkMode']:
+			widget.setStyleSheet(get_style('resource/qss/dark_without_mica.qss'))
 		else:
 			widget.setStyleSheet(get_style('resource/qss/light_without_mica.qss'))
-
-	if widget.options['settings.4.option']:
-		apply_mica(widget, widget.data['enableDarkMode'] or widget.options['settings.4.selector.2'] == 'colorMode.dark')
 
 
 def mend_dict_item(d, rd) -> dict[str, dict]:
