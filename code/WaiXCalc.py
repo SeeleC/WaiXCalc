@@ -15,7 +15,7 @@ from settings import *
 # WaiXCalc (WaiX Calculator)
 # By SeeleC
 # MIT License
-# Source https://github.com/WaiZhong/WaiXCalc
+# Source https://github.com/SeeleC/WaiXCalc
 
 
 class WaiX(QMainWindow):
