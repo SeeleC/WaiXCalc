@@ -56,7 +56,10 @@
   "settings.4.text": "窗口标题",
 
   "settings.5.title": "关于",
-  "settings.5.button": "关于Qt",
+  "settings.5.button": "检查更新",
+  "settings.5.hint.1": "目前没有可用的更新",
+  "settings.5.hint.2": "检测到新版本：<a href=\"https://github.com/SeeleC/WaiXCalc/releases/latest/\"><span style=\"color: #3a96dd\">%s</span></a>",
+  "settings.5.hint.3": "出现错误",
 
   "text.open.page": "%d / %d 页",
   "button.open.copyCurrent": "复制当前",

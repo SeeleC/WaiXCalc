@@ -56,7 +56,10 @@
   "settings.4.text": "Window Title",
 
   "settings.5.title": "About",
-  "settings.5.button": "About Qt",
+  "settings.5.button": "Check for Updates",
+  "settings.5.hint.1": "This is the latest version",
+  "settings.5.hint.2": "New version: <a href=\"https://github.com/SeeleC/WaiXCalc/releases/latest/\"><span style=\"color: #3a96dd\">%s</span></a>",
+  "settings.5.hint.3": "Error",
 
   "text.open.page": "Page %d / %d",
   "button.open.copyCurrent": "Copy",

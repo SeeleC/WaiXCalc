@@ -1,4 +1,3 @@
-import http
 from typing import Iterable
 from PyQt5.QtWidgets import (
 	QTabWidget, QWidget, QVBoxLayout, QRadioButton, QCheckBox, QHBoxLayout, QScrollArea, QPushButton, QMessageBox,
@@ -8,6 +7,7 @@ from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap, QCloseEvent
 from PyQt5.QtCore import Qt, pyqtSignal
 from asyncio import run, create_task
 from sys import getwindowsversion
+from httpx import get, HTTPStatusError, NetworkError
 
 from colorModeDetect import Detector
 from settings import __version__, tFont, rFont
@@ -315,7 +315,35 @@ class Settings(QTabWidget):
 				save('data/options.json', self.options)
 				self.optionsChanged.emit()
 		elif sender.text() == self.trans['settings.5.button']:
-			QMessageBox.aboutQt(self, self.trans['settings.5.button'])
+			try:
+				r = get('https://api.github.com/repos/SeeleC/WaiXCalc/releases/latest')
+				r.raise_for_status()
+			except (HTTPStatusError, NetworkError, KeyError) as e:
+				get_enhanced_messagebox(
+					QMessageBox.Icon.Information,
+					self.trans['settings.5.button'],
+					self.trans['settings.5.hint.3'] + ': ' + str(repr(e)),
+					self,
+					self.data['enableDarkMode']
+				).show()
+			else:
+				latest_version = r.json()['tag_name'][1:]
+				if latest_version == __version__:
+					get_enhanced_messagebox(
+						QMessageBox.Icon.Information,
+						self.trans['settings.5.button'],
+						self.trans['settings.5.hint.1'],
+						self,
+						self.data['enableDarkMode']
+					).show()
+				else:
+					get_enhanced_messagebox(
+						QMessageBox.Icon.Information,
+						self.trans['settings.5.button'],
+						self.trans['settings.5.hint.2'] % latest_version,
+						self,
+						self.data['enableDarkMode']
+					).show()
 
 	def update_status(self):
 		self.autoCheck = True
