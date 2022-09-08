@@ -268,11 +268,11 @@ def text_update(string: str, label: QLabel) -> None:
 	防止意外的窗口拉伸
 	"""
 	label.setText(string)
-	weight = 0
+	width = 0
 	for i in range(len(string)):
 		if string[i] not in symbol_lst and string[i] not in bracket_lst[0] and string[i] not in bracket_lst[1]:
-			weight += num_widths[string[i]]
-			if weight >= 636:
+			width += num_widths[string[i]]
+			if width >= 636:
 				label.setText('...' + string[-i + 2:])
 				break
 
