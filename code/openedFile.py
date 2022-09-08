@@ -12,7 +12,7 @@ from functions import calculate, get_trans, get_enhanced_messagebox, get_options
 from settings import rFont, tFont
 
 
-class OpenedFormulaWin(SubWindow):
+class OpenedFile(SubWindow):
 	def __init__(self, formulas):
 		super().__init__()
 

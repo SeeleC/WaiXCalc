@@ -11,7 +11,7 @@ from settings import rFont, tFont
 from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme
 
 
-class HistoryWin(SubWindow):
+class History(SubWindow):
     historyReversion = pyqtSignal()
 
     def __init__(self, history):

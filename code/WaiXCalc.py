@@ -6,9 +6,9 @@ from sys import argv, exit
 from asyncio import run, create_task
 
 from colorModeDetect import Detector
-from settingsWin import SettingsWin
-from openedFormulaWin import OpenedFormulaWin
-from historyWin import HistoryWin
+from settingsWin import Settings
+from openedFile import OpenedFile
+from history import History
 from functions import *
 from settings import *
 
@@ -199,7 +199,7 @@ class WaiX(QMainWindow):
 
 	def closeEvent(self, a0: QCloseEvent) -> None:
 		try:
-			self.newWin.close()
+			self.sub_win.close()
 		except AttributeError:
 			pass
 
@@ -267,9 +267,9 @@ class WaiX(QMainWindow):
 
 	def history(self):
 		if len(self.history_content) != 0:
-			self.newWin = HistoryWin(self.history_content)
-			self.newWin.historyReversion.connect(self.revert_history)
-			self.newWin.show()
+			self.sub_win = History(self.history_content)
+			self.sub_win.historyReversion.connect(self.revert_history)
+			self.sub_win.show()
 		else:
 			get_enhanced_messagebox(
 				QMessageBox.Icon.Information,
@@ -428,23 +428,23 @@ class WaiX(QMainWindow):
 					self.data['enableDarkMode']
 				).show()
 		else:
-			self.newWin = OpenedFormulaWin(formulas)
-			self.newWin.show()
+			self.sub_win = OpenedFile(formulas)
+			self.sub_win.show()
 
 	def revert_history(self):
-		self.formula = self.newWin.focus_entry.split()
+		self.formula = self.sub_win.focus_entry.split()
 		self.text_update()
 
 	def settings(self):
-		self.newWin = SettingsWin()
+		self.sub_win = Settings()
 		self.detector.exit()
-		self.newWin.languageChanged.connect(self.language_update)
-		self.newWin.fontChanged.connect(self.font_update)
-		self.newWin.titleChanged.connect(self.title_update)
-		self.newWin.colorOptionChanged.connect(self.detect_color_mode)
-		self.newWin.optionsChanged.connect(self.options_update)
-		self.newWin.windowClose.connect(self.detector.start)
-		self.newWin.show()
+		self.sub_win.languageChanged.connect(self.language_update)
+		self.sub_win.fontChanged.connect(self.font_update)
+		self.sub_win.titleChanged.connect(self.title_update)
+		self.sub_win.colorOptionChanged.connect(self.detect_color_mode)
+		self.sub_win.optionsChanged.connect(self.options_update)
+		self.sub_win.windowClose.connect(self.detector.start)
+		self.sub_win.show()
 
 	def symbol(self, symbol):
 		self.isResult = False

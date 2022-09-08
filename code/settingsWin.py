@@ -1,3 +1,4 @@
+import http
 from typing import Iterable
 from PyQt5.QtWidgets import (
 	QTabWidget, QWidget, QVBoxLayout, QRadioButton, QCheckBox, QHBoxLayout, QScrollArea, QPushButton, QMessageBox,
@@ -16,7 +17,7 @@ from functions import (
 )
 
 
-class SettingsWin(QTabWidget):
+class Settings(QTabWidget):
 	def __init__(self):
 		super().__init__()
 		self.setWindowFlag(Qt.WindowCloseButtonHint)
@@ -204,7 +205,11 @@ class SettingsWin(QTabWidget):
 
 		database = QFontDatabase()
 		self.add_selector_entry(
-			l, self.trans['settings.4.selector.1'], 'settings.4.selector.1', database.families(), self.options['settings.4.selector.1']
+			l,
+			self.trans['settings.4.selector.1'],
+			'settings.4.selector.1',
+			database.families(),
+			self.options['settings.4.selector.1']
 		)
 
 		self.window_title = QLineEdit()
