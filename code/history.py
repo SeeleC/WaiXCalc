@@ -7,7 +7,7 @@ from os import remove
 from colorModeDetect import Detector
 from enhancedQLabel import EnhancedQLabel
 from subWindow import SubWindow
-from settings import rFont, tFont, label_color_dark, label_color_light
+from settings import rFont, tFont
 from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme
 
 
@@ -77,26 +77,24 @@ class History(SubWindow):
 
     def add_entry(self, formula, layout):
         f, r = formula.split(' = ')
-        f = f + ' ='
-
-        box = QHBoxLayout()
-        box.addStretch(1)
+        texts = [f+' =', r]
         if self.data['enableDarkMode']:
-            label = EnhancedQLabel(
-                f'<span style=\"color: {label_color_dark[0]}\">{f}</span><br>'
-                f'<font size={tFont.pointSize()}><span style=\"color: {label_color_dark[1]}\">{r}</span></font>'
-            )
+            colors = ['color:#838383;', 'color:#cccccc;']
         else:
-            label = EnhancedQLabel(
-                f'<span style="color: {label_color_light[0]}">{f}</span><br>'
-                f'<span style="color: {label_color_light[1]}">{r}</span>'
-            )
-        label.clicked.connect(self.revert_history)
-        label.setFont(rFont)
-        label.setWordWrap(True)
-        label.setAlignment(Qt.AlignRight)
-        box.addWidget(label)
-        layout.addLayout(box)
+            colors = ['color:#838383;', 'color:#0c0c0c;']
+        fonts = [rFont, tFont]
+
+        for text, color, font in zip(texts, colors, fonts):
+            box = QHBoxLayout()
+            box.addStretch(1)
+            label = EnhancedQLabel(text)
+            label.clicked.connect(self.revert_history)
+            label.setFont(font)
+            label.setStyleSheet(color)
+            label.setWordWrap(True)
+            label.setAlignment(Qt.AlignRight)
+            box.addWidget(label)
+            layout.addLayout(box)
 
     def apply_mica(self):
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -126,9 +124,9 @@ class History(SubWindow):
         sender = self.sender()
 
         if '=' in sender.text():
-            self.focus_entry = sender.text()[:-2]
+            self.focus_entry = sender.text()[3:-6]
         else:
-            self.focus_entry = sender.text()
+            self.focus_entry = sender.text()[3:-4]
         self.historyReversion.emit()
 
         self.close()
