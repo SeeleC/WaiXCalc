@@ -39,7 +39,6 @@ class WaiX(QMainWindow):
 		rFont.setFamily(self.options['settings.4.selector.1'])
 		hFont.setFamily(self.options['settings.4.selector.1'])
 		tFont.setFamily(self.options['settings.4.selector.1'])
-		mFont.setFamily(self.options['settings.4.selector.1'])
 
 		if not self.options['settings.4.selector.2']:
 			if is_dark_mode():
@@ -70,7 +69,7 @@ class WaiX(QMainWindow):
 		vbox.addWidget(self.textEdit)
 
 		self.menubar = self.menuBar()
-		self.menubar.setFont(mFont)
+		self.menubar.setFont(rFont)
 		fileMenu = self.menubar.addMenu(self.trans['menubar.fileMenu.title'])
 		editMenu = self.menubar.addMenu(self.trans['menubar.editMenu.title'])
 		helpMenu = self.menubar.addMenu(self.trans['menubar.helpMenu.title'])
@@ -133,7 +132,7 @@ class WaiX(QMainWindow):
 			action.triggered.connect(function)
 			menu.addAction(action)
 			self.actions.append(action)
-		menu.setFont(mFont)
+		menu.setFont(rFont)
 
 	def bracket(self, l_idx):
 		if l_idx == 0 and (self.formula[-1] in symbol_lst or self.formula == ['0']):
@@ -243,13 +242,12 @@ class WaiX(QMainWindow):
 		rFont.setFamily(self.options['settings.4.selector.1'])
 		hFont.setFamily(self.options['settings.4.selector.1'])
 		tFont.setFamily(self.options['settings.4.selector.1'])
-		mFont.setFamily(self.options['settings.4.selector.1'])
 
 		self.textEdit.setFont(hFont)
-		self.menubar.setFont(mFont)
+		self.menubar.setFont(rFont)
 
 		for m in self.menus:
-			m.setFont(mFont)
+			m.setFont(rFont)
 
 	def formula_update(self, content):
 		self.isResult = False
