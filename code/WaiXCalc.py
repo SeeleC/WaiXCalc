@@ -267,8 +267,10 @@ class WaiX(QMainWindow):
 
 	def history(self):
 		if len(self.history_content) != 0:
+			self.detector.exit()
 			self.sub_win = History(self.history_content)
 			self.sub_win.historyReversion.connect(self.revert_history)
+			self.sub_win.windowClose.connect(self.detector.start)
 			self.sub_win.show()
 		else:
 			get_enhanced_messagebox(
