@@ -5,9 +5,9 @@ from win32mica import ApplyMica, MICAMODE
 from os import remove
 
 from colorModeDetect import Detector
-from clickableQLabel import ClickableQLabel
+from enhancedQLabel import EnhancedQLabel
 from subWindow import SubWindow
-from settings import rFont, tFont
+from settings import rFont, tFont, label_color_dark, label_color_light
 from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme
 
 
@@ -77,24 +77,26 @@ class History(SubWindow):
 
     def add_entry(self, formula, layout):
         f, r = formula.split(' = ')
-        texts = [f+' =', r]
-        if self.data['enableDarkMode']:
-            colors = ['color:#838383;', 'color:#cccccc;']
-        else:
-            colors = ['color:#838383;', 'color:#0c0c0c;']
-        fonts = [rFont, tFont]
+        f = f + ' ='
 
-        for text, color, font in zip(texts, colors, fonts):
-            box = QHBoxLayout()
-            box.addStretch(1)
-            label = ClickableQLabel(text)
-            label.clicked.connect(self.revert_history)
-            label.setFont(font)
-            label.setStyleSheet(color)
-            label.setWordWrap(True)
-            label.setAlignment(Qt.AlignRight)
-            box.addWidget(label)
-            layout.addLayout(box)
+        box = QHBoxLayout()
+        box.addStretch(1)
+        if self.data['enableDarkMode']:
+            label = EnhancedQLabel(
+                f'<span style=\"color: {label_color_dark[0]}\">{f}</span><br>'
+                f'<font size={tFont.pointSize()}><span style=\"color: {label_color_dark[1]}\">{r}</span></font>'
+            )
+        else:
+            label = EnhancedQLabel(
+                f'<span style="color: {label_color_light[0]}">{f}</span><br>'
+                f'<span style="color: {label_color_light[1]}">{r}</span>'
+            )
+        label.clicked.connect(self.revert_history)
+        label.setFont(rFont)
+        label.setWordWrap(True)
+        label.setAlignment(Qt.AlignRight)
+        box.addWidget(label)
+        layout.addLayout(box)
 
     def apply_mica(self):
         self.setAttribute(Qt.WA_TranslucentBackground)
