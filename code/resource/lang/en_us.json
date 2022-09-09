@@ -70,9 +70,8 @@
   "hint.open.export": "Exported!",
   "hint.open.error": "Error",
 
-  "hint.history.title": "History",
-  "hint.history.empty": "No history yet",
-  "hint.history.clear": "Cleared!",
+  "history.empty": "No history yet",
+  "history.disabled": "Record history is disabled",
 
   "text.history.disabled": "Record history is disabled",
 

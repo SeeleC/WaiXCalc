@@ -266,20 +266,11 @@ class WaiX(QMainWindow):
 		).show()
 
 	def history(self):
-		if len(self.history_content) != 0:
-			self.detector.exit()
-			self.sub_win = History(self.history_content)
-			self.sub_win.historyReversion.connect(self.revert_history)
-			self.sub_win.windowClose.connect(self.detector.start)
-			self.sub_win.show()
-		else:
-			get_enhanced_messagebox(
-				QMessageBox.Icon.Information,
-				self.trans['hint.history.title'],
-				self.trans['hint.history.empty'],
-				self,
-				self.data['enableDarkMode']
-			).show()
+		self.detector.exit()
+		self.sub_win = History(self.history_content)
+		self.sub_win.historyReversion.connect(self.revert_history)
+		self.sub_win.windowClose.connect(self.detector.start)
+		self.sub_win.show()
 
 	def keyPressEvent(self, e: QKeyEvent):
 		if e.key() == Qt.Key_Backspace:
@@ -360,6 +351,7 @@ class WaiX(QMainWindow):
 			self.number('9')
 		elif e.key() == Qt.Key_0:
 			self.number('0')
+		print(self.calc_formula)
 
 	def language_update(self):
 		self.trans = get_trans()
@@ -433,9 +425,11 @@ class WaiX(QMainWindow):
 			self.sub_win = OpenedFile(formulas)
 			self.sub_win.show()
 
-	def revert_history(self):
+	def revert_history(self):  # FIXME 对插入算式的支持不完整导致不能进行计算
 		self.clear()
 		self.formula = self.sub_win.focus_entry.split()
+		self.calc_formula = get_formula(''.join(self.sub_win.focus_entry.split()))
+		# calcFormulaStep frontBracketIndex frontBracketIndexStep
 		self.text_update()
 
 	def settings(self):

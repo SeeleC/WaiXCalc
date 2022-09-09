@@ -42,8 +42,20 @@ class History(SubWindow):
         widget = QWidget()
         widget.setLayout(inner)
 
-        for i in [f + ' ' for f in get_reversed_list(self.history)]:
-            self.add_entry(i, inner)
+        if len(self.history) != 0:
+            for i in [f + ' ' for f in get_reversed_list(self.history)]:
+                self.add_entry(i, inner)
+        else:
+            empty = EnhancedQLabel(self.trans['history.empty'])
+            empty.setFont(rFont)
+            inner.addWidget(empty)
+
+        if not self.options['settings.2.option.1']:
+            inner.addSpacing(10)
+            disabled = EnhancedQLabel(self.trans['history.disabled'])
+            disabled.setFont(rFont)
+            inner.addWidget(disabled)
+
         inner.addStretch(1)
 
         self.area.setWidget(widget)
@@ -93,7 +105,7 @@ class History(SubWindow):
             label.setFont(font)
             label.setStyleSheet(color)
             label.setWordWrap(True)
-            label.setAlignment(Qt.AlignRight)
+            label.setAlignment(Qt.AlignRight)  # FIXME 需要删除，因为和setWordWrap EnhancedQLabel配合会导致崩溃
             box.addWidget(label)
             vbox.addLayout(box)
 
@@ -111,7 +123,7 @@ class History(SubWindow):
         self.history.clear()
 
         try:
-            remove('data/history.json')
+            remove('data/history.json')  # TODO 改成if exist
         except FileNotFoundError:
             pass
 
