@@ -74,8 +74,6 @@
   "hint.history.empty": "沒有歷史記錄！",
   "hint.history.clear": "已清空歷史記錄",
 
-  "hint.create.tooShort": "算式過短！",
-
   "text.history.disabled": "記錄歷史已關閉",
 
   "text.help.content": "1. 打開設置選項“啟用分數計算”時，為了兼容分數，如須輸入“÷”，請用“”或“:”代替;<br>\n3. 如有其他問題請前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a><br>",

@@ -74,8 +74,6 @@
   "hint.history.empty": "No history yet",
   "hint.history.clear": "Cleared!",
 
-  "hint.create.tooShort": "Too short!",
-
   "text.history.disabled": "Record history is disabled",
 
   "text.help.content": "1. Input `:` or `//` to replace `/` when you are fraction calculating.<br>3. If you have any other questions, go and <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/new\"><span style=\"color: #3a96dd\">create a new issue</span><\\a>.<br>",
