@@ -39,6 +39,7 @@ class WaiX(QMainWindow):
 		rFont.setFamily(self.options['settings.4.selector.1'])
 		hFont.setFamily(self.options['settings.4.selector.1'])
 		tFont.setFamily(self.options['settings.4.selector.1'])
+		nFont.setFamily(self.options['settings.4.selector.1'])
 
 		if not self.options['settings.4.selector.2']:
 			if is_dark_mode():
@@ -242,6 +243,7 @@ class WaiX(QMainWindow):
 		rFont.setFamily(self.options['settings.4.selector.1'])
 		hFont.setFamily(self.options['settings.4.selector.1'])
 		tFont.setFamily(self.options['settings.4.selector.1'])
+		nFont.setFamily(self.options['settings.4.selector.1'])
 
 		self.textEdit.setFont(hFont)
 		self.menubar.setFont(rFont)

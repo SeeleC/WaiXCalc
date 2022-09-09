@@ -7,7 +7,7 @@ from os import remove
 from colorModeDetect import Detector
 from enhancedQLabel import EnhancedQLabel
 from subWindow import SubWindow
-from settings import rFont, tFont
+from settings import rFont, nFont
 from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme
 
 
@@ -76,13 +76,14 @@ class History(SubWindow):
         self.resize(600, 400)
 
     def add_entry(self, formula, layout):
+        vbox = QVBoxLayout()
         f, r = formula.split(' = ')
         texts = [f+' =', r]
         if self.data['enableDarkMode']:
             colors = ['color:#838383;', 'color:#cccccc;']
         else:
             colors = ['color:#838383;', 'color:#0c0c0c;']
-        fonts = [rFont, tFont]
+        fonts = [rFont, nFont]
 
         for text, color, font in zip(texts, colors, fonts):
             box = QHBoxLayout()
@@ -94,7 +95,10 @@ class History(SubWindow):
             label.setWordWrap(True)
             label.setAlignment(Qt.AlignRight)
             box.addWidget(label)
-            layout.addLayout(box)
+            vbox.addLayout(box)
+
+        layout.addLayout(vbox)
+        layout.addSpacing(10)
 
     def apply_mica(self):
         self.setAttribute(Qt.WA_TranslucentBackground)

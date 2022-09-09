@@ -45,5 +45,8 @@ hFont.setPointSize(24)
 tFont = QFont()
 tFont.setPointSize(10)
 
+nFont = QFont()
+nFont.setPointSize(12)
+
 # tipFont = QFont()
 # tipFont.setPointSize(4)
