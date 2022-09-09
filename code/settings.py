@@ -11,13 +11,6 @@ num_widths = {
 	'.': 12.4, '/': 21, 'E': 30.5, 'e': 28
 }  # 672 / 一直输入直到窗口被拉伸的个数
 
-label_color_light = ['color:#838383;', 'color:#0c0c0c;']  # 淡色，标准
-label_color_dark = ['color:#7e7e7e;', 'color:#cccccc;']
-pressed_label_color_light = '#595b5c'
-pressed_label_color_dark = '#cecfcf'
-hover_background_color = '#7f7f7f3f'
-pressed_background_color = '#7f7f7f5f'
-
 default_options = {
 	'settings.1.option.1': False,
 	'settings.1.option.2': False,
