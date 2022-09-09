@@ -58,7 +58,7 @@ class WaiX(QMainWindow):
 		self.show()
 
 		if self.calc_formula == ['0'] and self.formula != self.calc_formula:
-			self.clear_edit()
+			self.clear()
 
 	def _init_ui(self):
 		vbox = QVBoxLayout()
@@ -180,7 +180,7 @@ class WaiX(QMainWindow):
 				if self.options['settings.2.option.1']:
 					self.history_content.append(''.join([i + ' ' for i in self.formula]) + '= ' + str(result))
 
-				self.clear_edit()
+				self.clear()
 				self.formula = [str(result)]
 				self.calc_formula = [str(result)]
 				self.text_update()
@@ -189,7 +189,7 @@ class WaiX(QMainWindow):
 		qr = self.frameGeometry()
 		qr.moveCenter(qr.topLeft())
 
-	def clear_edit(self):
+	def clear(self):
 		self.formula = ['0']
 		self.calc_formula = ['0']
 		self.calc_f_step.clear()
@@ -223,14 +223,14 @@ class WaiX(QMainWindow):
 
 	def cut(self):
 		self.clipboard.setText(''.join([i for i in self.formula]).strip())
-		self.clear_edit()
+		self.clear()
 
 	def delete(self):
 		if len(self.formula) >= 2:
 			self.formula = self.formula[:-1]
 			self.calc_formula = self.calc_f_step[:-1]
 		else:
-			self.clear_edit()
+			self.clear()
 		self.text_update()
 
 	def detect_color_mode(self):
@@ -284,7 +284,7 @@ class WaiX(QMainWindow):
 			self.isResult = False
 			if len(self.formula[-1]) == 2 and '-' in self.formula[-1]:
 				if len(self.formula) == 1:
-					self.clear_edit()
+					self.clear()
 				else:
 					self.formula_update('0')
 					self.text_update()
@@ -301,7 +301,7 @@ class WaiX(QMainWindow):
 				self.calc_formula = self.calc_formula[:-1]
 				self.text_update()
 			elif (len(self.formula[-1]) == 1 and len(self.formula) == 1) or self.isResult:
-				self.clear_edit()
+				self.clear()
 		elif e.key() == Qt.Key_Equal or e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:
 			self.calculate()
 		elif e.key() == Qt.Key_Plus:
@@ -319,7 +319,7 @@ class WaiX(QMainWindow):
 		elif e.key() == Qt.Key_plusminus:
 			self.plusminus()
 		elif e.key() == Qt.Key_C:
-			self.clear_edit()
+			self.clear()
 		elif e.key() == Qt.Key_Percent:
 			if self.formula[-1] != '0':
 				self.formula_update(str(Decimal(self.formula[-1]) / 100))
@@ -432,6 +432,7 @@ class WaiX(QMainWindow):
 			self.sub_win.show()
 
 	def revert_history(self):
+		self.clear()
 		self.formula = self.sub_win.focus_entry.split()
 		self.text_update()
 
