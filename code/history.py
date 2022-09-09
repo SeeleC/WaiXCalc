@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScr
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
 from win32mica import ApplyMica, MICAMODE
-from os import remove
+from os import remove, path
 
 from colorModeDetect import Detector
 from enhancedQLabel import EnhancedQLabel
@@ -122,10 +122,8 @@ class History(SubWindow):
     def clear_history(self):
         self.history.clear()
 
-        try:
-            remove('data/history.json')  # TODO 改成if exist
-        except FileNotFoundError:
-            pass
+        if path.exists('data/history.json'):
+            remove('data/history.json')
 
         self.close()
         get_enhanced_messagebox(
