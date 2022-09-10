@@ -99,14 +99,17 @@ class History(SubWindow):
 
         for text, color, font in zip(texts, colors, fonts):
             box = QHBoxLayout()
-            box.addStretch(1)
-            label = EnhancedQLabel(text)
+
+            label = EnhancedQLabel(self)
+            label.setText(text)
             label.clicked.connect(self.revert_history)
             label.setFont(font)
             label.setStyleSheet(color)
-            label.setWordWrap(True)
             label.setAlignment(Qt.AlignRight)
+            label.setWordWrap(True)
+
             box.addWidget(label)
+            box.addStretch(1)
             vbox.addLayout(box)
 
         layout.addLayout(vbox)
@@ -128,8 +131,8 @@ class History(SubWindow):
         self.close()
         get_enhanced_messagebox(
             QMessageBox.Icon.NoIcon,
-            self.trans['hint.history.title'],
-            self.trans['hint.history.clear'],
+            self.trans['window.history.title'],
+            self.trans['history.cleared'],
             self,
             self.data['enableDarkMode']
         ).show()
