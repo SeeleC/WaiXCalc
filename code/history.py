@@ -109,7 +109,6 @@ class History(SubWindow):
             label.setWordWrap(True)
 
             box.addWidget(label)
-            box.addStretch(1)
             vbox.addLayout(box)
 
         layout.addLayout(vbox)
