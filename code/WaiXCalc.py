@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import (
-	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout
+	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout, QSizePolicy
 )
-from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent
+from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent, QResizeEvent
 from sys import argv, exit
 from asyncio import run, create_task
 
@@ -65,8 +65,9 @@ class WaiX(QMainWindow):
 		self.widget.setLayout(vbox)
 
 		self.textEdit = QLabel()
-		self.text_update()
 		self.textEdit.setFont(hFont)
+		self.text_update()
+		self.textEdit.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Expanding)
 		vbox.addWidget(self.textEdit)
 
 		self.menubar = self.menuBar()
@@ -426,6 +427,9 @@ class WaiX(QMainWindow):
 		else:
 			self.sub_win = OpenedFile(formulas)
 			self.sub_win.show()
+
+	def resizeEvent(self, a0: QResizeEvent) -> None:
+		self.text_update()
 
 	def revert_history(self):  # FIXME 对插入算式的支持不完整导致不能进行计算
 		self.clear()
