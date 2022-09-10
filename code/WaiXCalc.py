@@ -96,6 +96,9 @@ class WaiX(QMainWindow):
 		self.resize(672, 0)
 		self.setMaximumHeight(self.height())
 
+		if self.data['latest_width']:
+			self.resize(self.data['latest_width'], self.height())
+
 		self.detect_color_mode()
 
 		if self.data['latest_pos_x'] or self.data['latest_pos_y']:
@@ -213,6 +216,8 @@ class WaiX(QMainWindow):
 
 		self.data['latest_pos_x'] = self.pos().x()
 		self.data['latest_pos_y'] = self.pos().y()
+
+		self.data['latest_width'] = self.width()
 
 		save('data/options.json', self.options)
 		save('data/cache.json', self.data)

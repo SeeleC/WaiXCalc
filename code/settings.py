@@ -33,6 +33,7 @@ default_data = {
 	'isResult': False,
 	'latest_pos_x': 0,
 	'latest_pos_y': 0,
+	'latest_width': 0,
 	'enableDarkMode': False
 }
 
