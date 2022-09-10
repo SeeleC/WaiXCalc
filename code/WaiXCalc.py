@@ -93,7 +93,7 @@ class WaiX(QMainWindow):
 		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
 		self.title()
 		self.resize(672, 0)
-		self.setMaximumSize(self.width(), self.height())
+		self.setMaximumHeight(self.height())
 
 		self.detect_color_mode()
 
@@ -351,6 +351,8 @@ class WaiX(QMainWindow):
 			self.number('9')
 		elif e.key() == Qt.Key_0:
 			self.number('0')
+
+		# TODO 删除多余的debug信息
 		print(self.calc_formula)
 
 	def language_update(self):

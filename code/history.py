@@ -105,7 +105,7 @@ class History(SubWindow):
             label.setFont(font)
             label.setStyleSheet(color)
             label.setWordWrap(True)
-            label.setAlignment(Qt.AlignRight)  # FIXME 需要删除，因为和setWordWrap EnhancedQLabel配合会导致崩溃
+            label.setAlignment(Qt.AlignRight)
             box.addWidget(label)
             vbox.addLayout(box)
 

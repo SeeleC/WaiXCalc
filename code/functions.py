@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QTextStream, QFile, Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QFontMetrics
 from PyQt5.QtWidgets import QLabel, QMessageBox, QWidget
 from decimal import Decimal, InvalidOperation
 from fractions import Fraction
@@ -267,14 +267,11 @@ def text_update(string: str, label: QLabel) -> None:
 	"""
 	防止意外的窗口拉伸
 	"""
-	label.setText(string)
-	width = 0
-	for i in range(len(string)):
-		if string[i] not in symbol_lst and string[i] not in bracket_lst[0] and string[i] not in bracket_lst[1]:
-			width += num_widths[string[i]]
-			if width >= 636:
-				label.setText('...' + string[-i + 2:])
-				break
+	metrics = QFontMetrics(label.font())
+	if metrics.width(string) > label.width():
+		label.setText(QFontMetrics(label.font()).elidedText(string, Qt.ElideRight, label.width()))
+	else:
+		label.setText(string)
 
 
 # tree: core
