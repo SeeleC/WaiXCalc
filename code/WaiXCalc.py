@@ -65,11 +65,11 @@ class WaiX(QMainWindow):
 		vbox = QVBoxLayout()
 		self.widget.setLayout(vbox)
 
-		self.textEdit = SelectableLabel()
-		self.textEdit.setFont(hFont)
+		self.main_label = SelectableLabel()
+		self.main_label.setFont(hFont)
 		self.text_update()
-		self.textEdit.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Expanding)
-		vbox.addWidget(self.textEdit)
+		self.main_label.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Expanding)
+		vbox.addWidget(self.main_label)
 
 		self.menubar = self.menuBar()
 		self.menubar.setFont(rFont)
@@ -172,7 +172,7 @@ class WaiX(QMainWindow):
 			try:
 				result = calculate(self.calc_formula)
 			except (ValueError, ZeroDivisionError):
-				self.textEdit.setText(self.trans['text.main.error'])
+				self.main_label.setText(self.trans['text.main.error'])
 			else:
 				self.isResult = True
 
@@ -200,7 +200,7 @@ class WaiX(QMainWindow):
 		self.calc_f_step.clear()
 		self.b_idx_step.clear()
 		self.b_idx.clear()
-		self.textEdit.setText(self.formula[-1])
+		self.main_label.setText(self.formula[-1])
 
 	def closeEvent(self, a0: QCloseEvent) -> None:
 		try:
@@ -252,7 +252,7 @@ class WaiX(QMainWindow):
 		tFont.setFamily(self.options['settings.4.selector.1'])
 		nFont.setFamily(self.options['settings.4.selector.1'])
 
-		self.textEdit.setFont(hFont)
+		self.main_label.setFont(hFont)
 		self.menubar.setFont(rFont)
 
 		for m in self.menus:
@@ -466,7 +466,7 @@ class WaiX(QMainWindow):
 		self.text_update()
 
 	def text_update(self):
-		text_update(self.formula[-1], self.textEdit)
+		text_update(self.formula[-1], self.main_label)
 
 	def title(self):
 		if self.options['window_title'] != '':
