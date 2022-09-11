@@ -5,7 +5,7 @@ from win32mica import ApplyMica, MICAMODE
 from os import remove, path
 
 from colorModeDetect import Detector
-from enhancedQLabel import EnhancedQLabel
+from clickableLabel import ClickableLabel
 from subWindow import SubWindow
 from settings import rFont, nFont
 from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme
@@ -46,13 +46,13 @@ class History(SubWindow):
             for i in [f + ' ' for f in get_reversed_list(self.history)]:
                 self.add_entry(i, inner)
         else:
-            empty = EnhancedQLabel(self.trans['history.empty'])
+            empty = ClickableLabel(self.trans['history.empty'])
             empty.setFont(rFont)
             inner.addWidget(empty)
 
         if not self.options['settings.2.option.1']:
             inner.addSpacing(10)
-            disabled = EnhancedQLabel(self.trans['history.disabled'])
+            disabled = ClickableLabel(self.trans['history.disabled'])
             disabled.setFont(rFont)
             inner.addWidget(disabled)
 
@@ -100,7 +100,7 @@ class History(SubWindow):
         for text, color, font in zip(texts, colors, fonts):
             box = QHBoxLayout()
 
-            label = EnhancedQLabel(self)
+            label = ClickableLabel()
             label.setText(text)
             label.clicked.connect(self.revert_history)
             label.setFont(font)

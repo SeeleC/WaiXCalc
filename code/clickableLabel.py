@@ -1,15 +1,16 @@
 from PyQt5.QtCore import pyqtSignal, QEvent
 from PyQt5.QtGui import QMouseEvent
-from PyQt5.QtWidgets import QLabel
+
+from selectableLabel import SelectableLabel
 
 
-class EnhancedQLabel(QLabel):
+class ClickableLabel(SelectableLabel):
     clicked = pyqtSignal()
     mouseEnter = pyqtSignal()
     mouseLeave = pyqtSignal()
 
-    def __init__(self, parent=None):
-        super(EnhancedQLabel, self).__init__(parent)
+    def __init__(self):
+        super(ClickableLabel, self).__init__()
 
     def mouseReleaseEvent(self, ev: QMouseEvent) -> None:
         self.clicked.emit()

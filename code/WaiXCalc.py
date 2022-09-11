@@ -6,6 +6,7 @@ from sys import argv, exit
 from asyncio import run, create_task
 
 from colorModeDetect import Detector
+from selectableLabel import SelectableLabel
 from settingsWin import Settings
 from openedFile import OpenedFile
 from history import History
@@ -64,7 +65,7 @@ class WaiX(QMainWindow):
 		vbox = QVBoxLayout()
 		self.widget.setLayout(vbox)
 
-		self.textEdit = QLabel()
+		self.textEdit = SelectableLabel()
 		self.textEdit.setFont(hFont)
 		self.text_update()
 		self.textEdit.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Expanding)
