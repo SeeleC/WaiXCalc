@@ -269,7 +269,7 @@ def text_update(string: str, label: QLabel) -> None:
 	"""
 	metrics = QFontMetrics(label.font())
 	if metrics.width(string) > label.width():
-		label.setText(QFontMetrics(label.font()).elidedText(string, Qt.ElideRight, label.width()))  # FIXME 错误的略缩方向
+		label.setText(QFontMetrics(label.font()).elidedText(string, Qt.ElideLeft, label.width()))
 	else:
 		label.setText(string)
 
