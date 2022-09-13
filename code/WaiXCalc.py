@@ -4,9 +4,9 @@ from re import match
 from typing import Union
 
 # WaiXCalc-Core
-# By WaiZhong
+# By SeeleC
 # MIT LICENSE
-# Source https://github.com/WaiZhong/WaiXCalc/tree/core
+# Source https://github.com/SeeleC/WaiXCalc/tree/core
 
 symbol_lst = ['+', '-', '*', '//', ':', '^', '**']
 symbol_lst_2 = ['/', '.']
@@ -55,8 +55,8 @@ def calculate(formula: list) -> Union[Fraction, Decimal, int]:
 	"""
 	传入formula，从左到右计算，优先计算嵌套的列表内算式。
 	为了兼容分数，所以 除号(/) 需要用 双斜杠(//) 来代替。
-	:param formula: list[str]
-	:return: Union[Fraction, Decimal, int]
+	:param formula:
+	:return:
 	"""
 	def c(r: list[str] = formula[:], f: list = formula[:]) -> list:
 		for i in range(len(f)):
@@ -124,8 +124,8 @@ def get_formula(formula_string: str) -> Union[list[str], list[list[str]]]:
 	"""
 	传入字符串，将字符串转化为列表，列表每个元素是一串数字或一个符号。
 	仅允许以 括号`()` / 中括号`[]` / 大括号`{}` 作嵌套、同一嵌套内不能重复使用、不限制使用顺序。
-	:param formula_string: str
-	:return: list[str, list[str]]
+	:param:
+	:return:
 	"""
 	symbols = ['+', '-', '*', ':', '^']
 	fs = formula_string.replace(' ', '').replace('**', '^').replace('×', '*').replace('÷', ':').replace(
