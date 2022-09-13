@@ -277,27 +277,34 @@ def text_update(string: str, label: QLabel) -> None:
 # tree: core
 
 
-def isformula(formula: list[str]) -> bool:
+def verify_formula(formula: list[str]) -> bool:
 	"""
 	仅支持单层算式，如'1+3.5*8/9'
 	不支持多层算式，如'1+(3.5*8.9)'
 	"""
-	symbol_in = False
-
 	for i in range(len(formula)):
-		if (i+1) % 2 == 0:
-			if formula[i] in symbol_lst:
-				continue
-		else:
-			for j in formula[i]:
-				if j in symbol_turn or (symbol_in and not j.isdigit()):
-					break
-				elif j in symbol_lst_2:
-					symbol_in = True
-			else:
-				symbol_in = False
-				continue
+		if (i+1) % 2 == 0 and formula[i] in symbol_lst:
+			continue
+		elif verify_int(formula[i]):
+			continue
 		return False
+	return True
+
+
+def verify_int(integer: str):
+	symbol_frequency = {'.': 0, '/': 0}
+
+	if integer[-1] in symbol_lst_2:
+		return False
+
+	for i in integer:
+		if i in symbol_turn or i in [j for _ in bracket_lst for j in _]:
+			return False
+		elif i in symbol_lst_2:
+			symbol_frequency[i] += 1
+			if symbol_frequency['.'] > 2 or symbol_frequency['/'] > 1:
+				return False
+
 	return True
 
 

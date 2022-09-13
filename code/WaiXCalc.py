@@ -308,7 +308,7 @@ class WaiX(QMainWindow):
 			self.symbol('+')
 		elif e.key() == Qt.Key_Minus:
 			self.symbol('-')
-		elif e.key() == Qt.Key_Asterisk:
+		elif e.key() == Qt.Key_Asterisk:  # TODO 再次按下时输“^”
 			self.symbol('×')
 		elif e.key() == Qt.Key_Colon:
 			self.symbol('÷')
@@ -324,20 +324,10 @@ class WaiX(QMainWindow):
 			if self.formula[-1] != '0':
 				self.formula_update(str(Decimal(self.formula[-1]) / 100))
 				self.text_update()
-		elif e.key() == Qt.Key_Period:
-			if self.formula[-1] not in symbol_lst and '.' not in self.formula[-1]:
-				self.formula_update(self.formula[-1] + '.')
-				self.text_update()
+		elif e.key() == Qt.Key_Period:  # TODO “.”与“/”不可兼容
+			self.period()
 		elif e.key() == Qt.Key_Slash:
-			if self.options['settings.1.option.1']:
-				if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
-					self.formula_update(self.formula[-1] + '/')
-					self.text_update()
-				elif self.formula[-1][-1] == '/':
-					self.formula_update(self.formula[-1][:-1])
-					self.symbol('÷')
-			else:
-				self.symbol('÷')
+			self.slash()
 		elif e.key() == Qt.Key_1:
 			self.number('1')
 		elif e.key() == Qt.Key_2:
@@ -358,9 +348,6 @@ class WaiX(QMainWindow):
 			self.number('9')
 		elif e.key() == Qt.Key_0:
 			self.number('0')
-
-		# TODO 删除多余的debug信息
-		print(self.calc_formula)
 
 	def language_update(self):
 		self.trans = get_trans()
@@ -398,13 +385,18 @@ class WaiX(QMainWindow):
 
 	def paste(self):
 		text: str = self.clipboard.text()
-		if isformula(get_formula(text)):
+		if verify_formula(get_formula(text)):
 			if self.formula[-1] in symbol_lst or self.formula[-1] in bracket_lst[0]:
 				self.formula += get_formula(text)
 				self.calc_formula += get_formula(text)
 			else:
 				self.formula = get_formula(text)
 				self.calc_formula = get_formula(text)
+			self.text_update()
+
+	def period(self):
+		if self.formula[-1] not in symbol_lst and '.' not in self.formula[-1]:
+			self.formula_update(self.formula[-1] + '.')
 			self.text_update()
 
 	def plusminus(self):
@@ -421,7 +413,7 @@ class WaiX(QMainWindow):
 			with open(file[0], 'r') as f:
 				f_formula = f.read()
 				f_formulas = f_formula.split('\n')
-				formulas = [get_formula(i) for i in f_formulas if isformula(get_formula(i))]
+				formulas = [get_formula(i) for i in f_formulas if verify_formula(get_formula(i))]
 		except (FileNotFoundError, IndexError) as e:
 			if type(e) == IndexError:
 				get_enhanced_messagebox(
@@ -438,12 +430,23 @@ class WaiX(QMainWindow):
 	def resizeEvent(self, a0: QResizeEvent) -> None:
 		self.text_update()
 
-	def revert_history(self):  # FIXME 对插入算式的支持不完整导致不能进行计算
+	def revert_history(self):
 		self.clear()
-		self.formula = self.sub_win.focus_entry.split()
-		self.calc_formula = get_formula(''.join(self.sub_win.focus_entry.split()))
-		# calcFormulaStep frontBracketIndex frontBracketIndexStep
-		self.text_update()
+		for i in self.sub_win.focus_entry.split():
+			if verify_int(i):
+				for j in i:
+					if j.isdigit():
+						self.number(j)
+					elif j == '.':
+						self.period()
+					elif j == '/':
+						self.slash()
+			elif i in symbol_lst:
+				self.symbol(i)
+			elif i in bracket_lst[0]:
+				self.bracket(0)
+			elif i in bracket_lst[1]:
+				self.bracket(1)
 
 	def settings(self):
 		self.sub_win = Settings()
@@ -455,6 +458,17 @@ class WaiX(QMainWindow):
 		self.sub_win.optionsChanged.connect(self.options_update)
 		self.sub_win.windowClose.connect(self.detector.start)
 		self.sub_win.show()
+
+	def slash(self):
+		if self.options['settings.1.option.1']:
+			if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
+				self.formula_update(self.formula[-1] + '/')
+				self.text_update()
+			elif self.formula[-1][-1] == '/':
+				self.formula_update(self.formula[-1][:-1])
+				self.symbol('÷')
+		else:
+			self.symbol('÷')
 
 	def symbol(self, symbol):
 		self.isResult = False
