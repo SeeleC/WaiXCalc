@@ -1,6 +1,6 @@
 # WaiXCalc
 
-[WaiXCalc](https://github.com/SeeleC/WaiXCalc) (WaiX Calculator) 是一个使用PyQt5开发的计算器，支持分数四则运算、算式解析等功能。
+[WaiXCalc](https://github.com/SeeleC/WaiXCalc) (WaiX Calculator) 是一个使用PyQt5开发的计算器，支持分数四则运算、历史记录等功能。
 
 *~~纯手工代码 不使用Qt Designer~~*
 
