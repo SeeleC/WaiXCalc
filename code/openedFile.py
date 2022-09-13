@@ -71,6 +71,7 @@ class OpenedFile(SubWindow):
 		body.addWidget(self.formula_text, 0, 0, 4, 4)
 
 		equal = QLabel('=')
+		equal.setAlignment(Qt.AlignHCenter)
 		equal.setFont(tFont)
 		body.addWidget(equal, 0, 5)
 
