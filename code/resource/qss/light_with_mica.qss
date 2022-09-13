@@ -1,5 +1,8 @@
 /* QComboBox */
 
+QComboBox {
+}
+
 /*QComboBox {
   background-color: #ffffff;
 }
