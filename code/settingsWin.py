@@ -101,6 +101,7 @@ class Settings(QTabWidget):
 			widget.stateChanged.connect(self.checked)
 		else:
 			widget.clicked.connect(self.clicked)
+		widget.setFont(rFont)
 
 		hbox = QHBoxLayout()
 		hbox.addWidget(widget)
@@ -110,10 +111,12 @@ class Settings(QTabWidget):
 
 	def add_enter_entry(self, layout: QVBoxLayout, title: str, widget: QLineEdit, text: str = '') -> QVBoxLayout:
 		widget.setText(text)
+		widget.setFont(rFont)
 
 		hbox = QHBoxLayout()
 
 		title_label = QLabel(title + ':')
+		title_label.setFont(rFont)
 		hbox.addWidget(title_label)
 		hbox.addStretch(1)
 
@@ -126,6 +129,7 @@ class Settings(QTabWidget):
 		hbox = QHBoxLayout()
 
 		label = QLabel(title + ' :')
+		label.setFont(rFont)
 		hbox.addWidget(label)
 
 		self.selectors[flag] = QComboBox()
@@ -147,8 +151,6 @@ class Settings(QTabWidget):
 		outer.addWidget(s)
 		self.add_bottom_button(outer)
 		widget.setLayout(outer)
-
-		widget.setFont(rFont)
 
 		self.update_status()
 		self.addTab(widget, name)
