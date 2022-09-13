@@ -16,11 +16,11 @@ WaiXCalc实现了分数四则混合运算、算式分割等功能。
 
 ```python
 import WaiXCalc
-WaiXCalc.get_formula('1/2^3')
+WaiXCalc.get_formula('1/2^(1.5+1.5)')
 ```
 output:
 ```python
-['1/2', '**', '3']
+['1/2', '**', ['1.5', '+', '1.5']]
 ```
 
 ## License
