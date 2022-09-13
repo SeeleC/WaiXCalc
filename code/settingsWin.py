@@ -265,10 +265,12 @@ class Settings(QTabWidget):
 		hbox = QHBoxLayout()
 
 		ok = QPushButton(self.trans['button.ok'])
+		ok.setFont(rFont)
 		ok.setShortcut('Return')
 		ok.clicked.connect(self.clicked)
 
 		cancel = QPushButton(self.trans['button.cancel'])
+		cancel.setFont(rFont)
 		cancel.setShortcut('Escape')
 		cancel.clicked.connect(self.clicked)
 

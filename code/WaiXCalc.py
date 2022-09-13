@@ -308,8 +308,11 @@ class WaiX(QMainWindow):
 			self.symbol('+')
 		elif e.key() == Qt.Key_Minus:
 			self.symbol('-')
-		elif e.key() == Qt.Key_Asterisk:  # TODO 再次按下时输“^”
-			self.symbol('×')
+		elif e.key() == Qt.Key_Asterisk:
+			if self.formula[-1] == '×':
+				self.symbol('^')
+			else:
+				self.symbol('×')
 		elif e.key() == Qt.Key_Colon:
 			self.symbol('÷')
 		elif e.key() == Qt.Key_ParenLeft or e.key() == Qt.Key_BracketLeft:
@@ -324,7 +327,7 @@ class WaiX(QMainWindow):
 			if self.formula[-1] != '0':
 				self.formula_update(str(Decimal(self.formula[-1]) / 100))
 				self.text_update()
-		elif e.key() == Qt.Key_Period:  # TODO “.”与“/”不可兼容
+		elif e.key() == Qt.Key_Period:
 			self.period()
 		elif e.key() == Qt.Key_Slash:
 			self.slash()
