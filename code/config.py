@@ -3,7 +3,7 @@ import sys
 from PyQt5.QtGui import QFont
 from os import path
 
-__version__ = '1.9.0'
+__version__ = '1.9.1'
 
 symbol_lst = ['+', '-', '×', '÷', '^']
 symbol_lst_2 = ['.', '/']
