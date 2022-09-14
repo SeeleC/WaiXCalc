@@ -11,7 +11,7 @@ from settingsWin import Settings
 from openedFile import OpenedFile
 from history import History
 from functions import *
-from settings import *
+from config import *
 
 # WaiXCalc (WaiX Calculator)
 # By SeeleC
@@ -92,7 +92,7 @@ class WaiX(QMainWindow):
 		self.actions = []
 		run(self._init_menubar(names, statustips, functions, shortcuts))
 
-		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
+		self.setWindowIcon(QIcon(icon_path))
 		self.title()
 		self.resize(672, 0)
 		self.setMaximumHeight(self.height())

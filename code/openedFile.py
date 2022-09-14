@@ -9,7 +9,7 @@ from win32mica import ApplyMica, MICAMODE
 from colorModeDetect import Detector
 from subWindow import SubWindow
 from functions import calculate, get_trans, get_enhanced_messagebox, get_options, get_data, load_theme
-from settings import rFont, tFont
+from config import rFont, tFont, icon_path
 
 
 class OpenedFile(SubWindow):
@@ -108,7 +108,7 @@ class OpenedFile(SubWindow):
 		self.addAction(close_action)
 
 		self.setLayout(layout)
-		self.setWindowIcon(QIcon('resource/images/icon.jpg'))
+		self.setWindowIcon(QIcon(icon_path))
 		self.setWindowTitle(self.trans['window.open.title'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())

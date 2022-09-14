@@ -7,7 +7,7 @@ from os import remove, path
 from colorModeDetect import Detector
 from clickableLabel import ClickableLabel
 from subWindow import SubWindow
-from settings import rFont, nFont
+from config import rFont, nFont, icon_path
 from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme
 
 
@@ -84,7 +84,7 @@ class History(SubWindow):
 
         self.setLayout(outer)
         self.setWindowTitle(self.trans['window.history.title'])
-        self.setWindowIcon(QIcon('resource/images/icon.jpg'))
+        self.setWindowIcon(QIcon(icon_path))
         self.resize(600, 400)
 
     def add_entry(self, formula, layout):

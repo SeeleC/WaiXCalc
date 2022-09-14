@@ -10,8 +10,9 @@ from os import mkdir, listdir, remove, path
 from winreg import ConnectRegistry, HKEY_CURRENT_USER, OpenKey, EnumValue
 from win32mica import ApplyMica, MICAMODE
 
-from settings import (
-	symbol_lst, symbol_lst_2, symbol_turn, num_widths, bracket_lst, default_options, default_data, rFont
+from config import (
+	symbol_lst, symbol_lst_2, symbol_turn, bracket_lst, default_options, default_data, rFont, qss_d_m_path,
+	qss_l_m_path, qss_d_path, qss_l_path, lang_path
 )
 
 
@@ -147,7 +148,7 @@ def get_trans() -> dict[str]:
 	with open('data/options.json', 'r', encoding='utf-8') as f:
 		language = load(f)['language']
 
-	with open(f'resource/lang/{language}.json', 'r', encoding='utf-8') as f:
+	with open(f'{lang_path}/{language}.json', 'r', encoding='utf-8') as f:
 		return load(f)
 
 
@@ -170,10 +171,10 @@ def get_trans_info() -> dict[str]:
 	遍历lang文件夹、获取json文件信息
 	"""
 	data = {}
-	for i in sorted(listdir('resource/lang')):
+	for i in sorted(listdir(lang_path)):
 		i = i[:-5]
 		if i != 'template':
-			with open(f'resource/lang/{i}.json', 'r', encoding='utf-8') as f:
+			with open(f'{lang_path}/{i}.json', 'r', encoding='utf-8') as f:
 				res = load(f)
 				data = {**data, **{res['language.name']: res['language.id']}}
 	return data
@@ -224,15 +225,15 @@ def is_dark_mode():
 def load_theme(widget: QWidget):
 	if widget.options['settings.4.option']:
 		if widget.data['enableDarkMode']:
-			widget.setStyleSheet(get_style('resource/qss/dark_with_mica.qss'))
+			widget.setStyleSheet(get_style(qss_d_m_path))
 		else:
-			widget.setStyleSheet(get_style('resource/qss/light_with_mica.qss'))
+			widget.setStyleSheet(get_style(qss_l_m_path))
 		apply_mica(widget, widget.data['enableDarkMode'] or widget.options['settings.4.selector.2'] == 'colorMode.dark')
 	else:
 		if widget.data['enableDarkMode']:
-			widget.setStyleSheet(get_style('resource/qss/dark_without_mica.qss'))
+			widget.setStyleSheet(get_style(qss_d_path))
 		else:
-			widget.setStyleSheet(get_style('resource/qss/light_without_mica.qss'))
+			widget.setStyleSheet(get_style(qss_l_path))
 
 
 def mend_dict_item(d, rd) -> dict[str, dict]:

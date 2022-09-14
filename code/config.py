@@ -1,4 +1,7 @@
+import sys
+
 from PyQt5.QtGui import QFont
+from os import path
 
 __version__ = '1.9.0'
 
@@ -6,10 +9,21 @@ symbol_lst = ['+', '-', '×', '÷', '^']
 symbol_lst_2 = ['.', '/']
 bracket_lst = [['(', '[', '{'], [')', ']', '}']]
 symbol_turn = {'+': '+', '-': '-', '×': '*', '÷': '/', '//': '/', '^': '**', '**': '**'}
-num_widths = {
+'''num_widths = {
 	'1': 30.4, '2': 31.8, '3': 33.4, '4': 33.4, '5': 33.4, '6': 33.4, '7': 30.3, '8': 33.4, '9': 33.4, '0': 31.8,
 	'.': 12.4, '/': 21, 'E': 30.5, 'e': 28
-}  # 672 / 一直输入直到窗口被拉伸的个数
+}  # 672 ÷ 一直输入直到窗口被拉伸的个数'''
+
+if getattr(sys, 'frozen', False):
+	cur_path = sys._MEIPATH
+else:
+	cur_path = path.dirname(__file__)
+icon_path = path.join(cur_path, 'resource/images/icon.jpg')
+lang_path = path.join(cur_path, 'resource/lang')
+qss_d_m_path = path.join(cur_path, 'resource/qss/dark_with_mica.qss')
+qss_d_path = path.join(cur_path, 'resource/qss/dark_without_mica.qss')
+qss_l_m_path = path.join(cur_path, 'resource/qss/light_with_mica.qss')
+qss_l_path = path.join(cur_path, 'resource/qss/light_without_mica.qss')
 
 default_options = {
 	'settings.1.option.1': False,
