@@ -18,12 +18,12 @@ if getattr(sys, 'frozen', False):
 	cur_path = sys._MEIPATH
 else:
 	cur_path = path.dirname(__file__)
-icon_path = path.join(cur_path, 'resource/images/icon.jpg')
-lang_path = path.join(cur_path, 'resource/lang')
-qss_d_m_path = path.join(cur_path, 'resource/qss/dark_with_mica.qss')
-qss_d_path = path.join(cur_path, 'resource/qss/dark_without_mica.qss')
-qss_l_m_path = path.join(cur_path, 'resource/qss/light_with_mica.qss')
-qss_l_path = path.join(cur_path, 'resource/qss/light_without_mica.qss')
+icon_path = path.join(cur_path, 'resources/images/icon.jpg')
+lang_path = path.join(cur_path, 'resources/lang')
+qss_d_m_path = path.join(cur_path, 'resources/qss/dark_with_mica.qss')
+qss_d_path = path.join(cur_path, 'resources/qss/dark_without_mica.qss')
+qss_l_m_path = path.join(cur_path, 'resources/qss/light_with_mica.qss')
+qss_l_path = path.join(cur_path, 'resources/qss/light_without_mica.qss')
 
 default_options = {
 	'settings.1.option.1': False,

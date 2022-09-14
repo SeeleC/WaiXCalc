@@ -230,7 +230,7 @@ class Settings(QTabWidget):
 		inner_vbox.addStretch(1)
 
 		image = QLabel()
-		image.setPixmap(QPixmap('resource\\images\\icon.jpg'))
+		image.setPixmap(QPixmap(icon_path))
 		image.setFixedSize(100, 100)
 		image.setScaledContents(True)
 		inner_vbox.addWidget(image)
