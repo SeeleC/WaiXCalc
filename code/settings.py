@@ -10,7 +10,7 @@ from sys import getwindowsversion
 from httpx import get, HTTPStatusError, NetworkError
 
 from colorModeDetect import Detector
-from config import __version__, tFont, rFont, icon_path
+from config import __version__, tFont, rFont
 from functions import (
 	save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_enhanced_messagebox, load_theme,
 	switch_color_mode
@@ -64,7 +64,7 @@ class Settings(QTabWidget):
 		load_theme(self)
 
 		self.setFont(rFont)
-		self.setWindowIcon(QIcon(icon_path))
+		self.setWindowIcon(QIcon('resources/images/icon.jpg'))
 		self.setWindowTitle(self.trans['window.settings.title'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
@@ -230,7 +230,7 @@ class Settings(QTabWidget):
 		inner_vbox.addStretch(1)
 
 		image = QLabel()
-		image.setPixmap(QPixmap(icon_path))
+		image.setPixmap(QPixmap('resources/images/icon.jpg'))
 		image.setFixedSize(100, 100)
 		image.setScaledContents(True)
 		inner_vbox.addWidget(image)

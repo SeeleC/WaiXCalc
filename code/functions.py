@@ -12,7 +12,7 @@ from win32mica import ApplyMica, MICAMODE
 
 from config import (
 	symbol_lst, symbol_lst_2, symbol_turn, bracket_lst, default_options, default_data, rFont, qss_d_m_path,
-	qss_l_m_path, qss_d_path, qss_l_path, lang_path
+	qss_l_m_path, qss_d_path, qss_l_path
 )
 
 
@@ -148,7 +148,7 @@ def get_trans() -> dict[str]:
 	with open('data/options.json', 'r', encoding='utf-8') as f:
 		language = load(f)['language']
 
-	with open(f'{lang_path}/{language}.json', 'r', encoding='utf-8') as f:
+	with open(f'resources/lang/{language}.json', 'r', encoding='utf-8') as f:
 		return load(f)
 
 
@@ -171,10 +171,10 @@ def get_trans_info() -> dict[str]:
 	遍历lang文件夹、获取json文件信息
 	"""
 	data = {}
-	for i in sorted(listdir(lang_path)):
+	for i in sorted(listdir('resources/lang')):
 		i = i[:-5]
 		if i != 'template':
-			with open(f'{lang_path}/{i}.json', 'r', encoding='utf-8') as f:
+			with open(f'resources/lang/{i}.json', 'r', encoding='utf-8') as f:
 				res = load(f)
 				data = {**data, **{res['language.name']: res['language.id']}}
 	return data
@@ -225,15 +225,15 @@ def is_dark_mode():
 def load_theme(widget: QWidget):
 	if widget.options['settings.4.option']:
 		if widget.data['enableDarkMode']:
-			widget.setStyleSheet(get_style(qss_d_m_path))
+			widget.setStyleSheet(get_style('resources/qss/dark_with_mica.qss'))
 		else:
-			widget.setStyleSheet(get_style(qss_l_m_path))
+			widget.setStyleSheet(get_style('resources/qss/light_with_mica.qss'))
 		apply_mica(widget, widget.data['enableDarkMode'] or widget.options['settings.4.selector.2'] == 'colorMode.dark')
 	else:
 		if widget.data['enableDarkMode']:
-			widget.setStyleSheet(get_style(qss_d_path))
+			widget.setStyleSheet(get_style('resources/qss/dark_without_mica.qss'))
 		else:
-			widget.setStyleSheet(get_style(qss_l_path))
+			widget.setStyleSheet(get_style('resources/qss/light_without_mica.qss'))
 
 
 def mend_dict_item(d, rd) -> dict[str, dict]:

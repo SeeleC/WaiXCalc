@@ -7,7 +7,7 @@ from asyncio import run, create_task
 
 from colorModeDetect import Detector
 from selectableLabel import SelectableLabel
-from settingsWin import Settings
+from settings import Settings
 from openedFile import OpenedFile
 from history import History
 from functions import *
@@ -92,7 +92,7 @@ class WaiX(QMainWindow):
 		self.actions = []
 		run(self._init_menubar(names, statustips, functions, shortcuts))
 
-		self.setWindowIcon(QIcon(icon_path))
+		self.setWindowIcon(QIcon('resources/images/icon.jpg'))
 		self.title()
 		self.resize(672, 0)
 		self.setMaximumHeight(self.height())
