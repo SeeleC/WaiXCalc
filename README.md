@@ -4,7 +4,7 @@
 
 *~~纯手工代码 不使用Qt Designer~~*
 
-如仅需该项目的计算函数，请前往 [core](https://github.com/WaiZhong/SeeleC/tree/core) 分支。
+如仅需该项目的计算函数，请前往 [core](https://github.com/SeeleC/WaiXCalc/tree/core) 分支。
 
 ## Install
 
