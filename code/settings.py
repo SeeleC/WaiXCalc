@@ -238,6 +238,7 @@ class Settings(QTabWidget):
 		inner_vbox.addWidget(label)
 
 		button = QPushButton(self.trans['settings.5.button'])
+		button.setFont(rFont)
 		button.clicked.connect(self.clicked)
 		inner_vbox.addWidget(button)
 
