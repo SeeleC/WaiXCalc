@@ -156,11 +156,11 @@ class Settings(QTabWidget):
 		self.addTab(widget, name)
 
 	def calculate_tab(self) -> QVBoxLayout:
-		l = QVBoxLayout()
+		layout = QVBoxLayout()
 		for i, j in get_trans_entry(self.trans, 'settings.1.option').items():
 			self.checkboxes[i] = QCheckBox(j)
-			l = self.add_option_entry(l, self.checkboxes[i])
-		return l
+			layout = self.add_option_entry(layout, self.checkboxes[i])
+		return layout
 
 	def closeEvent(self, a0: QCloseEvent) -> None:
 		self.detector.exit()
@@ -170,35 +170,33 @@ class Settings(QTabWidget):
 		switch_color_mode(self)
 
 	def history_tab(self) -> QVBoxLayout:
-		l = QVBoxLayout()
+		layout = QVBoxLayout()
 		for i, j in get_trans_entry(self.trans, 'settings.2.option').items():
 			self.checkboxes[i] = QCheckBox(j)
-			l = self.add_option_entry(l, self.checkboxes[i])
-		return l
+			layout = self.add_option_entry(layout, self.checkboxes[i])
+		return layout
 
 	def language_tab(self) -> QVBoxLayout:
-		l = QVBoxLayout()
+		layout = QVBoxLayout()
 
 		for name, id in get_trans_info().items():
 			self.radiobuttons[id] = QRadioButton(name)
-			l = self.add_option_entry(l, self.radiobuttons[id])
+			layout = self.add_option_entry(layout, self.radiobuttons[id])
 
 			if id == self.options['language']:
 				self.radiobuttons[id].setChecked(True)
 
-		return l
+		return layout
 
 	def style_tab(self) -> QVBoxLayout:
-		l = QVBoxLayout()
-
-		self.checkboxes['settings.4.option'] = QCheckBox(self.trans['settings.4.option'])
-		l = self.add_option_entry(l, self.checkboxes['settings.4.option'])
+		layout = QVBoxLayout()
 
 		if getwindowsversion().build < 22000:
-			self.checkboxes['settings.4.option'].setEnabled(False)
+			self.checkboxes['settings.4.option'] = QCheckBox(self.trans['settings.4.option'])
+			layout = self.add_option_entry(layout, self.checkboxes['settings.4.option'])
 
 		self.add_selector_entry(
-			l,
+			layout,
 			self.trans['settings.4.selector.2'],
 			'settings.4.selector.2',
 			[self.trans[i] for i in get_trans_entry(self.trans, 'colorMode')],
@@ -207,7 +205,7 @@ class Settings(QTabWidget):
 
 		database = QFontDatabase()
 		self.add_selector_entry(
-			l,
+			layout,
 			self.trans['settings.4.selector.1'],
 			'settings.4.selector.1',
 			database.families(),
@@ -215,9 +213,9 @@ class Settings(QTabWidget):
 		)
 
 		self.window_title = QLineEdit()
-		self.add_enter_entry(l, self.trans['settings.4.text'], self.window_title, self.options['window_title'])
+		self.add_enter_entry(layout, self.trans['settings.4.text'], self.window_title, self.options['window_title'])
 
-		return l
+		return layout
 
 	def about_tab(self) -> QVBoxLayout:
 		outer_vbox = QVBoxLayout()
