@@ -15,6 +15,7 @@
 - [Python](https://www.python.org/) >= 3.9
 - [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) >= 5.15.6
 - [Win32mica](https://github.com/martinet101/win32mica) >= 1.6
+- [HTTPX](https://www.python-httpx.org/) >= 0.23.0
 
 ## Features
 
