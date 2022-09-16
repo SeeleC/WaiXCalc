@@ -330,12 +330,14 @@ class Settings(QTabWidget):
 					self.data['enableDarkMode']
 				).show()
 			else:
-				latest_version = r.json()['tag_name'][1:]
-				if latest_version == __version__:
+				latest_version = r.json()['tag_name'][1:].split('.')
+				formatted_version = __version__.split('.')
+				if latest_version[0] > formatted_version[0] or latest_version[1] > formatted_version[1] or\
+					latest_version[2] > formatted_version[2]:
 					get_enhanced_messagebox(
 						QMessageBox.Icon.Information,
 						self.trans['settings.5.button'],
-						self.trans['settings.5.hint.1'],
+						self.trans['settings.5.hint.2'] % latest_version,
 						self,
 						self.data['enableDarkMode']
 					).show()
@@ -343,7 +345,7 @@ class Settings(QTabWidget):
 					get_enhanced_messagebox(
 						QMessageBox.Icon.Information,
 						self.trans['settings.5.button'],
-						self.trans['settings.5.hint.2'] % latest_version,
+						self.trans['settings.5.hint.1'],
 						self,
 						self.data['enableDarkMode']
 					).show()
