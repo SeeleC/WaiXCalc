@@ -191,7 +191,7 @@ class Settings(QTabWidget):
 	def style_tab(self) -> QVBoxLayout:
 		layout = QVBoxLayout()
 
-		if getwindowsversion().build < 22000:
+		if not getwindowsversion().build < 22000:
 			self.checkboxes['settings.4.option'] = QCheckBox(self.trans['settings.4.option'])
 			layout = self.add_option_entry(layout, self.checkboxes['settings.4.option'])
 
