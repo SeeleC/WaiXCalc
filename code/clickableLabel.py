@@ -9,8 +9,8 @@ class ClickableLabel(SelectableLabel):
     mouseEnter = pyqtSignal()
     mouseLeave = pyqtSignal()
 
-    def __init__(self):
-        super(ClickableLabel, self).__init__()
+    def __init__(self, *args):
+        super(ClickableLabel, self).__init__(*args)
 
     def mouseReleaseEvent(self, ev: QMouseEvent) -> None:
         self.clicked.emit()
