@@ -11,6 +11,7 @@ from settings import Settings
 from openedFile import OpenedFile
 from history import History
 from functions import *
+from core import *
 from config import *
 
 # WaiXCalc (WaiX Calculator)
