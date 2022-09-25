@@ -2,11 +2,11 @@
   "language.name": "繁體中文",
   "language.id": "zh_tw",
 
-  "menubar.fileMenu.title": "文件(&F)",
+  "menubar.fileMenu.title": "檔案(&F)",
   "option.fileMenu.1": "打開..(&O)",
   "option.fileMenu.2": "設置..(&S)",
   "option.fileMenu.3": "退出(&X)",
-  "statusTip.fileMenu.1": "打開包含算式的文本文件",
+  "statusTip.fileMenu.1": "打開包含算式的檔案",
   "statusTip.fileMenu.2": "編輯應用設置",
   "statusTip.fileMenu.3": "退出WaiXCalc",
 
@@ -31,7 +31,7 @@
   "window.main.title": "WaiXCalc",
   "window.settings.title": "設置",
   "window.open.title": "打開",
-  "window.selectFile.title": "文件",
+  "window.selectFile.title": "檔案",
   "window.history.title": "歷史記錄",
   "window.help.title": "幫助",
   "window.whole.title": "完整算式",
@@ -74,7 +74,7 @@
   "history.disabled": "記錄歷史已關閉",
   "history.cleared": "已清空歷史記錄",
 
-  "text.help.content": "1. 打開設置選項“啟用分數計算”時，為了兼容分數，如須輸入“÷”，請用“”或“:”代替;<br>\n3. 如有其他問題請前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a><br>",
+  "text.help.content": "1. 打開設置選項“啟用分數計算”時，為了兼容分數，如須輸入“÷”，請用“”或“:”代替;<br>\n2. 如有其他問題請前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a><br>",
 
   "text.main.error": "錯誤",
 

@@ -37,7 +37,7 @@
   "window.whole.title": "完整算式",
   "window.hint.title": "提示",
 
-  "settings.1.title": "计算",
+  "settings.1.title": "一般",
   "settings.1.option.1": "启用分数计算",
   "settings.1.option.2": "仅显示分数结果",
   "settings.1.option.3": "仅显示小数结果",
@@ -74,7 +74,7 @@
   "history.disabled": "记录历史已关闭",
   "history.cleared": "已清空历史记录",
 
-  "text.help.content": "1. 打开设置选项“启用分数计算”时，为了兼容分数，如须输入“÷”，请用“//”或“:”代替;<br>3. 如有其他问题请前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a><br>",
+  "text.help.content": "1. 打开设置选项“启用分数计算”时，为了兼容分数，如须输入“÷”，请用“//”或“:”代替;<br>2. 如有其他问题请前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a><br>",
 
   "text.main.error": "错误",
 

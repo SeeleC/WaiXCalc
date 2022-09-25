@@ -6,8 +6,8 @@
   "option.fileMenu.1": "&Open",
   "option.fileMenu.2": "&Settings",
   "option.fileMenu.3": "E&xit",
-  "statusTip.fileMenu.1": "Open a text file and calculate",
-  "statusTip.fileMenu.2": "Edit application settings",
+  "statusTip.fileMenu.1": "Read formula from selected file",
+  "statusTip.fileMenu.2": "Edit settings",
   "statusTip.fileMenu.3": "Quit calculator",
 
   "menubar.editMenu.title": "&Edit",
@@ -15,17 +15,17 @@
   "option.editMenu.2": "&Copy",
   "option.editMenu.3": "&Paste",
   "option.editMenu.4": "&Delete",
-  "statusTip.editMenu.1": "Cut to clipboard",
-  "statusTip.editMenu.2": "Copy to clipboard",
+  "statusTip.editMenu.1": "Cut formula to clipboard",
+  "statusTip.editMenu.2": "Copy formula to clipboard",
   "statusTip.editMenu.3": "Paste from clipboard",
   "statusTip.editMenu.4": "Delete current item",
 
   "menubar.helpMenu.title": "&Help",
   "option.helpMenu.1": "&Help",
   "option.helpMenu.2": "H&istory",
-  "option.helpMenu.3": "&Whole formula",
+  "option.helpMenu.3": "&Full formula",
   "statusTip.helpMenu.1": "Show help contents",
-  "statusTip.helpMenu.2": "View accumulated history",
+  "statusTip.helpMenu.2": "View history",
   "statusTip.helpMenu.3": "View the current full formula",
 
   "window.main.title": "WaiXCalc",
@@ -34,29 +34,29 @@
   "window.selectFile.title": "File",
   "window.history.title": "History",
   "window.help.title": "Help",
-  "window.whole.title": "Whole",
+  "window.view.title": "View",
   "window.hint.title": "Hint",
 
-  "settings.1.title": "Calculate",
-  "settings.1.option.1": "Enable Fraction Calculate",
-  "settings.1.option.2": "Only Fraction Result",
-  "settings.1.option.3": "Only Decimal Result",
+  "settings.1.title": "General",
+  "settings.1.option.1": "Enable fraction calculation",
+  "settings.1.option.2": "Return only fractional results",
+  "settings.1.option.3": "Return only decimal results",
 
   "settings.2.title": "History",
-  "settings.2.option.1": "Enable Record History",
-  "settings.2.option.2": "Keep History",
+  "settings.2.option.1": "Enable record history",
+  "settings.2.option.2": "Keep history at quit",
 
   "settings.3.title": "Language",
 
   "settings.4.title": "Style",
-  "settings.4.option": "Show Mica Effect",
-  "settings.4.hint": "Relaunch to Apply Changes",
+  "settings.4.option": "Show Mica effect",
+  "settings.4.hint": "Relaunch to apply changes",
   "settings.4.selector.1": "Font",
-  "settings.4.selector.2": "Color Mode",
-  "settings.4.text": "Window Title",
+  "settings.4.selector.2": "Color mode",
+  "settings.4.text": "Window title",
 
   "settings.5.title": "About",
-  "settings.5.button": "Check for Updates",
+  "settings.5.button": "Check for updates",
   "settings.5.hint.1": "This is the latest version",
   "settings.5.hint.2": "New version: <a href=\"https://github.com/SeeleC/WaiXCalc/releases/latest/\"><span style=\"color: #3a96dd\">%s</span></a>",
   "settings.5.hint.3": "Error",
@@ -76,7 +76,7 @@
 
   "text.history.disabled": "Record history is disabled",
 
-  "text.help.content": "1. Input `:` or `//` to replace `/` when you are fraction calculating.<br>3. If you have any other questions, go and <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/new\"><span style=\"color: #3a96dd\">create a new issue</span><\\a>.<br>",
+  "text.help.content": "1. Input `:` or `//` to replace `/` when you are fractional calculating.<br>2. If you have any other questions, go and <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/new\"><span style=\"color: #3a96dd\">create a new issue</span><\\a>.<br>",
 
   "text.main.error": "Error",
 
