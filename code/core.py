@@ -8,8 +8,9 @@ from config import symbol_lst, symbol_lst_2, symbol_turn, bracket_lst
 
 def verify_formula(formula: list[str]) -> bool:
     """
-    仅支持单层算式，如'1+3.5*8/9'
-    不支持多层算式，如'1+(3.5*8.9)'
+    验证列表中的算式（get_formula()的结果）是否是calculate()可进行计算的
+    :param formula:
+    :return bool:
     """
     for i in range(len(formula)):
         if (i+1) % 2 == 0 and formula[i] in symbol_lst:
@@ -21,6 +22,11 @@ def verify_formula(formula: list[str]) -> bool:
 
 
 def verify_int(integer: str):
+    """
+    验证字符串是否是整数、小数或分数
+    :param integer:
+    :return bool:
+    """
     symbol_frequency = {'.': 0, '/': 0}
 
     if integer[-1] in symbol_lst_2:
@@ -41,6 +47,8 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
     """
     传入formula，从左到右计算，优先计算嵌套的列表内算式。
     为了兼容分数，所以 除号(/) 需要用 双斜杠(//) 来代替。
+    :param formula:
+    :return:
     """
     def c(r: list[str] = formula[:], f: list = formula[:]) -> list:
         for i in range(len(f)):
