@@ -244,7 +244,7 @@ def save(filename: str, data) -> None:
 	快速保存
 	"""
 	with open(filename, 'w', encoding='utf-8') as f:
-		dump(data, f)
+		dump(data, f, indent=1)
 
 
 def switch_color_mode(widget: QWidget):
