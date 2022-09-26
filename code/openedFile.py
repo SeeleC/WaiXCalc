@@ -8,8 +8,9 @@ from win32mica import ApplyMica, MICAMODE
 
 from colorModeDetect import Detector
 from subWindow import SubWindow
-from functions import calculate, get_trans, get_enhanced_messagebox, get_options, get_data, load_theme
+from functions import get_trans, get_enhanced_messagebox, get_options, get_data, load_theme
 from config import rFont, tFont
+from core import calculate
 
 
 class OpenedFile(SubWindow):
