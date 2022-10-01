@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (
-	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout, QSizePolicy
+	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout, QSizePolicy, QMenu
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent, QResizeEvent
 from PyQtExtras import SelectableLabel
@@ -140,6 +140,8 @@ class WaiX(QMainWindow):
 			menu.addAction(action)
 			self.actions.append(action)
 		menu.setFont(rFont)
+		if names[0] == self.trans['option.editMenu.1']:
+			self.main_label.setContextMenu(menu)
 
 	def bracket(self, l_idx):
 		if l_idx == 0 and (self.formula[-1] in symbol_lst or self.formula == ['0']):
@@ -227,7 +229,10 @@ class WaiX(QMainWindow):
 			save('data/history.json', self.history_content)
 
 	def copy(self):
-		self.clipboard.setText(''.join([i for i in self.formula]).strip())
+		if self.main_label.hasSelectedText():
+			self.clipboard.setText(self.main_label.selectedText())
+		else:
+			self.clipboard.setText(''.join([i for i in self.formula]).strip())
 
 	def cut(self):
 		self.clipboard.setText(''.join([i for i in self.formula]).strip())
