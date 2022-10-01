@@ -9,7 +9,7 @@ from asyncio import run, create_task
 from sys import getwindowsversion
 from httpx import get, HTTPStatusError, NetworkError
 
-from colorModeDetect import Detector
+from detector import Detector
 from config import __version__, tFont, rFont
 from functions import (
 	save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_enhanced_messagebox, load_theme,
@@ -71,7 +71,7 @@ class Settings(QTabWidget):
 
 	async def init_tabs(self):
 		task1 = create_task(
-			self.init_tab(self.trans['settings.1.title'], self.calculate_tab)
+			self.init_tab(self.trans['settings.1.title'], self.general_tab)
 		)
 		task2 = create_task(
 			self.init_tab(self.trans['settings.4.title'], self.style_tab)
@@ -155,7 +155,7 @@ class Settings(QTabWidget):
 		self.update_status()
 		self.addTab(widget, name)
 
-	def calculate_tab(self) -> QVBoxLayout:
+	def general_tab(self) -> QVBoxLayout:
 		layout = QVBoxLayout()
 		for i, j in get_trans_entry(self.trans, 'settings.1.option').items():
 			self.checkboxes[i] = QCheckBox(j)

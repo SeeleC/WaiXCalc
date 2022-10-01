@@ -2,11 +2,11 @@ from PyQt5.QtWidgets import (
 	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout, QSizePolicy
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent, QResizeEvent
+from PyQtExtras import SelectableLabel
 from sys import argv, exit
 from asyncio import run, create_task
 
-from colorModeDetect import Detector
-from selectableLabel import SelectableLabel
+from detector import Detector
 from settings import Settings
 from openedFile import OpenedFile
 from history import History

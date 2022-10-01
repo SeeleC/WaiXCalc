@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIcon
 from win32mica import ApplyMica, MICAMODE
 
-from colorModeDetect import Detector
+from detector import Detector
 from subWindow import SubWindow
 from functions import get_trans, get_enhanced_messagebox, get_options, get_data, load_theme
 from config import rFont, tFont

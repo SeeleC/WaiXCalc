@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QMessageBox, QAction
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQtExtras import ClickableLabel
 from win32mica import ApplyMica, MICAMODE
 from os import remove, path
 
-from colorModeDetect import Detector
-from clickableLabel import ClickableLabel
+from detector import Detector
 from subWindow import SubWindow
 from config import rFont, nFont
 from functions import get_trans, get_options, get_reversed_list, get_enhanced_messagebox, get_data, load_theme
