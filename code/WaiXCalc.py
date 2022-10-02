@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import (
-	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout, QSizePolicy, QMenu
+	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout, QSizePolicy, QMenu, QGraphicsOpacityEffect
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent, QResizeEvent
+from PyQt5.QtCore import QTimer
 from PyQtExtras import SelectableLabel
 from sys import argv, exit
 from asyncio import run, create_task
@@ -70,6 +71,10 @@ class WaiX(QMainWindow):
 		self.main_label.setFont(hFont)
 		self.text_update()
 		self.main_label.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Expanding)
+
+		self.opacity = QGraphicsOpacityEffect()
+		self.main_label.setGraphicsEffect(self.opacity)
+
 		vbox.addWidget(self.main_label)
 
 		self.menubar = self.menuBar()
@@ -180,13 +185,17 @@ class WaiX(QMainWindow):
 				self.isResult = True
 
 				if self.options['settings.1.option.1']:
-					if self.options['settings.1.option.2']:
+					if self.options['settings.1.option.2']:  # 小数2分数
 						result = Fraction(result)
-					elif self.options['settings.1.option.3']:
-						result = float(str(result).split('/')[0]) / float(str(result).split('/')[1])
+					elif self.options['settings.1.option.3']:  # 分数2小数
+						result = Decimal(str(result).split('/')[0]) / Decimal(str(result).split('/')[1])
 
+				# 历史记录
 				if self.options['settings.2.option.1']:
 					self.history_content.append(''.join([i + ' ' for i in self.formula]) + '= ' + str(result))
+
+				if str(result) == self.formula[-1]:
+					self.fade_out()
 
 				self.clear()
 				self.formula = [str(result)]
@@ -249,6 +258,22 @@ class WaiX(QMainWindow):
 	def detect_color_mode(self):
 		self.options = get_options()
 		switch_color_mode(self)
+
+	def fade_out(self):
+		self.opacity.i = 1
+
+		def timeout():
+			self.opacity.setOpacity(self.opacity.i / 100)
+			self.main_label.setGraphicsEffect(self.opacity)
+			self.opacity.i += 8
+			if self.opacity.i >= 100:
+				timer.stop()
+				timer.deleteLater()
+
+		timer = QTimer()
+		timer.setInterval(10)
+		timer.timeout.connect(timeout)
+		timer.start()
 
 	def font_update(self):
 		self.options = get_options()
