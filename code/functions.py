@@ -60,8 +60,7 @@ def get_menu_items(trans: dict):
 		[
 			trans['option.editMenu.1'],
 			trans['option.editMenu.2'],
-			trans['option.editMenu.3'],
-			trans['option.editMenu.4']
+			trans['option.editMenu.3']
 		],
 		[
 			trans['option.helpMenu.1'],
@@ -79,7 +78,6 @@ def get_menu_items(trans: dict):
 			trans['statusTip.editMenu.1'],
 			trans['statusTip.editMenu.2'],
 			trans['statusTip.editMenu.3'],
-			trans['statusTip.editMenu.4'],
 		],
 		[
 			trans['statusTip.helpMenu.1'],

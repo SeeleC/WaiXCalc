@@ -145,6 +145,7 @@ class Settings(QTabWidget):
 		widget = QWidget()
 		outer = QVBoxLayout()
 		s = QScrollArea()
+		s.setWidgetResizable(True)
 
 		inner.addStretch()
 		s.setLayout(inner)

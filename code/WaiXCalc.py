@@ -87,12 +87,12 @@ class WaiX(QMainWindow):
 		names, statustips = get_menu_items(self.trans)
 		functions = [
 			[self.read_formula_file, self.settings, self.close],
-			[self.cut, self.copy, self.paste, self.delete],
+			[self.copy, self.paste, self.delete],
 			[self.help, self.history, self.whole_formula]
 		]
 		shortcuts = [
-			['Ctrl+O', 'Ctrl+S', 'Ctrl+Q', ''],
-			['Ctrl+X', 'Ctrl+C', 'Ctrl+V', 'Del'],
+			['Ctrl+O', 'Ctrl+S', 'Ctrl+Q'],
+			['Ctrl+C', 'Ctrl+V', 'Del'],
 			['', 'Ctrl+H', 'Ctrl+F']
 		]
 		self.actions = []
@@ -243,10 +243,6 @@ class WaiX(QMainWindow):
 		else:
 			self.clipboard.setText(''.join([i for i in self.formula]).strip())
 
-	def cut(self):
-		self.clipboard.setText(''.join([i for i in self.formula]).strip())
-		self.clear()
-
 	def delete(self):
 		if len(self.formula) >= 2:
 			self.formula = self.formula[:-1]
@@ -265,7 +261,7 @@ class WaiX(QMainWindow):
 		def timeout():
 			self.opacity.setOpacity(self.opacity.i / 100)
 			self.main_label.setGraphicsEffect(self.opacity)
-			self.opacity.i += 8
+			self.opacity.i += 7.5
 			if self.opacity.i >= 100:
 				timer.stop()
 				timer.deleteLater()

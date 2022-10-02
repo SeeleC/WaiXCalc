@@ -11,14 +11,12 @@
   "statusTip.fileMenu.3": "退出WaiXCalc",
 
   "menubar.editMenu.title": "编辑(&E)",
-  "option.editMenu.1": "剪切(&T)",
-  "option.editMenu.2": "复制(&C)",
-  "option.editMenu.3": "粘贴(&P)",
-  "option.editMenu.4": "删除(&D)",
-  "statusTip.editMenu.1": "剪切到剪贴板",
-  "statusTip.editMenu.2": "复制到剪贴板",
-  "statusTip.editMenu.3": "从剪贴板粘贴",
-  "statusTip.editMenu.4": "删除当前计算步骤",
+  "option.editMenu.1": "复制(&C)",
+  "option.editMenu.2": "粘贴(&P)",
+  "option.editMenu.3": "删除(&D)",
+  "statusTip.editMenu.1": "复制到剪贴板",
+  "statusTip.editMenu.2": "从剪贴板粘贴",
+  "statusTip.editMenu.3": "删除当前计算步骤",
 
   "menubar.helpMenu.title": "帮助(&H)",
   "option.helpMenu.1": "帮助(&H)",
@@ -27,6 +25,12 @@
   "statusTip.helpMenu.1": "显示帮助内容",
   "statusTip.helpMenu.2": "计算的历史记录",
   "statusTip.helpMenu.3": "查看当前的完整算式",
+
+  "contextMenu.mainLabel.item.1": "撤销",
+  "contextMenu.mainLabel.item.3": "复制",
+  "contextMenu.mainLabel.item.4": "粘贴",
+  "contextMenu.mainLabel.item.5": "删除",
+  "contextMenu.mainLabel.item.6": "全选",
 
   "window.main.title": "WaiXCalc",
   "window.settings.title": "设置",

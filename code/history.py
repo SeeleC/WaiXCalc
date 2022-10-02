@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QMessageBox, QAction
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QScrollArea, QMessageBox, QAction, QLabel
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQtExtras import ClickableLabel
@@ -46,14 +46,14 @@ class History(SubWindow):
             for i in [f + ' ' for f in get_reversed_list(self.history)]:
                 self.add_entry(i, inner)
         else:
-            empty = ClickableLabel(self.trans['history.empty'])
+            empty = QLabel(self.trans['history.empty'])
             empty.setFont(rFont)
             inner.addWidget(empty)
 
         if not self.options['settings.2.option.1']:
-            inner.addSpacing(10)
-            disabled = ClickableLabel(self.trans['history.disabled'])
+            disabled = QLabel(self.trans['history.disabled'])
             disabled.setFont(rFont)
+            inner.addSpacing(10)
             inner.addWidget(disabled)
 
         inner.addStretch(1)
