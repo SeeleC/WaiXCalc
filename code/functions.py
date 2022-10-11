@@ -1,5 +1,5 @@
-from PyQt5.QtCore import QTextStream, QFile, Qt
-from PyQt5.QtGui import QPixmap, QFontMetrics
+from PyQt5.QtCore import QTextStream, QFile, Qt, QUrl
+from PyQt5.QtGui import QPixmap, QFontMetrics, QDesktopServices
 from PyQt5.QtWidgets import QLabel, QMessageBox, QWidget
 from typing import Union
 from json import load, dump
@@ -235,6 +235,10 @@ def mend_dict_item(d, rd) -> dict[str, dict]:
 		except KeyError:
 			d[i] = rd[i]
 	return d
+
+
+def open_url(url: str):
+	QDesktopServices.openUrl(QUrl(url))
 
 
 def save(filename: str, data) -> None:

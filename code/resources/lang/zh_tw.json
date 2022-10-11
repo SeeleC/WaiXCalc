@@ -83,5 +83,6 @@
 
   "colorMode.light": "淺色",
   "colorMode.dark": "深色",
-  "colorMode.auto": "使用系統設置"
+  "colorMode.auto": "使用系統設置",
+  "colorMode.custom": "自定"
 }

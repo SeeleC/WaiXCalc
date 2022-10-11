@@ -9,7 +9,6 @@ class SubWindow(QWidget):
     windowClose = pyqtSignal()
 
     def closeEvent(self, a0: QCloseEvent) -> None:
-        self.detector.exit()
         self.windowClose.emit()
 
     def detect_dark_mode(self):

@@ -85,5 +85,6 @@
 
   "colorMode.light": "Light",
   "colorMode.dark": "Dark",
-  "colorMode.auto": "Auto"
+  "colorMode.auto": "Auto",
+  "colorMode.custom": "Custom"
 }

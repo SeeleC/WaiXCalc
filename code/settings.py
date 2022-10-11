@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap, QCloseEvent
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQtExtras import ClickableLabel
 from asyncio import run, create_task
 from sys import getwindowsversion
 from httpx import get, HTTPStatusError, NetworkError
@@ -13,7 +14,7 @@ from detector import Detector
 from config import __version__, tFont, rFont
 from functions import (
 	save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_enhanced_messagebox, load_theme,
-	switch_color_mode
+	switch_color_mode, open_url
 )
 
 
@@ -49,7 +50,7 @@ class Settings(QTabWidget):
 		self.detector.colorModeChanged.connect(self.detect_dark_mode)
 		self.detector.start()
 
-		self.init_ui()
+		self._init_ui()
 
 	languageChanged = pyqtSignal()
 	fontChanged = pyqtSignal()
@@ -58,8 +59,8 @@ class Settings(QTabWidget):
 	colorOptionChanged = pyqtSignal()
 	windowClose = pyqtSignal()
 
-	def init_ui(self):
-		run(self.init_tabs())
+	def _init_ui(self):
+		run(self._init_tabs())
 
 		load_theme(self)
 
@@ -69,21 +70,21 @@ class Settings(QTabWidget):
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
 
-	async def init_tabs(self):
+	async def _init_tabs(self):
 		task1 = create_task(
-			self.init_tab(self.trans['settings.1.title'], self.general_tab)
+			self._init_tab(self.trans['settings.1.title'], self.general_tab)
 		)
 		task2 = create_task(
-			self.init_tab(self.trans['settings.4.title'], self.style_tab)
+			self._init_tab(self.trans['settings.4.title'], self.style_tab)
 		)
 		task3 = create_task(
-			self.init_tab(self.trans['settings.2.title'], self.history_tab)
+			self._init_tab(self.trans['settings.2.title'], self.history_tab)
 		)
 		task4 = create_task(
-			self.init_tab(self.trans['settings.3.title'], self.language_tab)
+			self._init_tab(self.trans['settings.3.title'], self.language_tab)
 		)
 		task5 = create_task(
-			self.init_tab(self.trans['settings.5.title'], self.about_tab)
+			self._init_tab(self.trans['settings.5.title'], self.about_tab)
 		)
 
 		await task1
@@ -92,7 +93,7 @@ class Settings(QTabWidget):
 		await task4
 		await task5
 
-	async def init_tab(self, title, function):
+	async def _init_tab(self, title, function):
 		lyt = function()
 		self.add_tab(lyt, title)
 
@@ -164,7 +165,6 @@ class Settings(QTabWidget):
 		return layout
 
 	def closeEvent(self, a0: QCloseEvent) -> None:
-		self.detector.exit()
 		self.windowClose.emit()
 
 	def detect_dark_mode(self):
@@ -234,9 +234,36 @@ class Settings(QTabWidget):
 		image.setScaledContents(True)
 		inner_vbox.addWidget(image)
 
-		label = QLabel(f'WaiXCalc\nBy Github@SeeleC\nVersion {__version__}\n')
-		label.setFont(tFont)
-		inner_vbox.addWidget(label)
+		app_name = ClickableLabel('WaiXCalc')
+		app_name.setFont(tFont)
+		app_name.clicked.connect(
+			lambda: open_url('https://github.com/SeeleC/WaiXCalc')
+		)
+		inner_vbox.addWidget(app_name)
+
+		auther_box = QHBoxLayout()
+		auther_title = QLabel('By')
+		auther_title.setFont(tFont)
+		auther = ClickableLabel('Github@SeeleC')
+		auther.setFont(tFont)
+		auther.clicked.connect(
+			lambda: open_url('https://github.com/SeeleC/')
+		)
+		auther_box.addWidget(auther_title)
+		auther_box.addWidget(auther)
+		inner_vbox.addLayout(auther_box)
+
+		version_box = QHBoxLayout()
+		version_title = QLabel('Version')
+		version_title.setFont(tFont)
+		version = ClickableLabel(__version__)
+		version.setFont(tFont)
+		version.clicked.connect(
+			lambda: open_url(f'https://github.com/SeeleC/WaiXCalc/releases/tag/v{__version__}')
+		)
+		version_box.addWidget(version_title)
+		version_box.addWidget(version)
+		inner_vbox.addLayout(version_box)
 
 		button = QPushButton(self.trans['settings.5.button'])
 		button.setFont(rFont)
