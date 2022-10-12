@@ -4,11 +4,12 @@ from PyQt5.QtWidgets import (
 	QLabel, QLineEdit, QComboBox
 )
 from PyQt5.QtGui import QIcon, QFontDatabase, QPixmap, QCloseEvent
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QUrl, QByteArray
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager, QNetworkReply
 from PyQtExtras import ClickableLabel
 from asyncio import run, create_task
 from sys import getwindowsversion
-from httpx import get, HTTPStatusError, NetworkError
+from json import loads
 
 from detector import Detector
 from config import __version__, tFont, rFont
@@ -157,6 +158,12 @@ class Settings(QTabWidget):
 		self.update_status()
 		self.addTab(widget, name)
 
+	def closeEvent(self, a0: QCloseEvent) -> None:
+		self.windowClose.emit()
+
+	def detect_dark_mode(self):
+		switch_color_mode(self)
+
 	def general_tab(self) -> QVBoxLayout:
 		layout = QVBoxLayout()
 		for i, j in get_trans_entry(self.trans, 'settings.1.option').items():
@@ -164,11 +171,42 @@ class Settings(QTabWidget):
 			layout = self.add_option_entry(layout, self.checkboxes[i])
 		return layout
 
-	def closeEvent(self, a0: QCloseEvent) -> None:
-		self.windowClose.emit()
+	def handle_response(self, reply: QNetworkReply):
+		error = reply.error()
+		if error == QNetworkReply.NoError:
+			array: QByteArray = reply.readAll()
+			latest_version = loads(str(array.data(), encoding='utf-8'))['tag_name'][1:].split('.')
+			formatted_version = __version__.split('.')
+			if latest_version[0] > formatted_version[0] or latest_version[1] > formatted_version[1] or \
+					latest_version[2] > formatted_version[2]:
+				get_enhanced_messagebox(
+					QMessageBox.Icon.Information,
+					self.trans['settings.5.button'],
+					self.trans['settings.5.hint.2'] % latest_version,
+					self,
+					self.data['enableDarkMode']
+				).show()
+			else:
+				get_enhanced_messagebox(
+					QMessageBox.Icon.Information,
+					self.trans['settings.5.button'],
+					self.trans['settings.5.hint.1'],
+					self,
+					self.data['enableDarkMode']
+				).show()
+		else:
+			get_enhanced_messagebox(
+				QMessageBox.Icon.Information,
+				self.trans['settings.5.button'],
+				self.trans['settings.5.hint.3'] + ': ' + str(repr(error)),
+				self,
+				self.data['enableDarkMode']
+			).show()
 
-	def detect_dark_mode(self):
-		switch_color_mode(self)
+			'''print('Error: ', error)  # logger
+			print(reply.errorString())'''
+
+		reply.deleteLater()
 
 	def history_tab(self) -> QVBoxLayout:
 		layout = QVBoxLayout()
@@ -346,37 +384,11 @@ class Settings(QTabWidget):
 				save('data/options.json', self.options)
 				self.optionsChanged.emit()
 		elif sender.text() == self.trans['settings.5.button']:
-			try:
-				r = get('https://api.github.com/repos/SeeleC/WaiXCalc/releases/latest')
-				r.raise_for_status()
-			except (HTTPStatusError, NetworkError, KeyError) as e:
-				get_enhanced_messagebox(
-					QMessageBox.Icon.Information,
-					self.trans['settings.5.button'],
-					self.trans['settings.5.hint.3'] + ': ' + str(repr(e)),
-					self,
-					self.data['enableDarkMode']
-				).show()
-			else:
-				latest_version = r.json()['tag_name'][1:].split('.')
-				formatted_version = __version__.split('.')
-				if latest_version[0] > formatted_version[0] or latest_version[1] > formatted_version[1] or\
-					latest_version[2] > formatted_version[2]:
-					get_enhanced_messagebox(
-						QMessageBox.Icon.Information,
-						self.trans['settings.5.button'],
-						self.trans['settings.5.hint.2'] % latest_version,
-						self,
-						self.data['enableDarkMode']
-					).show()
-				else:
-					get_enhanced_messagebox(
-						QMessageBox.Icon.Information,
-						self.trans['settings.5.button'],
-						self.trans['settings.5.hint.1'],
-						self,
-						self.data['enableDarkMode']
-					).show()
+			r = QNetworkRequest()
+			r.setUrl(QUrl('https://api.github.com/repos/SeeleC/WaiXCalc/releases/latest'))
+			access = QNetworkAccessManager(self)
+			access.finished.connect(self.handle_response)
+			access.get(r)
 
 	def update_status(self):
 		self.autoCheck = True
