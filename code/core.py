@@ -17,6 +17,9 @@ def verify_formula(formula: list[str]) -> bool:
             continue
         elif verify_int(formula[i]):
             continue
+        elif isinstance(formula[i], list):
+            if verify_formula(formula[i]):
+                continue
         return False
     return True
 
@@ -29,16 +32,19 @@ def verify_int(integer: str):
     """
     symbol_frequency = {'.': 0, '/': 0}
 
-    if integer[-1] in symbol_lst_2:
+    if not integer or integer[-1] in symbol_lst_2:
         return False
 
     for i in integer:
-        if i in symbol_turn or i in [j for _ in bracket_lst for j in _]:
-            return False
-        elif i in symbol_lst_2:
-            symbol_frequency[i] += 1
-            if symbol_frequency['.'] > 2 or symbol_frequency['/'] > 1:
+        if i.isdigit() or i in symbol_lst_2:
+            if i in symbol_turn or i in [j for _ in bracket_lst for j in _]:
                 return False
+            elif i in symbol_lst_2:
+                symbol_frequency[i] += 1
+                if symbol_frequency['.'] > 2 or symbol_frequency['/'] > 1:
+                    return False
+        else:
+            return False
 
     return True
 
