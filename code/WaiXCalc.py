@@ -73,7 +73,6 @@ class WaiX(QMainWindow):
 		self.main_label.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Expanding)
 
 		self.opacity = QGraphicsOpacityEffect()
-		self.main_label.setGraphicsEffect(self.opacity)
 
 		vbox.addWidget(self.main_label)
 
@@ -256,12 +255,12 @@ class WaiX(QMainWindow):
 		switch_color_mode(self)
 
 	def fade_out(self):
-		self.opacity.i = 1
+		self.opacity.i = 0
 
 		def timeout():
 			self.opacity.setOpacity(self.opacity.i / 100)
 			self.main_label.setGraphicsEffect(self.opacity)
-			self.opacity.i += 7.5
+			self.opacity.i += 5
 			if self.opacity.i >= 100:
 				timer.stop()
 				timer.deleteLater()
