@@ -123,34 +123,41 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
         return formula[0]
 
 
-def get_formula(formula_string: str) -> list[str]:
+def get_formula(string: str) -> list[str]:
     """
-    传入字符串，将字符串转化为列表，列表每个元素是一串数字或一个符号。
+    传入字符串，将字符串转化为算式，每个元素是一串数字或一个符号。
+    可以用()作嵌套。
+    :param string:
+    :return list[str]:
     """
-    fs = formula_string.replace(' ', '').replace('**', '^').replace('*', '×').replace(':', '÷').replace(
-        '//', '÷')
+    def length(lst: list):
+        value = 0
+        for _ in lst:
+            if isinstance(_, list):
+                value += length(_)+2
+            else:
+                value += len(_)
+        return value
 
-    def split(s: str = fs) -> list[str]:
-        f = []
-        start = 0
-
-        for i in range(len(s)):
-            if i >= len(s):
-                break
-
-            if s[i] in symbol_lst or i == len(s) - 1:
-                if not s[i-1] == ' ':
-                    f.append(s[start:i])
-                f.append(s[i])
-                start = i + 1
-            elif s[i] in bracket_lst[0]:
-                idx = s.index(bracket_lst[1][bracket_lst[0].index(s[i])])
-                f.append(split(s[i+1:idx]))
-                s = s[:i] + ' ' + s[idx+1:]
-
-        if type(f[-1]) != list and f[-2] not in symbol_lst:
-            f[-2] += f[-1]
-            del f[-1]
-        return f
-
-    return split()
+    f = []
+    s = string.replace('**', '^').replace('//', ':')
+    for i in range(len(s)):
+        if i > len(s)-1:
+            break
+        if f and not isinstance(f[-1], list):
+            if s[i] == '(':
+                inner = get_formula(s[i+1:])
+                f = [*f, inner]
+                s = s[:i] + s[i+length(inner)+1:]
+            elif s[i] == ')':
+                return f
+            elif f[-1] in symbol_lst or s[i] in symbol_lst:
+                f = [*f, s[i]]
+            else:
+                if not isinstance(f[-1], list):
+                    f = [*f[:-1], f[-1] + s[i]]
+                else:
+                    f = [*f, s[i]]
+        else:
+            f = [*f, s[i]]
+    return f
