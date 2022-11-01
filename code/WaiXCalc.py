@@ -301,7 +301,7 @@ class WaiX(QMainWindow):
 	def history(self):
 		self.detector.exit()
 		self.sub_win = History(self.history_content)
-		self.sub_win.historyReversion.connect(self.revert_history)
+		self.sub_win.historyReversion.connect(lambda: self.generate_formula(self.sub_win.focus_entry))
 		self.sub_win.windowClose.connect(self.detector.start)
 		self.sub_win.show()
 
@@ -414,14 +414,7 @@ class WaiX(QMainWindow):
 
 	def paste(self):
 		text: str = self.clipboard.text()
-		if verify_formula(get_formula(text)):
-			if self.formula[-1] in symbol_lst or self.formula[-1] in bracket_lst[0]:
-				self.formula += get_formula(text)
-				self.calc_formula += get_formula(text)
-			else:
-				self.formula = get_formula(text)
-				self.calc_formula = get_formula(text)
-			self.text_update()
+		self.generate_formula(text)
 
 	def period(self):
 		if self.formula[-1] not in symbol_lst and '.' not in self.formula[-1]:
@@ -459,9 +452,9 @@ class WaiX(QMainWindow):
 	def resizeEvent(self, a0: QResizeEvent) -> None:
 		self.text_update()
 
-	def revert_history(self):
+	def generate_formula(self, text: str):
 		self.clear()
-		for i in self.sub_win.focus_entry.split():
+		for i in text.split():
 			if verify_int(i):
 				for j in i:
 					if j.isdigit():
