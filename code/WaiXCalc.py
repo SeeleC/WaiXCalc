@@ -30,7 +30,7 @@ class WaiX(QMainWindow):
 		self.data = get_data()
 		self.history_content = get_history()
 
-		self.isResult: bool = self.data['isResult']
+		self.is_result: bool = self.data['isResult']
 		self.formula: list = self.data['formula']
 		self.calc_formula: list = self.data['calcFormula']
 		self.b_idx: list[int] = self.data['frontBracketIndex']
@@ -181,7 +181,7 @@ class WaiX(QMainWindow):
 			except (ValueError, ZeroDivisionError):
 				self.main_label.setText(self.trans['text.main.error'])
 			else:
-				self.isResult = True
+				self.is_result = True
 
 				if self.options['settings.1.option.1']:
 					if self.options['settings.1.option.2']:  # 小数2分数
@@ -219,7 +219,7 @@ class WaiX(QMainWindow):
 		except AttributeError:
 			pass
 
-		self.data['isResult'] = self.isResult
+		self.data['isResult'] = self.is_result
 		self.data['formula'] = self.formula
 		self.data['calcFormula'] = self.calc_formula
 		self.data['frontBracketIndex'] = self.b_idx
@@ -285,7 +285,7 @@ class WaiX(QMainWindow):
 			m.setFont(rFont)
 
 	def formula_update(self, content):
-		self.isResult = False
+		self.is_result = False
 		self.formula[-1] = content
 		self.calc_formula[-1] = content
 
@@ -307,7 +307,7 @@ class WaiX(QMainWindow):
 
 	def keyPressEvent(self, e: QKeyEvent):
 		if e.key() == Qt.Key_Backspace:
-			self.isResult = False
+			self.is_result = False
 			if len(self.formula[-1]) == 2 and '-' in self.formula[-1]:
 				if len(self.formula) == 1:
 					self.clear()
@@ -326,7 +326,7 @@ class WaiX(QMainWindow):
 				self.formula = self.formula[:-1]
 				self.calc_formula = self.calc_formula[:-1]
 				self.text_update()
-			elif (len(self.formula[-1]) == 1 and len(self.formula) == 1) or self.isResult:
+			elif (len(self.formula[-1]) == 1 and len(self.formula) == 1) or self.is_result:
 				self.clear()
 		elif e.key() == Qt.Key_Equal or e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:
 			self.calculate()
@@ -395,7 +395,7 @@ class WaiX(QMainWindow):
 	def number(self, num: str):
 		if (self.formula[-1][-1] != '/' or num != '0') and 'e' not in self.formula[-1] and\
 				'E' not in self.formula[-1] and self.formula[-1] not in bracket_lst[1]:
-			if not self.isResult:
+			if not self.is_result:
 				if self.formula[-1] in symbol_lst or self.formula[-1] in bracket_lst[0]:
 					self.formula.append(num)
 					self.calc_formula.append(num)
@@ -405,7 +405,7 @@ class WaiX(QMainWindow):
 					else:
 						self.formula_update(self.formula[-1] + num)
 			else:
-				self.isResult = False
+				self.is_result = False
 				self.formula_update(num)
 			self.text_update()
 
@@ -493,7 +493,7 @@ class WaiX(QMainWindow):
 			self.symbol('÷')
 
 	def symbol(self, symbol):
-		self.isResult = False
+		self.is_result = False
 		if self.formula[-1] not in symbol_lst and self.formula[-1] not in bracket_lst[0] and\
 			self.formula[-1] not in symbol_lst_2:
 			self.formula.append(symbol)
