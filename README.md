@@ -1,12 +1,16 @@
 # WaiXCalc
 
-[WaiXCalc](https://github.com/SeeleC/WaiXCalc) (WaiX Calculator) 是一个使用PyQt5开发的计算器，支持分数四则运算、历史记录等功能。
+[WaiXCalc](https://github.com/SeeleC/WaiXCalc) 是一个使用PyQt5开发的计算器，支持分数四则运算、历史记录等功能。
 
 *~~纯手工代码 不使用Qt Designer~~*
 
 如仅需该项目的计算函数，请前往 [core](https://github.com/SeeleC/WaiXCalc/tree/core) 分支。
 
 ## Install
+
+从 [Releases](https://github.com/SeeleC/WaiXCalc/releases/) 获取打包完成的应用程序和源代码。
+
+或者使用 Git 克隆仓库到本地：
 
     git clone git@github.com:SeeleC/WaiXCalc.git
 
@@ -15,7 +19,6 @@
 - [Python](https://www.python.org/) >= 3.9
 - [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) >= 5.15.6
 - [Win32mica](https://github.com/martinet101/win32mica) >= 1.6
-- [HTTPX](https://www.python-httpx.org/) >= 0.23.0
 
 ## Features
 
