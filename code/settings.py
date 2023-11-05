@@ -148,6 +148,7 @@ class Settings(QTabWidget):
 		outer = QVBoxLayout()
 		s = QScrollArea()
 		s.setWidgetResizable(True)
+		s.setAutoFillBackground(True)
 
 		inner.addStretch()
 		s.setLayout(inner)
