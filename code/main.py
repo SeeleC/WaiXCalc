@@ -308,7 +308,6 @@ class WaiX(QMainWindow):
 		elif e.key() == Qt.Key_Percent:
 			if self.formula[-1] != '0':
 				self.formula_update(str(Decimal(self.formula[-1]) / 100))
-				self.text_update()
 		elif e.key() == Qt.Key_Period:
 			self.period()
 		elif e.key() == Qt.Key_Slash:
@@ -333,6 +332,7 @@ class WaiX(QMainWindow):
 			self.number('9')
 		elif e.key() == Qt.Key_0:
 			self.number('0')
+		self.text_update()
 
 	def language_update(self):
 		self.trans = get_trans()
@@ -357,7 +357,6 @@ class WaiX(QMainWindow):
 					self.formula_update(self.formula[-1] + num)
 			else:
 				self.formula_update(num)
-			self.text_update()
 
 	def options_update(self):
 		self.options = get_options()
@@ -369,14 +368,12 @@ class WaiX(QMainWindow):
 	def period(self):
 		if self.formula[-1] not in symbol_lst and '.' not in self.formula[-1]:
 			self.formula_update(self.formula[-1] + '.')
-			self.text_update()
 
 	def plusminus(self):
 		if self.formula[-1][0] != '-' and self.formula[-1] not in [*symbol_lst, '0', '(', ')']:
 			self.formula_update('-' + self.formula[-1])
 		elif self.formula[-1][0] == '-' and self.formula[-1] != '-':
 			self.formula_update(self.formula[-1].lstrip('-'))
-		self.text_update()
 
 	def read_formula_file(self):
 		file = QFileDialog.getOpenFileName(self, self.trans['window.selectFile.name'], '', '*.txt;;All Files(*)')
@@ -447,7 +444,6 @@ class WaiX(QMainWindow):
 		if self.options['settings.1.option.1']:
 			if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
 				self.formula_update(self.formula[-1] + '/')
-				self.text_update()
 			elif self.formula[-1][-1] == '/':
 				self.formula_update(self.formula[-1][:-1])
 				self.symbol('÷')
@@ -460,7 +456,6 @@ class WaiX(QMainWindow):
 			self.formula.append(symbol)
 		else:
 			self.formula_update(symbol)
-		self.text_update()
 
 	def text_update(self):
 		text_update(self.formula[-1], self.main_label)
