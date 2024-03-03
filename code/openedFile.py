@@ -110,7 +110,7 @@ class OpenedFile(SubWindow):
 
 		self.setLayout(layout)
 		self.setWindowIcon(QIcon('resources/images/icon.jpg'))
-		self.setWindowTitle(self.trans['window.open.title'])
+		self.setWindowTitle(self.trans['window.open.name'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
 
@@ -172,7 +172,7 @@ class OpenedFile(SubWindow):
 		self.clipboard.setText(content.replace(' ', ''))
 		get_enhanced_messagebox(
 			QMessageBox.Icon.Information,
-			self.trans['window.hint.title'],
+			self.trans['window.hint.name'],
 			self.trans[f'hint.open.copy{range.title()}'],
 			self,
 			self.data['enableDarkMode']
@@ -187,7 +187,7 @@ class OpenedFile(SubWindow):
 				)
 			get_enhanced_messagebox(
 				QMessageBox.Icon.Information,
-				self.trans['window.hint.title'],
+				self.trans['window.hint.name'],
 				self.trans['hint.open.export'],
 				self,
 				self.data['enableDarkMode']

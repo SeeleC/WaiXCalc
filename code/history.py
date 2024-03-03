@@ -83,7 +83,7 @@ class History(SubWindow):
         self.addAction(close_action)
 
         self.setLayout(outer)
-        self.setWindowTitle(self.trans['window.history.title'])
+        self.setWindowTitle(self.trans['window.history.name'])
         self.setWindowIcon(QIcon('resources/images/icon.jpg'))
         self.resize(600, 400)
 
@@ -130,7 +130,7 @@ class History(SubWindow):
         self.close()
         get_enhanced_messagebox(
             QMessageBox.Icon.NoIcon,
-            self.trans['window.history.title'],
+            self.trans['window.history.name'],
             self.trans['history.cleared'],
             self,
             self.data['enableDarkMode']

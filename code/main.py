@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import (
-	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout, QSizePolicy, QMenu, QGraphicsOpacityEffect
+	QApplication, QMainWindow, QFileDialog, QAction, QVBoxLayout, QSizePolicy, QGraphicsOpacityEffect
 )
 from PyQt5.QtGui import QIcon, QCloseEvent, QKeyEvent, QResizeEvent
 from PyQt5.QtCore import QTimer
@@ -78,24 +78,23 @@ class WaiX(QMainWindow):
 
 		self.menubar = self.menuBar()
 		self.menubar.setFont(rFont)
-		fileMenu = self.menubar.addMenu(self.trans['menubar.fileMenu.title'])
-		editMenu = self.menubar.addMenu(self.trans['menubar.editMenu.title'])
-		helpMenu = self.menubar.addMenu(self.trans['menubar.helpMenu.title'])
 
-		self.menus = [fileMenu, editMenu, helpMenu]
-		names, statustips = get_menu_items(self.trans)
-		functions = [
-			[self.read_formula_file, self.settings, self.close],
-			[self.copy, self.paste, self.delete],
-			[self.help, self.history, self.whole_formula]
-		]
-		shortcuts = [
-			['Ctrl+O', 'Ctrl+S', 'Ctrl+Q'],
-			['Ctrl+C', 'Ctrl+V', 'Del'],
-			['', 'Ctrl+H', 'Ctrl+F']
-		]
+		self.menus = {}
+		for i, j in self.get_trans_entry('menubar').items():
+			self.menus[i.split('.')[1]] = self.menubar.addMenu(j)
+
+		functions = {
+			'fileMenu': [self.read_formula_file, self.settings, self.close],
+			'editMenu': [self.copy, self.paste, self.delete, self.select_all],
+			'helpMenu': [self.help, self.history, self.full_formula]
+		}
+		shortcuts = {
+			'fileMenu': ['Ctrl+O', 'Ctrl+S', 'Ctrl+Q'],
+			'editMenu': ['Ctrl+C', 'Ctrl+V', 'Del', 'Ctrl+A'],
+			'helpMenu': ['', 'Ctrl+H', 'Ctrl+F']
+		}
 		self.actions = []
-		run(self._init_menubar(names, statustips, functions, shortcuts))
+		run(self._init_menubar(functions, shortcuts))
 
 		self.setWindowIcon(QIcon('resources/images/icon.jpg'))
 		self.title()
@@ -114,20 +113,21 @@ class WaiX(QMainWindow):
 
 		self.statusBar()
 
-	async def _init_menubar(self, names, status_tips, functions, shortcuts):
-		task1 = create_task(
-			self._init_menu(self.menus[0], names[0], status_tips[0], shortcuts[0], functions[0])
-		)
-		task2 = create_task(
-			self._init_menu(self.menus[1], names[1], status_tips[1], shortcuts[1], functions[1])
-		)
-		task3 = create_task(
-			self._init_menu(self.menus[2], names[2], status_tips[2], shortcuts[2], functions[2])
-		)
+	async def _init_menubar(self, functions, shortcuts):
 
-		await task1
-		await task2
-		await task3
+		tasks = []
+		for menu in self.menus:
+			tasks.append(create_task(
+				self._init_menu(
+					menu,
+					list(self.get_trans_entry(f'option.{menu}').values()),
+					list(self.get_trans_entry(f'statusTip.{menu}').values()),
+					shortcuts[menu],
+					functions[menu])
+			))
+
+		for task in tasks:
+			await task
 
 	async def _init_menu(self, menu, names, status_tips, shortcuts, functions):
 		for name, status_tip, shortcut, function in zip(names, status_tips, shortcuts, functions):
@@ -135,17 +135,17 @@ class WaiX(QMainWindow):
 				continue
 			elif name == self.trans['option.fileMenu.2'] or name == self.trans['option.fileMenu.3'] or \
 					name == self.trans['option.helpMenu.2']:
-				menu.addSeparator()
+				self.menus[menu].addSeparator()
 
 			action = QAction(name, self)
 			action.setShortcut(shortcut)
 			action.setStatusTip(status_tip)
 			action.triggered.connect(function)
-			menu.addAction(action)
+			self.menus[menu].addAction(action)
 			self.actions.append(action)
-		menu.setFont(rFont)
+		self.menus[menu].setFont(rFont)
 		if names[0] == self.trans['option.editMenu.1']:
-			self.main_label.setContextMenu(menu)
+			self.main_label.setContextMenu(self.menus[menu])
 
 	def bracket(self, l_idx):
 		if l_idx == 0 and (self.formula[-1] in symbol_lst or self.formula == ['0']):
@@ -292,7 +292,7 @@ class WaiX(QMainWindow):
 	def help(self):
 		get_enhanced_messagebox(
 			QMessageBox.Icon.NoIcon,
-			self.trans['window.help.title'],
+			self.trans['window.help.name'],
 			self.trans['text.help.content'],
 			self,
 			self.data['enableDarkMode']
@@ -380,17 +380,15 @@ class WaiX(QMainWindow):
 
 	def language_update(self):
 		self.trans = get_trans()
-		menu_names, menu_status_tips = get_menu_items(self.trans)
 
-		for idx, name in zip([0, 1, 2], ['file', 'edit', 'help']):
-			self.menus[idx].setTitle(self.trans[f'menubar.{name}Menu.title'])
+		for name, menu in self.menus.items():
+			menu.setTitle(self.trans[f'menubar.{name}.name'])
 
 		idx = 0
-		for names, status_tips in zip(menu_names, menu_status_tips):
-			for name, status_tip in zip(names, status_tips):
-				self.actions[idx].setText(name)
-				self.actions[idx].setStatusTip(status_tip)
-				idx += 1
+		for name, status_tip in zip(self.get_trans_entry('option').values(), self.get_trans_entry('statusTip').values()):
+			self.actions[idx].setText(name)
+			self.actions[idx].setStatusTip(status_tip)
+			idx += 1
 
 	def number(self, num: str):
 		if (self.formula[-1][-1] != '/' or num != '0') and 'e' not in self.formula[-1] and\
@@ -430,7 +428,7 @@ class WaiX(QMainWindow):
 		self.text_update()
 
 	def read_formula_file(self):
-		file = QFileDialog.getOpenFileName(self, self.trans['window.selectFile.title'], '', '*.txt;;All Files(*)')
+		file = QFileDialog.getOpenFileName(self, self.trans['window.selectFile.name'], '', '*.txt;;All Files(*)')
 		try:
 			with open(file[0], 'r') as f:
 				f_formula = f.read()
@@ -440,7 +438,7 @@ class WaiX(QMainWindow):
 			if type(e) == IndexError:
 				get_enhanced_messagebox(
 					QMessageBox.Icon.Warning,
-					self.trans['window.hint.title'],
+					self.trans['window.hint.name'],
 					self.trans['hint.open.error'],
 					self,
 					self.data['enableDarkMode']
@@ -470,9 +468,24 @@ class WaiX(QMainWindow):
 			elif i in bracket_lst[1]:
 				self.bracket(1)
 
+	def get_trans_entry(self, text: str) -> dict:
+		"""
+		通过键名查找多个条目
+		"""
+		result = {}
+
+		for i in self.trans.keys():
+			if i[:len(text)] == text:
+				result = {**result, i: self.trans[i]}
+
+		return result
+
+	def select_all(self):
+		self.main_label.setSelection(0, len(self.main_label.text()))
+
 	def settings(self):
-		self.sub_win = Settings()
 		self.detector.exit()
+		self.sub_win = Settings()
 		self.sub_win.languageChanged.connect(self.language_update)
 		self.sub_win.fontChanged.connect(self.font_update)
 		self.sub_win.titleChanged.connect(self.title_update)
@@ -515,11 +528,11 @@ class WaiX(QMainWindow):
 		self.options = get_options()
 		self.title()
 
-	def whole_formula(self):
+	def full_formula(self):
 		f = [i + ' ' for i in self.formula]
 		get_enhanced_messagebox(
 			QMessageBox.Icon.NoIcon,
-			self.trans['window.whole.title'],
+			self.trans['window.view.name'],
 			''.join(f),
 			self,
 			self.data['enableDarkMode']

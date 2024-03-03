@@ -67,25 +67,25 @@ class Settings(QTabWidget):
 
 		self.setFont(rFont)
 		self.setWindowIcon(QIcon('resources/images/icon.jpg'))
-		self.setWindowTitle(self.trans['window.settings.title'])
+		self.setWindowTitle(self.trans['window.settings.name'])
 		self.resize(600, 400)
 		self.setMaximumSize(self.width(), self.height())
 
 	async def _init_tabs(self):
 		task1 = create_task(
-			self._init_tab(self.trans['settings.1.title'], self.general_tab)
+			self._init_tab(self.trans['settings.1.name'], self.general_tab)
 		)
 		task2 = create_task(
-			self._init_tab(self.trans['settings.4.title'], self.style_tab)
+			self._init_tab(self.trans['settings.4.name'], self.style_tab)
 		)
 		task3 = create_task(
-			self._init_tab(self.trans['settings.2.title'], self.history_tab)
+			self._init_tab(self.trans['settings.2.name'], self.history_tab)
 		)
 		task4 = create_task(
-			self._init_tab(self.trans['settings.3.title'], self.language_tab)
+			self._init_tab(self.trans['settings.3.name'], self.language_tab)
 		)
 		task5 = create_task(
-			self._init_tab(self.trans['settings.5.title'], self.about_tab)
+			self._init_tab(self.trans['settings.5.name'], self.about_tab)
 		)
 
 		await task1
@@ -367,7 +367,7 @@ class Settings(QTabWidget):
 				if self.checkboxes['settings.4.option'].isChecked() != self.options['settings.4.option']:
 					get_enhanced_messagebox(
 						QMessageBox.Icon.Information,
-						self.trans['window.hint.title'],
+						self.trans['window.hint.name'],
 						self.trans['settings.4.hint'],
 						self,
 						self.data['enableDarkMode']
@@ -394,7 +394,7 @@ class Settings(QTabWidget):
 				if self.window_title.text() != self.options['window_title']:
 					self.options['window_title'] = self.window_title.text()
 					save('data/options.json', self.options)
-					self.titleChanged.emit()
+					self.nameChanged.emit()
 
 				save('data/options.json', self.options)
 				self.optionsChanged.emit()
