@@ -254,7 +254,7 @@ class WaiX(QMainWindow):
 		self.main_label.setFont(hFont)
 		self.menubar.setFont(rFont)
 
-		for m in self.menus:  # TODO add .values()
+		for m in self.menus.values():
 			m.setFont(rFont)
 
 	def formula_update(self, formula):
