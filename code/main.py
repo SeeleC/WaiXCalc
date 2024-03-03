@@ -282,6 +282,8 @@ class WaiX(QMainWindow):
 			self.is_result = False
 			if len(self.formula[-1]) > 1:
 				self.formula[-1] = self.formula[-1][:-1]
+			elif len(self.formula) == 1:
+				self.clear()
 			else:
 				self.formula = self.formula[:-1]
 		elif e.key() == Qt.Key_Equal or e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:
