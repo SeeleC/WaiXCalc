@@ -32,10 +32,6 @@ class WaiX(QMainWindow):
 
 		self.is_result: bool = self.data['isResult']
 		self.formula: list = self.data['formula']
-		self.calc_formula: list = self.data['calcFormula']
-		self.b_idx: list[int] = self.data['frontBracketIndex']
-		self.calc_f_step: list = self.data['calcFormulaStep']
-		self.b_idx_step: list = self.data['frontBracketIndexStep']
 
 		self.clipboard = QApplication.clipboard()
 
@@ -59,9 +55,6 @@ class WaiX(QMainWindow):
 		self.setCentralWidget(self.widget)
 		self._init_ui()
 		self.show()
-
-		if self.calc_formula == ['0'] and self.formula != self.calc_formula:
-			self.clear()
 
 	def _init_ui(self):
 		vbox = QVBoxLayout()
@@ -147,37 +140,23 @@ class WaiX(QMainWindow):
 		if names[0] == self.trans['option.editMenu.1']:
 			self.main_label.setContextMenu(self.menus[menu])
 
-	def bracket(self, l_idx):
-		if l_idx == 0 and (self.formula[-1] in symbol_lst or self.formula == ['0']):
-			if self.formula == ['0']:
-				self.formula_update('(')
-			else:
-				self.formula.append('(')
-				self.calc_formula.append('(')
-			self.b_idx.append(len(self.calc_formula)-1)
-			self.b_idx.append(len(self.formula)-1)
+	def bracket(self, text: str):
+		if self.is_result:
+			self.formula = [text]
+		elif self.formula[-1] not in ['(', ')']:
+			if text == '(' and self.formula[-1] in symbol_lst:
+				self.formula.append(text)
+			elif text == ')' and verify_monomial(self.formula[-1]):
+				self.formula.append(text)
 
-		elif l_idx == 1 and self.formula[-1] not in symbol_lst and\
-			self.formula[-1] not in bracket_lst[0]:
-			self.calc_f_step.append(self.calc_formula[:])
-			self.b_idx_step.append(self.b_idx[:])
-
-			self.formula.append(')')
-			self.calc_formula.append(')')
-
-			self.calc_formula = self.calc_formula[:self.b_idx[-2]] + [self.calc_formula[self.b_idx[-2]+1:-1]]
-			self.b_idx = self.b_idx[:-2]
 		self.text_update()
 
 	def calculate(self):
-		if len(self.formula) > 2 and self.formula[-1] not in symbol_lst and\
-			self.formula[-1][-1] not in symbol_lst_2 and self.formula[-1] not in bracket_lst[0]:
-
-			while len(self.b_idx) != 0:
-				self.bracket(1)
+		if len(self.formula) > 2 and self.formula[-1] not in [*symbol_lst, '(', ')'] and\
+			self.formula[-1][-1] not in symbol_lst_2:
 
 			try:
-				result = calculate(self.calc_formula)
+				result = calculate(self.formula)
 			except (ValueError, ZeroDivisionError):
 				self.main_label.setText(self.trans['text.main.error'])
 			else:
@@ -193,12 +172,12 @@ class WaiX(QMainWindow):
 				if self.options['settings.2.option.1']:
 					self.history_content.append(''.join([i + ' ' for i in self.formula]) + '= ' + str(result))
 
+				# 渐入效果
 				if str(result) == self.formula[-1]:
-					self.fade_out()
+					self.fade_in()
 
 				self.clear()
 				self.formula = [str(result)]
-				self.calc_formula = [str(result)]
 				self.text_update()
 
 	def center(self):
@@ -207,10 +186,6 @@ class WaiX(QMainWindow):
 
 	def clear(self):
 		self.formula = ['0']
-		self.calc_formula = ['0']
-		self.calc_f_step.clear()
-		self.b_idx_step.clear()
-		self.b_idx.clear()
 		self.main_label.setText(self.formula[-1])
 
 	def closeEvent(self, a0: QCloseEvent) -> None:
@@ -221,10 +196,6 @@ class WaiX(QMainWindow):
 
 		self.data['isResult'] = self.is_result
 		self.data['formula'] = self.formula
-		self.data['calcFormula'] = self.calc_formula
-		self.data['frontBracketIndex'] = self.b_idx
-		self.data['calcFormulaStep'] = self.calc_f_step
-		self.data['frontBracketIndexStep'] = self.b_idx_step
 
 		self.data['latest_pos_x'] = self.pos().x()
 		self.data['latest_pos_y'] = self.pos().y()
@@ -248,7 +219,6 @@ class WaiX(QMainWindow):
 	def delete(self):
 		if len(self.formula) >= 2:
 			self.formula = self.formula[:-1]
-			self.calc_formula = self.calc_f_step[:-1]
 		else:
 			self.clear()
 		self.text_update()
@@ -257,7 +227,7 @@ class WaiX(QMainWindow):
 		self.options = get_options()
 		switch_color_mode(self)
 
-	def fade_out(self):
+	def fade_in(self):
 		self.opacity.i = 0
 
 		def timeout():
@@ -284,13 +254,12 @@ class WaiX(QMainWindow):
 		self.main_label.setFont(hFont)
 		self.menubar.setFont(rFont)
 
-		for m in self.menus:
+		for m in self.menus:  # TODO add .values()
 			m.setFont(rFont)
 
-	def formula_update(self, content):
+	def formula_update(self, formula):
 		self.is_result = False
-		self.formula[-1] = content
-		self.calc_formula[-1] = content
+		self.formula[-1] = formula
 
 	def help(self):
 		get_enhanced_messagebox(
@@ -311,26 +280,10 @@ class WaiX(QMainWindow):
 	def keyPressEvent(self, e: QKeyEvent):
 		if e.key() == Qt.Key_Backspace:
 			self.is_result = False
-			if len(self.formula[-1]) == 2 and '-' in self.formula[-1]:
-				if len(self.formula) == 1:
-					self.clear()
-				else:
-					self.formula_update('0')
-					self.text_update()
-			elif self.formula[-1] in bracket_lst[1]:
+			if len(self.formula[-1]) > 1:
+				self.formula[-1] = self.formula[-1][:-1]
+			else:
 				self.formula = self.formula[:-1]
-				self.calc_formula = self.calc_f_step.pop()
-				self.b_idx = self.b_idx_step.pop()
-				self.text_update()
-			elif self.formula[-1][-1] not in symbol_lst and len(self.formula[-1]) >= 2:
-				self.formula_update(self.formula[-1][:-1])
-				self.text_update()
-			elif len(self.formula[-1]) == 1 and len(self.formula) >= 2:
-				self.formula = self.formula[:-1]
-				self.calc_formula = self.calc_formula[:-1]
-				self.text_update()
-			elif (len(self.formula[-1]) == 1 and len(self.formula) == 1) or self.is_result:
-				self.clear()
 		elif e.key() == Qt.Key_Equal or e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:
 			self.calculate()
 		elif e.key() == Qt.Key_Plus:
@@ -345,9 +298,9 @@ class WaiX(QMainWindow):
 		elif e.key() == Qt.Key_Colon:
 			self.symbol('÷')
 		elif e.key() == Qt.Key_ParenLeft or e.key() == Qt.Key_BracketLeft:
-			self.bracket(0)
+			self.bracket('(')
 		elif e.key() == Qt.Key_ParenRight or e.key() == Qt.Key_BracketRight:
-			self.bracket(1)
+			self.bracket(')')
 		elif e.key() == Qt.Key_plusminus:
 			self.plusminus()
 		elif e.key() == Qt.Key_C:
@@ -394,19 +347,15 @@ class WaiX(QMainWindow):
 			idx += 1
 
 	def number(self, num: str):
-		if (self.formula[-1][-1] != '/' or num != '0') and 'e' not in self.formula[-1] and\
-				'E' not in self.formula[-1] and self.formula[-1] not in bracket_lst[1]:
+		if (self.formula[-1][-1] != '/' or num != '0') and not list({'e', 'E', '(', ')'} & set(self.formula)):
 			if not self.is_result:
-				if self.formula[-1] in symbol_lst or self.formula[-1] in bracket_lst[0]:
+				if self.formula[-1] in symbol_lst or self.formula[-1] == '(':
 					self.formula.append(num)
-					self.calc_formula.append(num)
+				elif self.formula[-1] == '0':
+					self.formula_update(num)
 				else:
-					if self.formula == ['0'] or self.formula[-1] == '0':
-						self.formula_update(num)
-					else:
-						self.formula_update(self.formula[-1] + num)
+					self.formula_update(self.formula[-1] + num)
 			else:
-				self.is_result = False
 				self.formula_update(num)
 			self.text_update()
 
@@ -423,8 +372,7 @@ class WaiX(QMainWindow):
 			self.text_update()
 
 	def plusminus(self):
-		if self.formula[-1][0] != '-' and self.formula[-1] != '0' and self.formula[-1] not in symbol_lst and\
-			self.formula[-1][-1] not in [i for _ in bracket_lst for i in _]:
+		if self.formula[-1][0] != '-' and self.formula[-1] not in [*symbol_lst, '0', '(', ')']:
 			self.formula_update('-' + self.formula[-1])
 		elif self.formula[-1][0] == '-' and self.formula[-1] != '-':
 			self.formula_update(self.formula[-1].lstrip('-'))
@@ -456,7 +404,7 @@ class WaiX(QMainWindow):
 	def generate_formula(self, text: str):
 		self.clear()
 		for i in text.split():
-			if verify_int(i):
+			if verify_monomial(i):
 				for j in i:
 					if j.isdigit():
 						self.number(j)
@@ -466,10 +414,8 @@ class WaiX(QMainWindow):
 						self.slash()
 			elif i in symbol_lst:
 				self.symbol(i)
-			elif i in bracket_lst[0]:
-				self.bracket(0)
-			elif i in bracket_lst[1]:
-				self.bracket(1)
+			elif i in ['(', ')']:
+				self.bracket(i)
 
 	def get_trans_entry(self, text: str) -> dict:
 		"""
@@ -510,10 +456,8 @@ class WaiX(QMainWindow):
 
 	def symbol(self, symbol):
 		self.is_result = False
-		if self.formula[-1] not in symbol_lst and self.formula[-1] not in bracket_lst[0] and\
-			self.formula[-1] not in symbol_lst_2:
+		if self.formula[-1] not in [*symbol_lst, *symbol_lst_2, '(']:
 			self.formula.append(symbol)
-			self.calc_formula.append(symbol)
 		else:
 			self.formula_update(symbol)
 		self.text_update()

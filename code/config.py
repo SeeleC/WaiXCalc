@@ -4,7 +4,6 @@ __version__ = '1.9.2'
 
 symbol_lst = ['+', '-', '×', '÷', '^']
 symbol_lst_2 = ['.', '/']
-bracket_lst = [['(', '[', '{'], [')', ']', '}']]
 symbol_turn = {'+': '+', '-': '-', '×': '*', '÷': '/', '//': '/', '^': '**', '**': '**'}
 
 default_options = {
@@ -22,10 +21,6 @@ default_options = {
 
 default_data = {
 	'formula': ['0'],
-	'calcFormula': ['0'],
-	'calcFormulaStep': [],
-	'frontBracketIndex': [],
-	'frontBracketIndexStep': [],
 	'isResult': False,
 	'latest_pos_x': 0,
 	'latest_pos_y': 0,
