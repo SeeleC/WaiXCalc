@@ -277,7 +277,7 @@ class WaiX(QMainWindow):
 		self.sub_win.windowClose.connect(self.detector.start)
 		self.sub_win.show()
 
-	def keyPressEvent(self, e: QKeyEvent):
+	def keyPressEvent(self, e: QKeyEvent):  # py310+ match case
 		if e.key() == Qt.Key_Backspace:
 			self.is_result = False
 			if len(self.formula[-1]) > 1:

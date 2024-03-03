@@ -23,6 +23,7 @@ class Settings(QTabWidget):
 	def __init__(self):
 		super().__init__()
 		self.setWindowFlag(Qt.WindowCloseButtonHint)
+		self.setWindowModality(Qt.ApplicationModal)
 
 		self.options = get_options()
 		self.data = get_data()
