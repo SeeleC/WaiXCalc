@@ -85,12 +85,12 @@ class WaiX(QMainWindow):
 
 		functions = {
 			'fileMenu': [self.read_formula_file, self.settings, self.close],
-			'editMenu': [self.copy, self.paste, self.delete, self.select_all],
+			'editMenu': [self.copy, self.full_copy, self.paste, self.delete, self.select_all],
 			'helpMenu': [self.help, self.history, self.full_formula]
 		}
 		shortcuts = {
 			'fileMenu': ['Ctrl+O', 'Ctrl+S', 'Ctrl+Q'],
-			'editMenu': ['Ctrl+C', 'Ctrl+V', 'Del', 'Ctrl+A'],
+			'editMenu': ['Ctrl+C', '', 'Ctrl+V', 'Del', 'Ctrl+A'],
 			'helpMenu': ['', 'Ctrl+H', 'Ctrl+F']
 		}
 		self.actions = []
@@ -240,7 +240,10 @@ class WaiX(QMainWindow):
 		if self.main_label.hasSelectedText():
 			self.clipboard.setText(self.main_label.selectedText())
 		else:
-			self.clipboard.setText(''.join([i for i in self.formula]).strip())
+			self.clipboard.setText(self.main_label.text())
+
+	def full_copy(self):
+		self.clipboard.setText(''.join([i for i in self.formula]).strip())
 
 	def delete(self):
 		if len(self.formula) >= 2:
