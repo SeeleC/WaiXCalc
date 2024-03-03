@@ -144,20 +144,6 @@ def get_trans() -> dict[str]:
 		return load(f)
 
 
-def get_trans_entry(trans: dict, text: str) -> dict:
-	"""
-	通过键名查找多个条目
-	"""
-	result = {}
-
-	for i in trans.keys():
-		for j in range(len(i)):
-			if i[:j] == text:
-				result = {**result, **{i: trans[i]}}
-
-	return result
-
-
 def get_trans_info() -> dict[str]:
 	"""
 	遍历lang文件夹、获取json文件信息

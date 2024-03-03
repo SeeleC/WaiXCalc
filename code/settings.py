@@ -14,7 +14,7 @@ from json import loads
 from detector import Detector
 from config import __version__, tFont, rFont
 from functions import (
-	save, get_trans, get_options, get_trans_entry, get_trans_info, get_data, get_enhanced_messagebox, load_theme,
+	save, get_trans, get_options, get_trans_info, get_data, get_enhanced_messagebox, load_theme,
 	switch_color_mode, open_url
 )
 
@@ -33,11 +33,11 @@ class Settings(QTabWidget):
 		self.names = {
 			j: i
 			for _ in range(1, 5)
-			for i, j in get_trans_entry(self.trans, f'settings.{_}').items()
+			for i, j in self.get_trans_entry(f'settings.{_}').items()
 		}
 		self.color_modes = {
 			j: i
-			for i, j in get_trans_entry(self.trans, 'colorMode').items()
+			for i, j in self.get_trans_entry('colorMode').items()
 		}
 		self.languages = get_trans_info()
 		self.checkboxes: dict[str: QCheckBox] = {}
@@ -169,10 +169,22 @@ class Settings(QTabWidget):
 
 	def general_tab(self) -> QVBoxLayout:
 		layout = QVBoxLayout()
-		for i, j in get_trans_entry(self.trans, 'settings.1.option').items():
+		for i, j in self.get_trans_entry('settings.1.option').items():
 			self.checkboxes[i] = QCheckBox(j)
 			layout = self.add_option_entry(layout, self.checkboxes[i])
 		return layout
+
+	def get_trans_entry(self, text: str) -> dict:
+		"""
+		通过键名查找多个条目
+		"""
+		result = {}
+
+		for i in self.trans.keys():
+			if text in i:
+				result = {**result, i: self.trans[i]}
+
+		return result
 
 	def handle_response(self, reply: QNetworkReply):
 		error = reply.error()
@@ -213,7 +225,7 @@ class Settings(QTabWidget):
 
 	def history_tab(self) -> QVBoxLayout:
 		layout = QVBoxLayout()
-		for i, j in get_trans_entry(self.trans, 'settings.2.option').items():
+		for i, j in self.get_trans_entry('settings.2.option').items():
 			self.checkboxes[i] = QCheckBox(j)
 			layout = self.add_option_entry(layout, self.checkboxes[i])
 		return layout
@@ -241,7 +253,7 @@ class Settings(QTabWidget):
 			layout,
 			self.trans['settings.4.selector.2'],
 			'settings.4.selector.2',
-			[self.trans[i] for i in get_trans_entry(self.trans, 'colorMode')],
+			[self.trans[i] for i in self.get_trans_entry('colorMode')],
 			self.trans[self.options['settings.4.selector.2']]
 		)
 
