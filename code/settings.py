@@ -149,9 +149,11 @@ class Settings(QTabWidget):
 		s = QScrollArea()
 		s.setWidgetResizable(True)
 		s.setAutoFillBackground(True)
+		w = QWidget()
 
 		inner.addStretch()
-		s.setLayout(inner)
+		w.setLayout(inner)
+		s.setWidget(w)
 		outer.addWidget(s)
 		self.add_bottom_button(outer)
 		widget.setLayout(outer)
