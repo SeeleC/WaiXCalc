@@ -46,7 +46,7 @@
 
   "settings.2.name": "History",
   "settings.2.option.1": "Enable record history",
-  "settings.2.option.2": "Keep history at quit",
+  "settings.2.option.2": "Save history",
 
   "settings.3.name": "Language",
 
