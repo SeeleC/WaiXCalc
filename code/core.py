@@ -1,4 +1,4 @@
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal
 from fractions import Fraction
 from typing import Union
 
@@ -66,7 +66,7 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
             continue
         else:
             if not turn_frac:
-                formula[i] = f'Decimal({formula[i]})'
+                formula[i] = f'Decimal("{formula[i]}")'
             else:
                 formula[i] = f'Fraction({formula[i]})'
 
