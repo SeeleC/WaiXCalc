@@ -414,6 +414,7 @@ class WaiX(QMainWindow):
 				self.symbol(i)
 			elif i in ['(', ')']:
 				self.bracket(i)
+		self.text_update()
 
 	def get_help(self) -> str:
 		texts = [i for i in self.get_trans_entry('text.help').values()]
