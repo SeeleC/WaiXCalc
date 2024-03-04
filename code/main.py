@@ -264,7 +264,7 @@ class WaiX(QMainWindow):
 		get_enhanced_messagebox(
 			QMessageBox.Icon.NoIcon,
 			self.trans['window.help.name'],
-			self.trans['text.help.content'],
+			self.get_help(),
 			self,
 			self.data['enableDarkMode']
 		).show()
@@ -414,6 +414,11 @@ class WaiX(QMainWindow):
 				self.symbol(i)
 			elif i in ['(', ')']:
 				self.bracket(i)
+
+	def get_help(self) -> str:
+		texts = [i for i in self.get_trans_entry('text.help').values()]
+		_help = ''.join([f'{j+1}. {texts[j]}<br>' for j in range(len(texts))])
+		return _help
 
 	def get_trans_entry(self, text: str) -> dict:
 		"""

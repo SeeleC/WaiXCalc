@@ -82,7 +82,9 @@
   "history.disabled": "记录历史已关闭",
   "history.cleared": "已清空历史记录",
 
-  "text.help.content": "1. 打开设置选项“启用分数计算”时，为了兼容分数，如须输入“÷”，请用“//”或“:”代替;<br>2. 如有其他问题请前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a><br>",
+  "text.help.1": "打开设置选项“启用分数计算”时，为了兼容分数，如须输入“÷”，请用“//”或“:”代替;",
+  "text.help.2": "如果计算结果不准确，可能是数字长度过大导致的，尝试简化算式以解决问题;",
+  "text.help.3": "如有其他问题请前往<a href=\"https://github.com/SeeleC/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a>",
 
   "text.main.error": "错误",
 

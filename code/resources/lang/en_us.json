@@ -78,7 +78,9 @@
 
   "text.history.disabled": "Record history is disabled",
 
-  "text.help.content": "1. Input `:` or `//` to replace `/` when you are fractional calculating.<br>2. If you have any other questions, go and <a href=\"https://github.com/WaiZhong/WaiXCalc/issues/new\"><span style=\"color: #3a96dd\">create a new issue</span><\\a>.<br>",
+  "text.help.1": "Input `:` or `//` to replace `/` when you are fractional calculating.",
+  "text.help.2": "If the calculation result is inaccurate, it may be caused by the number length being too large. Try simplifying the calculation to solve the problem.",
+  "text.help.3": "If you have any other questions, go and <a href=\"https://github.com/SeeleC/WaiXCalc/issues/new\"><span style=\"color: #3a96dd\">create a new issue</span><\\a>.",
 
   "text.main.error": "Error",
 

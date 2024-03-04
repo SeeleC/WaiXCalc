@@ -76,7 +76,9 @@
   "history.disabled": "記錄歷史已關閉",
   "history.cleared": "已清空歷史記錄",
 
-  "text.help.content": "1. 打開設置選項“啟用分數計算”時，為了兼容分數，如須輸入“÷”，請用“”或“:”代替;<br>\n2. 如有其他問題請前往<a href=\"https://github.com/WaiZhong/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a><br>",
+  "text.help.1": "打開設置選項“啟用分數計算”時，為了兼容分數，如須輸入“÷”，請用“//”或“:”代替;",
+  "text.help.2": "如果計算結果不準確，可能是數字長度過大導致的，嘗試簡化算式以解決問題;",
+  "text.help.3": "如有其他問題請前往<a href=\"https://github.com/SeeleC/WaiXCalc/issues/\"><span style=\"color: #3a96dd\">Issues</span><\\a>",
 
   "text.main.error": "錯誤",
 
