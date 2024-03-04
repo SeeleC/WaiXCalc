@@ -126,8 +126,7 @@ class WaiX(QMainWindow):
 		for name, status_tip, shortcut, function in zip(names, status_tips, shortcuts, functions):
 			if name == '':
 				continue
-			elif name == self.trans['option.fileMenu.2'] or name == self.trans['option.fileMenu.3'] or \
-					name == self.trans['option.helpMenu.2']:
+			elif name in [self.trans['option.fileMenu.2'], self.trans['option.fileMenu.3'], self.trans['option.helpMenu.2']]:
 				self.menus[menu].addSeparator()
 
 			action = QAction(name, self)
@@ -156,7 +155,7 @@ class WaiX(QMainWindow):
 			self.formula[-1][-1] not in symbol_lst_2:
 
 			try:
-				result = calculate(self.formula)
+				result = calculate(self.formula[:])
 			except (ValueError, ZeroDivisionError):
 				self.main_label.setText(self.trans['text.main.error'])
 			else:
