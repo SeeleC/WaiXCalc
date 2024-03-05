@@ -57,7 +57,7 @@ class Settings(QTabWidget):
 	languageChanged = pyqtSignal()
 	fontChanged = pyqtSignal()
 	optionsChanged = pyqtSignal()
-	titleChanged = pyqtSignal()
+	titleChanged = pyqtSignal(str)
 	colorOptionChanged = pyqtSignal()
 	windowClose = pyqtSignal()
 
@@ -395,7 +395,7 @@ class Settings(QTabWidget):
 				if self.window_title.text() != self.options['window_title']:
 					self.options['window_title'] = self.window_title.text()
 					save('data/options.json', self.options)
-					self.titleChanged.emit()
+					self.titleChanged.emit(self.options['window_title'])
 
 				save('data/options.json', self.options)
 				self.optionsChanged.emit()

@@ -25,8 +25,8 @@ class WaiX(QMainWindow):
 	def __init__(self):
 		super().__init__()
 
-		self.options: dict = get_options()
-		self.trans: dict = get_trans()
+		self.options = get_options()
+		self.trans = get_trans()
 		self.data = get_data()
 		self.history_content = get_history()
 
@@ -90,7 +90,7 @@ class WaiX(QMainWindow):
 		run(self._init_menubar(functions, shortcuts))
 
 		self.setWindowIcon(QIcon('resources/images/icon.jpg'))
-		self.title()
+		self.title(self.options['window_title'])
 		self.resize(672, 0)
 		self.setMaximumHeight(self.height())
 
@@ -441,7 +441,7 @@ class WaiX(QMainWindow):
 		self.sub_win = Settings()
 		self.sub_win.languageChanged.connect(self.language_update)
 		self.sub_win.fontChanged.connect(self.font_update)
-		self.sub_win.titleChanged.connect(self.title_update)
+		self.sub_win.titleChanged.connect(self.title)
 		self.sub_win.colorOptionChanged.connect(self.detect_color_mode)
 		self.sub_win.optionsChanged.connect(self.options_update)
 		self.sub_win.windowClose.connect(self.detector.start)
@@ -467,15 +467,11 @@ class WaiX(QMainWindow):
 	def text_update(self):
 		text_update(self.formula[-1], self.main_label)
 
-	def title(self):
-		if self.options['window_title'] != '':
-			self.setWindowTitle(self.options['window_title'])
+	def title(self, title: str) -> None:
+		if title != '':
+			self.setWindowTitle(title)
 		else:
 			self.setWindowTitle(' ')
-
-	def title_update(self):
-		self.options = get_options()
-		self.title()
 
 	def full_formula(self):
 		f = [i + ' ' for i in self.formula]
