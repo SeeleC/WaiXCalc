@@ -384,7 +384,7 @@ class WaiX(QMainWindow):
 				f_formulas = f_formula.split('\n')
 				formulas = [get_formula(i) for i in f_formulas if verify_formula(get_formula(i))]
 		except (FileNotFoundError, IndexError) as e:
-			if type(e) == IndexError:
+			if e is IndexError:
 				get_enhanced_messagebox(
 					QMessageBox.Icon.Warning,
 					self.trans['window.hint.name'],

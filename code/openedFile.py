@@ -31,7 +31,7 @@ class OpenedFile(SubWindow):
 		
 		for i in formulas:
 			try:
-				self.results.append(calculate(i))
+				self.results.append(calculate(i[:]))
 			except (ZeroDivisionError, ValueError):
 				self.results.append(self.trans['text.main.error'])
 		self.init_ui()
