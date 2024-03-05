@@ -95,6 +95,5 @@
 
   "colorMode.light": "浅色",
   "colorMode.dark": "深色",
-  "colorMode.auto": "使用系统设置",
-  "colorMode.custom": "自定义"
+  "colorMode.auto": "使用系统设置"
 }

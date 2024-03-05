@@ -54,6 +54,7 @@ class Settings(QTabWidget):
 
 		self._init_ui()
 
+	# combine
 	languageChanged = pyqtSignal()
 	fontChanged = pyqtSignal()
 	optionsChanged = pyqtSignal()
