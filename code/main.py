@@ -363,7 +363,7 @@ class WaiX(QMainWindow):
 		self.options = get_options()
 
 	def paste(self):
-		text: str = self.clipboard.text()
+		text = self.clipboard.text().replace(',', '').replace(' ', '')
 		self.generate_formula(text)
 
 	def period(self):
