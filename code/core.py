@@ -68,7 +68,7 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
             if not turn_frac:
                 formula[i] = f'Decimal("{formula[i]}")'
             else:
-                formula[i] = f'Fraction({formula[i]})'
+                formula[i] = f'Fraction("{formula[i]}")'
 
     return eval(''.join(formula))
 
