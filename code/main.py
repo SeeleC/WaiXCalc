@@ -304,7 +304,7 @@ class WaiX(QMainWindow):
 			self.bracket(')')
 		elif e.key() == Qt.Key_plusminus:
 			self.plusminus()
-		elif e.key() == Qt.Key_C:
+		elif e.key() == Qt.Key_C or e.key() == Qt.Key_Escape:
 			self.clear()
 		elif e.key() == Qt.Key_Percent:
 			if self.formula[-1] != '0':
