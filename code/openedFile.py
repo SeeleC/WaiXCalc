@@ -37,7 +37,6 @@ class OpenedFile(SubWindow):
 		self.init_ui()
 
 	def init_ui(self):
-		self.setFont(rFont)
 		layout = QVBoxLayout()
 		self.now_page = 1
 
@@ -47,16 +46,19 @@ class OpenedFile(SubWindow):
 		self.last_page_btn.clicked.connect(self.last_page)
 		self.last_page_btn.setShortcut('Right')
 		self.last_page_btn.setEnabled(False)
+		self.last_page_btn.setFont(rFont)
 		head.addWidget(self.last_page_btn)
 		head.addStretch(1)
 
 		self.title = QLabel(self.trans['text.open.page'] % (self.now_page, len(self.formulas)))
+		self.title.setFont(rFont)
 		head.addWidget(self.title)
 		head.addStretch(1)
 
 		self.next_page_btn = QPushButton('>>')
 		self.next_page_btn.clicked.connect(self.next_page)
 		self.next_page_btn.setShortcut('Left')
+		self.next_page_btn.setFont(rFont)
 		if len(self.formulas) <= 1:
 			self.next_page_btn.setEnabled(False)
 		head.addWidget(self.next_page_btn)
@@ -89,14 +91,17 @@ class OpenedFile(SubWindow):
 
 		copy_btn = QPushButton(self.trans['button.open.copyCurrent'])
 		copy_btn.clicked.connect(self.clicked)
+		copy_btn.setFont(rFont)
 		base.addWidget(copy_btn)
 
 		copy_all_btn = QPushButton(self.trans['button.open.copyAll'])
 		copy_all_btn.clicked.connect(self.clicked)
+		copy_all_btn.setFont(rFont)
 		base.addWidget(copy_all_btn)
 
 		save_result_btn = QPushButton(self.trans['button.open.export'])
 		save_result_btn.clicked.connect(self.clicked)
+		save_result_btn.setFont(rFont)
 		base.addWidget(save_result_btn)
 
 		layout.addLayout(base)
@@ -106,6 +111,7 @@ class OpenedFile(SubWindow):
 		close_action = QAction(self)
 		close_action.setShortcuts(['Return', 'Escape'])
 		close_action.triggered.connect(self.close)
+		close_action.setFont(rFont)
 		self.addAction(close_action)
 
 		self.setLayout(layout)
