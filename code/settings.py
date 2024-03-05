@@ -395,7 +395,7 @@ class Settings(QTabWidget):
 				if self.window_title.text() != self.options['window_title']:
 					self.options['window_title'] = self.window_title.text()
 					save('data/options.json', self.options)
-					self.nameChanged.emit()
+					self.titleChanged.emit()
 
 				save('data/options.json', self.options)
 				self.optionsChanged.emit()
