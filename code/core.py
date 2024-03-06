@@ -1,4 +1,4 @@
-from decimal import Decimal  # used
+from decimal import Decimal, InvalidOperation  # used
 from fractions import Fraction
 from typing import Union
 

@@ -31,6 +31,7 @@ class WaiX(QMainWindow):
 		self.history_content = get_history()
 
 		self.is_result: bool = self.data['isResult']
+		self.is_error: bool = False
 		self.formula: list = self.data['formula']
 
 		self.clipboard = QApplication.clipboard()
@@ -159,8 +160,9 @@ class WaiX(QMainWindow):
 
 			try:
 				result = calculate(self.formula[:])
-			except (ValueError, ZeroDivisionError):
+			except (ValueError, ZeroDivisionError, InvalidOperation, SyntaxError):
 				self.main_label.setText(self.trans['text.main.error'])
+				self.is_error = True
 			else:
 				self.is_result = True
 
@@ -281,13 +283,15 @@ class WaiX(QMainWindow):
 
 	def keyPressEvent(self, e: QKeyEvent):  # py310+ match case
 		if e.key() == Qt.Key_Backspace:
+			if not self.is_error:
+				if len(self.formula[-1]) > 1:
+					self.formula[-1] = self.formula[-1][:-1]
+				elif len(self.formula) == 1:
+					self.clear()
+				else:
+					self.formula = self.formula[:-1]
 			self.is_result = False
-			if len(self.formula[-1]) > 1:
-				self.formula[-1] = self.formula[-1][:-1]
-			elif len(self.formula) == 1:
-				self.clear()
-			else:
-				self.formula = self.formula[:-1]
+			self.is_error = False
 		elif e.key() == Qt.Key_Equal or e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:
 			self.calculate()
 		elif e.key() == Qt.Key_Plus:
@@ -351,8 +355,8 @@ class WaiX(QMainWindow):
 			idx += 1
 
 	def number(self, num: str):
-		if (self.formula[-1][-1] != '/' or num != '0') and not list({'e', 'E'} & set(self.formula)):
-			if not self.is_result:
+		if self.formula[-1][-1] != '/' or num != '0':
+			if not (self.is_result and self.is_error):
 				if self.formula[-1] in op_disp or self.formula[-1] == '(':
 					self.formula.append(num)
 				elif self.formula[-1] == '0':
@@ -361,6 +365,8 @@ class WaiX(QMainWindow):
 					self.formula_update(self.formula[-1] + num)
 			else:
 				self.formula_update(num)
+			self.is_result = False
+			self.is_error = False
 
 	def options_update(self):
 		self.options = get_options()
@@ -370,6 +376,9 @@ class WaiX(QMainWindow):
 		self.generate_formula(text)
 
 	def period(self):
+		self.is_result = False
+		self.is_error = False
+
 		if self.formula[-1] not in [*op_disp, *op_brac] and '.' not in self.formula[-1] and self.formula[-1][-1] != '/':
 			self.formula_update(self.formula[-1] + '.')
 
@@ -451,6 +460,9 @@ class WaiX(QMainWindow):
 		self.sub_win.show()
 
 	def slash(self):
+		self.is_result = False
+		self.is_error = False
+
 		if self.options['settings.1.option.1']:
 			if self.formula[-1] not in [*op_disp, *op_brac, '0'] and '/' not in self.formula[-1] and self.formula[-1][-1] != '.':
 				self.formula_update(self.formula[-1] + '/')
@@ -460,15 +472,17 @@ class WaiX(QMainWindow):
 		else:
 			self.operator('÷')
 
-	def operator(self, symbol):
+	def operator(self, op: str):
 		self.is_result = False
+		self.is_error = False
 		if self.formula[-1] in [*op_disp, *op_m]:
-			self.formula_update(symbol)
+			self.formula_update(op)
 		elif self.formula[-1] != '(':
-			self.formula.append(symbol)
+			self.formula.append(op)
 
 	def text_update(self):
-		text_update(self.formula[-1], self.main_label)
+		if not self.is_error:
+			text_update(self.formula[-1], self.main_label)
 
 	def title(self, title: str) -> None:
 		if title != '':
