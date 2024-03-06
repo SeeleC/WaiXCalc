@@ -412,8 +412,7 @@ class WaiX(QMainWindow):
 		self.text_update()
 
 	def generate_formula(self, text: str):
-		self.clear()
-		for i in text.split():
+		for i in list(text):
 			if verify_monomial(i):
 				for j in i:
 					if j.isdigit():
