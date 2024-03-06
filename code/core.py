@@ -1,8 +1,8 @@
-from decimal import Decimal
+from decimal import Decimal  # used
 from fractions import Fraction
 from typing import Union
 
-from config import symbol_lst, symbol_lst_2, symbol_turn
+from config import symbol_disp, symbol_m, symbol_turn, symbol_brac, symbol_calc
 
 
 def verify_formula(formula: list[str]) -> bool:
@@ -11,7 +11,7 @@ def verify_formula(formula: list[str]) -> bool:
     require rewrite
     """
     for i in range(len(formula)):
-        if (i+1) % 2 == 0 and formula[i] in symbol_lst:
+        if (i+1) % 2 == 0 and formula[i] in symbol_disp:
             continue
         elif verify_monomial(formula[i]):
             continue
@@ -31,18 +31,18 @@ def verify_frac(frac: str) -> bool:
 
 def verify_monomial(monomial: str) -> bool:
     """
-    验证字符串是否是整数、小数或分数
+    验证字符串是否是整数、小数或分数 require rewrite
     """
     symbol_frequency = {'.': 0, '/': 0}
 
-    if not monomial or monomial[-1] in symbol_lst_2:
+    if not monomial or monomial[-1] in symbol_m:
         return False
 
     for i in monomial:
-        if i.isdigit() or i in symbol_lst_2:
-            if i in symbol_turn or i in ['(', ')']:
+        if i.isdigit() or i in symbol_m:
+            if i in symbol_turn or i in symbol_brac:
                 return False
-            elif i in symbol_lst_2:
+            elif i in symbol_m:
                 if i == '/' and not verify_frac(monomial):
                     return False
                 elif symbol_frequency['.'] > 2 or symbol_frequency['/'] > 1:
@@ -56,13 +56,15 @@ def verify_monomial(monomial: str) -> bool:
 
 def calculate(formula: list) -> Union[Fraction, float, int]:
     turn_frac = False
-    for j in formula:
-        if verify_frac(j):
+    for j in range(len(formula)):
+        if formula[j] in symbol_turn.keys():
+            formula[j] = symbol_turn[formula[j]]
+        if verify_frac(formula[j]):
             turn_frac = True
             break
 
     for i in range(len(formula)):
-        if formula[i] in [*symbol_lst, '(', ')']:
+        if formula[i] in [*symbol_calc, *symbol_brac]:
             continue
         else:
             if not turn_frac:
@@ -101,7 +103,7 @@ def get_formula(string: str) -> list[str]:
                 s = s[:i] + s[i+length(inner)+1:]
             elif s[i] == ')':
                 return f
-            elif f[-1] in symbol_lst or s[i] in symbol_lst:
+            elif f[-1] in symbol_disp or s[i] in symbol_disp:
                 f = [*f, s[i]]
             else:
                 if not isinstance(f[-1], list):

@@ -142,8 +142,8 @@ class WaiX(QMainWindow):
 	def bracket(self, text: str):
 		if self.is_result:
 			self.formula = [text]
-		elif self.formula[-1] not in ['(', ')']:
-			if text == '(' and self.formula[-1] in symbol_lst:
+		elif self.formula[-1] not in symbol_brac:
+			if text == '(' and self.formula[-1] in symbol_disp:
 				self.formula.append(text)
 			elif text == ')' and verify_monomial(self.formula[-1]):
 				self.formula.append(text)
@@ -151,8 +151,8 @@ class WaiX(QMainWindow):
 		self.text_update()
 
 	def calculate(self):
-		if len(self.formula) > 2 and self.formula[-1] not in [*symbol_lst, '(', ')'] and\
-			self.formula[-1][-1] not in symbol_lst_2:
+		if len(self.formula) > 2 and self.formula[-1] not in [*symbol_disp, *symbol_brac] and\
+			self.formula[-1][-1] not in symbol_m:
 
 			try:
 				result = calculate(self.formula[:])
@@ -350,7 +350,7 @@ class WaiX(QMainWindow):
 	def number(self, num: str):
 		if (self.formula[-1][-1] != '/' or num != '0') and not list({'e', 'E', '(', ')'} & set(self.formula)):
 			if not self.is_result:
-				if self.formula[-1] in symbol_lst or self.formula[-1] == '(':
+				if self.formula[-1] in symbol_disp or self.formula[-1] == '(':
 					self.formula.append(num)
 				elif self.formula[-1] == '0':
 					self.formula_update(num)
@@ -367,11 +367,11 @@ class WaiX(QMainWindow):
 		self.generate_formula(text)
 
 	def period(self):
-		if self.formula[-1] not in symbol_lst and '.' not in self.formula[-1]:
+		if self.formula[-1] not in symbol_disp and '.' not in self.formula[-1]:
 			self.formula_update(self.formula[-1] + '.')
 
 	def plusminus(self):
-		if self.formula[-1][0] != '-' and self.formula[-1] not in [*symbol_lst, '0', '(', ')']:
+		if self.formula[-1][0] != '-' and self.formula[-1] not in [*symbol_disp, '0', '(', ')']:
 			self.formula_update('-' + self.formula[-1])
 		elif self.formula[-1][0] == '-' and self.formula[-1] != '-':
 			self.formula_update(self.formula[-1].lstrip('-'))
@@ -410,9 +410,9 @@ class WaiX(QMainWindow):
 						self.period()
 					elif j == '/':
 						self.slash()
-			elif i in symbol_lst:
+			elif i in symbol_disp:
 				self.symbol(i)
-			elif i in ['(', ')']:
+			elif i in symbol_brac:
 				self.bracket(i)
 		self.text_update()
 
@@ -449,7 +449,7 @@ class WaiX(QMainWindow):
 
 	def slash(self):
 		if self.options['settings.1.option.1']:
-			if self.formula[-1] not in symbol_lst and '/' not in self.formula[-1] and self.formula[-1] != '0':
+			if self.formula[-1] not in symbol_disp and '/' not in self.formula[-1] and self.formula[-1] != '0':
 				self.formula_update(self.formula[-1] + '/')
 			elif self.formula[-1][-1] == '/':
 				self.formula_update(self.formula[-1][:-1])
@@ -459,7 +459,7 @@ class WaiX(QMainWindow):
 
 	def symbol(self, symbol):
 		self.is_result = False
-		if self.formula[-1] not in [*symbol_lst, *symbol_lst_2, '(']:
+		if self.formula[-1] not in [*symbol_disp, *symbol_m, '(']:
 			self.formula.append(symbol)
 		else:
 			self.formula_update(symbol)
