@@ -351,7 +351,7 @@ class WaiX(QMainWindow):
 			idx += 1
 
 	def number(self, num: str):
-		if (self.formula[-1][-1] != '/' or num != '0') and not list({'e', 'E', '(', ')'} & set(self.formula)):
+		if (self.formula[-1][-1] != '/' or num != '0') and not list({'e', 'E'} & set(self.formula)):
 			if not self.is_result:
 				if self.formula[-1] in op_disp or self.formula[-1] == '(':
 					self.formula.append(num)
