@@ -2,11 +2,12 @@ from PyQt5.QtGui import QFont
 
 __version__ = '1.9.2'
 
-symbol_disp = ['+', '-', '×', '÷', '^']
-symbol_calc = ['+', '-', '*', '/', '**']
-symbol_brac = ['(', ')']
-symbol_m = ['.', '/']
-symbol_turn = {'+': '+', '-': '-', '×': '*', '÷': '/', ':': '/', '//': '/', '^': '**', '**': '**'}
+# operator
+op_disp = ['+', '-', '×', '÷', '^']
+op_calc = ['+', '-', '*', '/', '**']
+op_brac = ['(', ')']
+op_m = ['.', '/']
+op_turn = {'+': '+', '-': '-', '×': '*', '÷': '/', ':': '/', '//': '/', '^': '**', '**': '**'}
 
 default_options = {
 	'settings.1.option.1': False,
