@@ -291,16 +291,16 @@ class WaiX(QMainWindow):
 		elif e.key() == Qt.Key_Equal or e.key() == Qt.Key_Return or e.key() == Qt.Key_Enter:
 			self.calculate()
 		elif e.key() == Qt.Key_Plus:
-			self.symbol('+')
+			self.operator('+')
 		elif e.key() == Qt.Key_Minus:
-			self.symbol('-')
+			self.operator('-')
 		elif e.key() == Qt.Key_Asterisk:
 			if self.formula[-1] == '×':
-				self.symbol('^')
+				self.operator('^')
 			else:
-				self.symbol('×')
+				self.operator('×')
 		elif e.key() == Qt.Key_Colon:
-			self.symbol('÷')
+			self.operator('÷')
 		elif e.key() in [Qt.Key_BracketLeft, Qt.Key_ParenLeft]:
 			self.bracket('(')
 		elif e.key() in [Qt.Key_BracketRight, Qt.Key_ParenRight]:
@@ -414,7 +414,7 @@ class WaiX(QMainWindow):
 					elif j == '/':
 						self.slash()
 			elif i in op_disp:
-				self.symbol(i)
+				self.operator(i)
 			elif i in op_brac:
 				self.bracket(i)
 		self.text_update()
@@ -456,16 +456,16 @@ class WaiX(QMainWindow):
 				self.formula_update(self.formula[-1] + '/')
 			elif self.formula[-1][-1] == '/':
 				self.formula_update(self.formula[-1][:-1])
-				self.symbol('÷')
+				self.operator('÷')
 		else:
-			self.symbol('÷')
+			self.operator('÷')
 
-	def symbol(self, symbol):
+	def operator(self, symbol):
 		self.is_result = False
-		if self.formula[-1] not in [*op_disp, *op_m, '(']:
-			self.formula.append(symbol)
-		else:
+		if self.formula[-1] in [*op_disp, *op_m]:
 			self.formula_update(symbol)
+		elif self.formula[-1] != '(':
+			self.formula.append(symbol)
 
 	def text_update(self):
 		text_update(self.formula[-1], self.main_label)
