@@ -24,7 +24,7 @@ def verify_frac(frac: str) -> bool:
     验证字符串是否是分数(Fraction)
     """
     lst = frac.split('/')
-    if len(lst) == 2 and lst[0].isdigit() and lst[1].isdigit():
+    if len(lst) == 2 and lst[0].isdigit() and lst[1].isdigit():  # and verify_monomial(frac)
         return True
     return False
 
@@ -59,7 +59,7 @@ def calculate(formula: list) -> Union[Fraction, float, int]:
     for j in range(len(formula)):
         if formula[j] in op_turn.keys():
             formula[j] = op_turn[formula[j]]
-        if verify_frac(formula[j]):
+        elif verify_frac(formula[j]):
             turn_frac = True
             break
 

@@ -370,7 +370,7 @@ class WaiX(QMainWindow):
 		self.generate_formula(text)
 
 	def period(self):
-		if self.formula[-1] not in op_disp and '.' not in self.formula[-1]:
+		if self.formula[-1] not in [*op_disp, *op_brac] and '.' not in self.formula[-1] and self.formula[-1][-1] != '/':
 			self.formula_update(self.formula[-1] + '.')
 
 	def plusminus(self):
@@ -452,7 +452,7 @@ class WaiX(QMainWindow):
 
 	def slash(self):
 		if self.options['settings.1.option.1']:
-			if self.formula[-1] not in op_disp and '/' not in self.formula[-1] and self.formula[-1] != '0':
+			if self.formula[-1] not in [*op_disp, *op_brac, '0'] and '/' not in self.formula[-1] and self.formula[-1][-1] != '.':
 				self.formula_update(self.formula[-1] + '/')
 			elif self.formula[-1][-1] == '/':
 				self.formula_update(self.formula[-1][:-1])
