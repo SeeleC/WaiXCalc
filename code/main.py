@@ -143,8 +143,11 @@ class WaiX(QMainWindow):
 		if self.is_result:
 			self.formula = [text]
 		elif self.formula[-1] not in symbol_brac:
-			if text == '(' and self.formula[-1] in symbol_disp:
-				self.formula.append(text)
+			if text == '(':
+				if self.formula[-1] in symbol_disp:
+					self.formula.append(text)
+				elif self.formula[-1] == '0':
+					self.formula[-1] = text
 			elif text == ')' and verify_monomial(self.formula[-1]):
 				self.formula.append(text)
 
@@ -185,7 +188,7 @@ class WaiX(QMainWindow):
 
 	def clear(self):
 		self.formula = ['0']
-		self.main_label.setText(self.formula[-1])
+		self.text_update()
 
 	def closeEvent(self, a0: QCloseEvent) -> None:
 		try:
@@ -298,9 +301,9 @@ class WaiX(QMainWindow):
 				self.symbol('×')
 		elif e.key() == Qt.Key_Colon:
 			self.symbol('÷')
-		elif e.key() == Qt.Key_ParenLeft or e.key() == Qt.Key_BracketLeft:
+		elif e.key() in [Qt.Key_BracketLeft, Qt.Key_ParenLeft]:
 			self.bracket('(')
-		elif e.key() == Qt.Key_ParenRight or e.key() == Qt.Key_BracketRight:
+		elif e.key() in [Qt.Key_BracketRight, Qt.Key_ParenRight]:
 			self.bracket(')')
 		elif e.key() == Qt.Key_plusminus:
 			self.plusminus()
