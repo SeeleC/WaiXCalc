@@ -189,6 +189,8 @@ class WaiX(QMainWindow):
 		qr.moveCenter(qr.topLeft())
 
 	def clear(self):
+		self.is_result = False
+		self.is_error = False
 		self.formula = ['0']
 		self.text_update()
 
@@ -421,7 +423,7 @@ class WaiX(QMainWindow):
 						self.period()
 					elif j == '/':
 						self.slash()
-			elif i in op_disp:
+			elif i in op_disp:  # TODO * / : ** // 兼容
 				self.operator(i)
 			elif i in op_brac:
 				self.bracket(i)
