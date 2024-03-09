@@ -396,7 +396,7 @@ class WaiX(QMainWindow):
 			with open(file[0], 'r') as f:
 				f_formula = f.read()
 				f_formulas = f_formula.split('\n')
-				formulas = [get_formula(i) for i in f_formulas if verify_formula(get_formula(i))]
+				formulas = [get_formula(i) for i in f_formulas]
 		except (FileNotFoundError, IndexError) as e:
 			if e is IndexError:
 				get_enhanced_messagebox(
