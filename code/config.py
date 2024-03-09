@@ -3,7 +3,7 @@ from PyQt5.QtGui import QFont
 __version__ = '1.9.3'
 
 # operator
-op_disp = ['+', '-', '×', '÷', ':', '^']
+op_disp = ['+', '-', '×', '÷', ':', '//', '^']
 op_calc = ['+', '-', '*', '/', '**']
 op_brac = ['(', ')']
 op_m = ['.', '/']
