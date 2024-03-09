@@ -1,7 +1,7 @@
 from decimal import Decimal, InvalidOperation  # used
 from fractions import Fraction  # used
 
-from config import op_disp, op_turn, op_brac, op_calc
+from config import op_disp, op_turn, op_brac, op_calc, op_m
 
 
 def verify_frac(frac: str) -> bool:
@@ -51,39 +51,23 @@ def calculate(formula: list) -> str:
     return eval(''.join(formula))
 
 
-def get_formula(string: str) -> list[str]:
+def get_formula(s: str, frac: bool = False) -> list:
     """
-    传入字符串，将字符串转化为算式，每个元素是一串数字或一个符号。
-    可以用()作嵌套。
+    传入字符串，将字符串转化为算式，每个元素是单项式或运算符。
     """
-    def length(lst: list):
-        value = 0
-        for _ in lst:
-            if isinstance(_, list):
-                value += length(_)+2
-            else:
-                value += len(_)
-        return value
-
     f = []
-    s = string.replace('**', '^').replace('//', ':')
+    op = [*op_disp, *op_calc, *op_brac]  # operator
+
     for i in range(len(s)):
-        if i > len(s)-1:
-            break
-        if f and not isinstance(f[-1], list):
-            if s[i] == '(':
-                inner = get_formula(s[i+1:])
-                f = [*f, inner]
-                s = s[:i] + s[i+length(inner)+1:]
-            elif s[i] == ')':
-                return f
-            elif f[-1] in op_disp or s[i] in op_disp:
-                f = [*f, s[i]]
-            else:
-                if not isinstance(f[-1], list):
-                    f = [*f[:-1], f[-1] + s[i]]
-                else:
-                    f = [*f, s[i]]
+        if len(f) == 0:
+            f.append(s[i])
+        elif s[i] in ['*', '/'] and s[i] == f[-1]:
+            f[-1] += s[i]
+        elif frac and s[i] == '/' and s[i] not in f[-1]:
+            f[-1] += s[i]
+        elif f[-1] in op or s[i] in op:
+            f.append(s[i])
         else:
-            f = [*f, s[i]]
+            f[-1] += s[i]
+
     return f
